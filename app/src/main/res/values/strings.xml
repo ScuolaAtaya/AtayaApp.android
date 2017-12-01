@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Ruah</string>
+    <string name="background">background</string>
+    <string name="unit_icon">Unit icon</string>
+    <string name="database_name">db_ruah</string>
+
+    <!-- Titoli unità -->
+    <string name="accoglienza">accoglienza</string>
+    <string name="lavoro">il lavoro</string>
+    <string name="cibo">il cibo</string>
+    <string name="telefono">pronto?</string>
+    <string name="stato">come sei?\ncome stai?</string>
+    <string name="salute">la salute</string>
+    <string name="citta">la città e i\nsuoi servizi</string>
+    <string name="mezzi">i mezzi di\ntrasporto</string>
+    <string name="casa">la cura della\ncasa</string>
+    <string name="viaggio">il viaggio</string>
+
+
+</resources>

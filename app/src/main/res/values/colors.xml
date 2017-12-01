@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="transparentWhite">#44FFFFFF</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+
+    <!-- Unit colors -->
+    <color name="accoglienza">#37ABDF</color>
+    <color name="lavoro">#2C74B6</color>
+    <color name="cibo">#72458E</color>
+    <color name="telefono">#AE007D</color>
+    <color name="stato">#D4145D</color>
+    <color name="salute">#D2262D</color>
+    <color name="citta">#DD6927</color>
+    <color name="mezzi">#EAAC12</color>
+    <color name="casa">#9ACB2A</color>
+    <color name="viaggio">#139B43</color>
+</resources>
