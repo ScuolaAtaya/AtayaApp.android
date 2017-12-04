@@ -26,6 +26,7 @@ class App : Application() {
                         AppDatabase::class.java,
                         getString(R.string.database_name)
                 )
+                .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build()
         AppDatabase.setInstance(room)

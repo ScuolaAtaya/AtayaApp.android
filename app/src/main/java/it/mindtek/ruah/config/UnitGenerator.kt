@@ -15,6 +15,7 @@ class UnitGenerator {
                     R.drawable.accoglienza,
                     R.string.accoglienza,
                     R.color.accoglienza,
+                    R.color.accoglienza_dark,
                     1,
                     enabled = true
             )
@@ -24,6 +25,7 @@ class UnitGenerator {
                     R.drawable.lavoro,
                     R.string.lavoro,
                     R.color.lavoro,
+                    R.color.lavoro_dark,
                     2
             )
             units.add(unit2)
@@ -32,6 +34,7 @@ class UnitGenerator {
                     R.drawable.cibo,
                     R.string.cibo,
                     R.color.cibo,
+                    R.color.cibo_dark,
                     3
             )
             units.add(unit3)
@@ -40,6 +43,7 @@ class UnitGenerator {
                     R.drawable.telefono,
                     R.string.telefono,
                     R.color.telefono,
+                    R.color.telefono_dark,
                     4
             )
             units.add(unit4)
@@ -48,6 +52,7 @@ class UnitGenerator {
                     R.drawable.stato,
                     R.string.stato,
                     R.color.stato,
+                    R.color.stato_dark,
                     5
             )
             units.add(unit5)
@@ -56,6 +61,7 @@ class UnitGenerator {
                     R.drawable.salute,
                     R.string.salute,
                     R.color.salute,
+                    R.color.salute_dark,
                     6
             )
             units.add(unit6)
@@ -64,6 +70,7 @@ class UnitGenerator {
                     R.drawable.citta,
                     R.string.citta,
                     R.color.citta,
+                    R.color.citta_dark,
                     7
             )
             units.add(unit7)
@@ -72,6 +79,7 @@ class UnitGenerator {
                     R.drawable.mezzi,
                     R.string.mezzi,
                     R.color.mezzi,
+                    R.color.mezzi_dark,
                     8
             )
             units.add(unit8)
@@ -80,6 +88,7 @@ class UnitGenerator {
                     R.drawable.casa,
                     R.string.casa,
                     R.color.casa,
+                    R.color.casa_dark,
                     9
             )
             units.add(unit9)
@@ -88,6 +97,7 @@ class UnitGenerator {
                     R.drawable.viaggio,
                     R.string.viaggio,
                     R.color.viaggio,
+                    R.color.viaggio_dark,
                     10
             )
             units.add(unit10)

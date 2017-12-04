@@ -17,4 +17,8 @@
     <string name="viaggio">il viaggio</string>
 
 
+    <string name="section_understand">capiamo</string>
+    <string name="section_talk">parliamo</string>
+    <string name="section_read">leggiamo</string>
+    <string name="section_write">scriviamo</string>
 </resources>

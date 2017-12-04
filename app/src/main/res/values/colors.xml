@@ -19,4 +19,16 @@
     <color name="mezzi">#EAAC12</color>
     <color name="casa">#9ACB2A</color>
     <color name="viaggio">#139B43</color>
+
+    <!-- Unit colors dark -->
+    <color name="accoglienza_dark">#007cad</color>
+    <color name="lavoro_dark">#004986</color>
+    <color name="cibo_dark">#441b60</color>
+    <color name="telefono_dark">#7a0051</color>
+    <color name="stato_dark">#9c0034</color>
+    <color name="salute_dark">#990005</color>
+    <color name="citta_dark">#a53b00</color>
+    <color name="mezzi_dark">#b37d00</color>
+    <color name="casa_dark">#679a00</color>
+    <color name="viaggio_dark">#006b17</color>
 </resources>

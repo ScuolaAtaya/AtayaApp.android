@@ -17,6 +17,7 @@ open class ModelUnit(
         @StringRes
         var name: Int = 0,
         var color: Int = 0,
+        var colorDark: Int = 0,
         var position: Int = 0,
         var advanced: Boolean = false,
         var enabled: Boolean = false

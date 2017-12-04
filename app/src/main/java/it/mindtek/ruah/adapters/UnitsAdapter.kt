@@ -1,9 +1,7 @@
 package it.mindtek.ruah.adapters
 
-import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +13,7 @@ import it.mindtek.ruah.kotlin.extensions.db
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
-class UnitsAdapter(owner: LifecycleOwner): RecyclerView.Adapter<UnitHolder>() {
+class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit) -> Unit)?) : RecyclerView.Adapter<UnitHolder>() {
     var units: MutableList<ModelUnit> = mutableListOf()
 
     init {
@@ -27,7 +25,7 @@ class UnitsAdapter(owner: LifecycleOwner): RecyclerView.Adapter<UnitHolder>() {
                     notifyDataSetChanged()
                 }
             })
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -38,7 +36,7 @@ class UnitsAdapter(owner: LifecycleOwner): RecyclerView.Adapter<UnitHolder>() {
     }
 
     override fun onBindViewHolder(holder: UnitHolder, position: Int) {
-        holder.bind(units[position])
+        holder.bind(units[position], onClick)
     }
 
     override fun getItemCount(): Int = units.size

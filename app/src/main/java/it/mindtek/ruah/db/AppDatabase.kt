@@ -8,7 +8,7 @@ import it.mindtek.ruah.db.models.ModelUnit
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
-@Database(version = 1, entities = [ModelUnit::class])
+@Database(version = 2, entities = [ModelUnit::class])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unitDao(): DaoUnit
 
