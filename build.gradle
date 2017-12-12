@@ -3,6 +3,7 @@
 buildscript {
     ext{
         kotlin_version = '1.2.0'
+        anko_version = '0.10.3'
         roomVersion = '1.0.0'
         supportVersion = '26.1.0'
     }

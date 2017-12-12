@@ -21,4 +21,19 @@
     <string name="section_talk">parliamo</string>
     <string name="section_read">leggiamo</string>
     <string name="section_write">scriviamo</string>
+
+    <string name="section_understand_description">Guarda il video e rispondi\nalle domande</string>
+    <string name="section_talk_description">Ascolta e ripeti la parola\nregistrandola</string>
+    <string name="section_read_description">Guarda l\'immagine e seleziona\nla parola corrispondente</string>
+    <string name="section_write_description">Osserva l\'immagine e\ncomponi il suo nome</string>
+
+    <string name="start">COMINCIA</string>
+    <string name="back">INDIETRO</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="watch_video">Guarda il video per continuare</string>
+    <string name="listen">ascolta</string>
+    <string name="next">avanti</string>
+    <string name="button_video_audio">video/audio</string>
 </resources>

@@ -1,254 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    android:id="@+id/constraint"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipChildren="false"
     tools:context="it.mindtek.ruah.activities.ActivityUnit">
 
     <android.support.constraint.Guideline
         android:id="@+id/topLeftLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".0"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topLeftRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topLeftTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".0"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topLeftBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="horizontal"/>
-
-    <RelativeLayout
-        android:id="@+id/capire"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@id/topLeftBottom"
-        app:layout_constraintLeft_toLeftOf="@id/topLeftLeft"
-        app:layout_constraintRight_toRightOf="@id/topLeftRight"
-        app:layout_constraintTop_toTopOf="@id/topLeftTop">
-
-        <ImageView
-            android:id="@+id/iconCapiamo"
-            android:layout_width="wrap_content"
-            android:layout_height="92dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/capiamo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_below="@+id/iconCapiamo"
-            android:layout_centerHorizontal="true"
-            android:text="@string/section_understand"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
 
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="@color/white"
-        app:layout_constraintLeft_toLeftOf="@id/topRightLeft"/>
+        app:layout_constraintLeft_toLeftOf="@id/topRightLeft" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/capire"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/topLeftBottom"
+        app:layout_constraintLeft_toLeftOf="@id/topLeftLeft"
+        app:layout_constraintRight_toRightOf="@id/topLeftRight"
+        app:layout_constraintTop_toTopOf="@id/topLeftTop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iconCapiamo"
+                android:layout_width="wrap_content"
+                android:layout_height="92dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/capiamo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iconCapiamo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:text="@string/section_understand"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.constraint.Guideline
         android:id="@+id/topRightLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topRightRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="1"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topRightTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".0"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topRightBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/parlare"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="@id/topRightBottom"
         app:layout_constraintLeft_toLeftOf="@id/topRightLeft"
         app:layout_constraintRight_toRightOf="@id/topRightRight"
-        app:layout_constraintTop_toTopOf="@id/topRightTop"
-        android:gravity="center"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="@id/topRightTop">
 
-        <ImageView
-            android:id="@+id/iconParliamo"
-            android:layout_width="wrap_content"
-            android:layout_height="92dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/parliamo" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/section_talk"
-            android:textAllCaps="true"
-            android:layout_below="@+id/iconParliamo"
-            android:textSize="20sp"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iconParliamo"
+                android:layout_width="wrap_content"
+                android:layout_height="92dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/parliamo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iconParliamo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:text="@string/section_talk"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomLeftLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".0"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomLeftRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomLeftTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomLeftBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="1"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/leggere"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="@id/bottomLeftBottom"
         app:layout_constraintLeft_toLeftOf="@id/bottomLeftLeft"
         app:layout_constraintRight_toRightOf="@id/bottomLeftRight"
-        app:layout_constraintTop_toTopOf="@id/bottomLeftTop"
-        android:gravity="center"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="@id/bottomLeftTop">
 
-        <ImageView
-            android:id="@+id/iconLeggere"
-            android:layout_width="wrap_content"
-            android:layout_height="92dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/leggiamo" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/section_read"
-            android:layout_below="@+id/iconLeggere"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:textColor="@color/white"/>
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iconLeggere"
+                android:layout_width="wrap_content"
+                android:layout_height="92dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/leggiamo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iconLeggere"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:text="@string/section_read"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/white"
-        app:layout_constraintTop_toTopOf="@id/bottomLeftTop"/>
+        app:layout_constraintTop_toTopOf="@id/bottomLeftTop" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomRightLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomRightRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="1"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomRightTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".5"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottomRightBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="1"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/scrivere"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="@id/bottomRightBottom"
         app:layout_constraintLeft_toLeftOf="@id/bottomRightLeft"
         app:layout_constraintRight_toRightOf="@id/bottomRightRight"
-        app:layout_constraintTop_toTopOf="@id/bottomRightTop"
-        android:gravity="center">
+        app:layout_constraintTop_toTopOf="@id/bottomRightTop">
 
-        <ImageView
-            android:id="@+id/iconScriviamo"
-            android:layout_width="wrap_content"
-            android:layout_height="92dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/scriviamo" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/section_write"
-            android:layout_below="@+id/iconScriviamo"
-            android:textAllCaps="true"
-            android:textSize="20sp"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iconScriviamo"
+                android:layout_width="wrap_content"
+                android:layout_height="92dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/scriviamo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iconScriviamo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:text="@string/section_write"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

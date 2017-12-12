@@ -10,7 +10,7 @@ import it.mindtek.ruah.db.models.ModelUnit
  * Created by alessandrogaboardi on 29/11/2017.
  */
 @Dao
-open interface DaoUnit {
+interface DaoUnit {
     @Insert
     fun saveUnits(units: MutableList<ModelUnit>)
 

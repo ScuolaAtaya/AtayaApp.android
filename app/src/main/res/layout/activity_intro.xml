@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -11,15 +12,22 @@
         android:id="@+id/topText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".1"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
 
     <android.support.constraint.Guideline
         android:id="@+id/topIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent=".2"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/bottomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".74" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -34,16 +42,17 @@
         app:layout_constraintTop_toTopOf="@+id/topText">
 
         <ImageView
+            android:id="@+id/sectionIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/volume" />
 
         <TextView
+            android:id="@+id/sectionName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
-            android:text="Capiamo"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
@@ -62,14 +71,13 @@
         app:layout_constraintTop_toTopOf="@+id/topIcon" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/sectionDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Guarda il video e rispondi\nalle domande"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,15 +89,12 @@
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:drawableEnd="@drawable/play"
-        android:drawableTint="@color/colorPrimary"
-        android:text="COMINCIA"
-        android:textColor="@color/colorPrimary"
+        android:text="@string/start"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/fabBack"
+        app:layout_constraintBottom_toTopOf="@+id/bottomButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -113,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="INDIETRO"
+        android:text="@string/back"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

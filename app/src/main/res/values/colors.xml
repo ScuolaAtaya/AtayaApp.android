@@ -8,6 +8,12 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
 
+    <color name="disabled">#909090</color>
+    <color name="disabledText">#606060</color>
+    <color name="grey">#606060</color>
+    <color name="red">#F44336</color>
+    <color name="green">#4CAF50</color>
+
     <!-- Unit colors -->
     <color name="accoglienza">#37ABDF</color>
     <color name="lavoro">#2C74B6</color>
