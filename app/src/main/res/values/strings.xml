@@ -1,4 +1,6 @@
 <resources>
+    <string name="youtube_api_key">AIzaSyCrZFKOBhSh7QqW90eP2NSeB6MfWWNrLYw</string>
+
     <string name="app_name">Ruah</string>
     <string name="background">background</string>
     <string name="unit_icon">Unit icon</string>
@@ -36,4 +38,6 @@
     <string name="listen">ascolta</string>
     <string name="next">avanti</string>
     <string name="button_video_audio">video/audio</string>
+    <string name="congrats">Congratulazioni!</string>
+    <string name="listen">ascolta</string>
 </resources>

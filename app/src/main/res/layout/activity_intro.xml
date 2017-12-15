@@ -57,18 +57,33 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/unitIcon"
+    <RelativeLayout
+        android:id="@+id/iconSection"
         android:layout_width="0dp"
         android:layout_height="124dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/lavoro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topIcon" />
+        app:layout_constraintTop_toTopOf="@+id/topIcon" >
+
+        <ImageView
+            android:id="@+id/unitIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/lavoro"/>
+
+        <ImageView
+            android:id="@+id/done"
+            android:layout_toEndOf="@+id/unitIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/check"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/sectionDescription"
@@ -82,10 +97,10 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/unitIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/iconSection" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/buttonBack"
+        android:id="@+id/buttonNext"
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

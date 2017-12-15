@@ -12,10 +12,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.kotlin.extensions.compat21
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.setColor
-import it.mindtek.ruah.kotlin.extensions.setTintPreLollipop
+import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.activity_intro.*
 import org.jetbrains.anko.dip
 
@@ -23,6 +20,7 @@ class ActivityIntro : AppCompatActivity() {
     var unit_id: Int = -1
     var category: Category? = null
     var player: MediaPlayer? = null
+    var finish: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +29,7 @@ class ActivityIntro : AppCompatActivity() {
         intent?.let { intentNN ->
             unit_id = intentNN.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             category = Category.from(intentNN.getIntExtra(EXTRA_CATEGORY_ID, -1))
+            finish = intentNN.getBooleanExtra(EXTRA_IS_FINISH, false)
         }
 
         setup()
@@ -40,12 +39,21 @@ class ActivityIntro : AppCompatActivity() {
         if (unit_id == -1 || category == null) {
             finish()
         }
-        fabBack.setOnClickListener { onBackPressed() }
-        buttonBack.setOnClickListener { goToUnderstand() }
-        playAudio()
+        if (finish) {
+            buttonNext.setGone()
+            done.setVisible()
+            sectionDescription.text = getString(R.string.congrats)
+            fabBack.setOnClickListener { goToCategory() }
+        } else {
+            done.setGone()
+            fabBack.setOnClickListener { onBackPressed() }
+            buttonNext.setVisible()
+            buttonNext.setOnClickListener { dispatch() }
+            sectionDescription.text = getString(category!!.description)
+            playAudio()
+        }
         GlideApp.with(this).load(category!!.icon).override(dip(24), dip(24)).into(sectionIcon)
         sectionName.text = getString(category!!.title)
-        sectionDescription.text = getString(category!!.description)
         val unitObservable = db.unitDao().getUnitByIdAsync(unit_id)
         unitObservable.observe(this, Observer<ModelUnit> { unit ->
             unit?.let {
@@ -61,8 +69,8 @@ class ActivityIntro : AppCompatActivity() {
                 fabBack.setTintPreLollipop(color, R.drawable.home)
                 unitIcon.setImageResource(unit.icon)
                 val play = ContextCompat.getDrawable(this, R.drawable.play)
-                buttonBack.setCompoundDrawables(null, null, play, null)
-                buttonBack.setColor(color)
+                buttonNext.setCompoundDrawables(null, null, play, null)
+                buttonNext.setColor(color)
             }
         })
     }
@@ -73,6 +81,28 @@ class ActivityIntro : AppCompatActivity() {
             destroyPlayer()
         }
         player?.start()
+    }
+
+    private fun dispatch() {
+        if (category?.value == Category.UNDERSTAND.value)
+            goToUnderstand()
+        else
+            goToSpeak()
+    }
+
+    private fun goToCategory() {
+        val intent = Intent(this, ActivityUnit::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun goToSpeak(){
+        val intent = Intent(this, ActivitySpeak::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
+        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
+        startActivity(intent)
     }
 
     private fun goToUnderstand() {
@@ -93,5 +123,6 @@ class ActivityIntro : AppCompatActivity() {
 
     companion object {
         val EXTRA_CATEGORY_ID = "category_id"
+        val EXTRA_IS_FINISH = "extra_is_finish_section"
     }
 }

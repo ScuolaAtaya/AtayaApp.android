@@ -21,8 +21,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/exoPlayer"
+    <fragment
+        android:id="@+id/videoPlayer"
+        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
@@ -45,7 +46,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exoPlayer">
+        app:layout_constraintTop_toBottomOf="@+id/videoPlayer">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/listen"
