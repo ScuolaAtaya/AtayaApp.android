@@ -2,6 +2,7 @@ package it.mindtek.ruah.activities
 
 import android.annotation.TargetApi
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -84,10 +85,14 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun dispatch() {
-        if (category?.value == Category.UNDERSTAND.value)
-            goToUnderstand()
-        else
-            goToSpeak()
+        if (player != null)
+            destroyPlayer()
+        when (category?.value){
+            Category.UNDERSTAND.value -> goToUnderstand()
+            Category.TALK.value -> goToSpeak()
+            Category.READ.value -> goToRead()
+            Category.WRITE.value -> goToWrite()
+        }
     }
 
     private fun goToCategory() {
@@ -107,6 +112,20 @@ class ActivityIntro : AppCompatActivity() {
 
     private fun goToUnderstand() {
         val intent = Intent(this, ActivityUnderstand::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
+        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
+        startActivity(intent)
+    }
+
+    private fun goToRead() {
+        val intent = Intent(this, ActivityRead::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
+        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
+        startActivity(intent)
+    }
+
+    private fun goToWrite(){
+        val intent = Intent(this, ActivityWrite::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
         intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
         startActivity(intent)

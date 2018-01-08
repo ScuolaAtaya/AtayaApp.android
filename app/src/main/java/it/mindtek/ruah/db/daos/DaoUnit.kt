@@ -20,6 +20,9 @@ interface DaoUnit {
     @Query("SELECT * FROM units WHERE id = :unit_id LIMIT 1 ")
     fun getUnitByIdAsync(unit_id: Int): LiveData<ModelUnit>
 
+    @Query("SELECT * FROM units WHERE id = :unit_id LIMIT 1 ")
+    fun getUnitById(unit_id: Int): ModelUnit?
+
     @Query("SELECT COUNT(*) FROM units")
     fun count(): Int
 }

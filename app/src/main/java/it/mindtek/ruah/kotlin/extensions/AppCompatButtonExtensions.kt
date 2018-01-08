@@ -1,12 +1,9 @@
 package it.mindtek.ruah.kotlin.extensions
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatButton
-import it.mindtek.ruah.R
 import org.jetbrains.anko.dip
 
 /**
@@ -17,12 +14,12 @@ val TOP = 1
 val RIGHT = 2
 val BOTTOM = 3
 
-fun AppCompatButton.setColor(color: Int){
+fun AppCompatButton.setColor(color: Int) {
     setTextColor(color)
     setDrawableColor(color)
 }
 
-fun AppCompatButton.setDrawableColor(color: Int){
+fun AppCompatButton.setDrawableColor(color: Int) {
     val drawables = compoundDrawables
     val left = tint(drawables[LEFT], color, context)
     val top = tint(drawables[TOP], color, context)
@@ -31,11 +28,19 @@ fun AppCompatButton.setDrawableColor(color: Int){
     this.setCompoundDrawables(left, top, right, bottom)
 }
 
-fun tint(drawable: Drawable?, color: Int, context: Context): Drawable?{
+fun tint(drawable: Drawable?, color: Int, context: Context): Drawable? {
     drawable?.let {
         val copy = drawable.constantState.newDrawable()
         copy.setBounds(0, 0, context.dip(24), context.dip(24))
         copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         return copy
     } ?: return null
+}
+
+fun AppCompatButton.disable() {
+    this.isEnabled = false
+}
+
+fun AppCompatButton.enable() {
+    this.isEnabled = true
 }

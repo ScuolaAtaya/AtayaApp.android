@@ -39,5 +39,6 @@
     <string name="next">avanti</string>
     <string name="button_video_audio">video/audio</string>
     <string name="congrats">Congratulazioni!</string>
-    <string name="listen">ascolta</string>
+    <string name="hold_to_record">Tieni premuto per registrare</string>
+    <string name="listen_again">Riascolta</string>
 </resources>

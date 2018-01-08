@@ -132,16 +132,10 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun disableNext() {
         next.isEnabled = false
-        compat21(@TargetApi(21) {
-            next.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.disabled))
-        }, null)
     }
 
     private fun enableNext() {
         next.isEnabled = true
-        compat21(@TargetApi(21) {
-            next.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.casa))
-        }, null)
     }
 
     private fun destroyPlayer() {

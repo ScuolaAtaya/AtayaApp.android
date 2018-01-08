@@ -2,6 +2,8 @@ package it.mindtek.ruah.kotlin.extensions
 
 import android.content.Context
 import android.os.Build
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import it.mindtek.ruah.db.AppDatabase
 import okhttp3.ResponseBody
 import java.io.File
@@ -36,6 +38,8 @@ fun compatCheck(version: Int, compatible: (() -> Unit)?, incompatible: (() -> Un
         incompatible?.invoke()
     }
 }
+
+inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
 
 fun readFile(context: Context, fileName: String): File {
     val path = context.filesDir.absolutePath + File.separator + fileName

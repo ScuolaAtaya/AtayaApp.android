@@ -3,8 +3,7 @@ package it.mindtek.ruah
 import android.app.Application
 import android.arch.persistence.room.Room
 import android.support.multidex.MultiDexApplication
-import it.mindtek.ruah.config.UnderstandGenerator
-import it.mindtek.ruah.config.UnitGenerator
+import it.mindtek.ruah.config.*
 import it.mindtek.ruah.db.AppDatabase
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.ioThread
@@ -20,6 +19,9 @@ class App : MultiDexApplication() {
         initRoom()
         initUnits()
         initUnderstand()
+        initSpeak()
+        initRead()
+        initWrite()
     }
 
     private fun initRoom() {
@@ -58,6 +60,38 @@ class App : MultiDexApplication() {
                 db.understandDao().saveCategories(understand)
                 db.understandDao().saveQuestions(questions)
                 db.understandDao().saveAnswers(answers)
+            }
+        }
+    }
+
+    private fun initSpeak(){
+        if(db.speakDao().count() == 0){
+            val speak = SpeakGenerator.getSpeaks()
+
+            ioThread {
+                db.speakDao().saveCategories(speak)
+            }
+        }
+    }
+
+    private fun initRead(){
+        if(db.readDao().count() == 0){
+            val read = ReadGenerator.getRead()
+            val answers = ReadGenerator.getAnswers()
+
+            ioThread {
+                db.readDao().saveCategories(read)
+                db.readDao().saveAnswers(answers)
+            }
+        }
+    }
+
+    private fun initWrite(){
+        if(db.writeDao().count() == 0){
+            val write = WriteGenerator.getWrites()
+
+            ioThread {
+                db.writeDao().saveCategories(write)
             }
         }
     }

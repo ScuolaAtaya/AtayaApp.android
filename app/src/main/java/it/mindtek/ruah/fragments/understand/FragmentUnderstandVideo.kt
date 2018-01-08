@@ -12,12 +12,14 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -31,16 +33,15 @@ import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.pojos.UnderstandPojo
 import kotlinx.android.synthetic.main.fragment_understand_video.*
-import org.jetbrains.anko.support.v4.find
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class FragmentUnderstandVideo : Fragment(), Player.EventListener {
+class FragmentUnderstandVideo : Fragment() {
     private var unit_id: Int = -1
-//    var player: SimpleExoPlayer? = null
     var audioPlayer: MediaPlayer? = null
+    var videoPlayer: YouTubePlayer? = null
     var communicator: UnderstandActivityInterface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +61,30 @@ class FragmentUnderstandVideo : Fragment(), Player.EventListener {
         }
     }
 
-    val videoListener = object : YouTubePlayer.OnInitializedListener{
+    val videoListener = object : YouTubePlayer.OnInitializedListener {
         override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
+            videoPlayer = p1
+            p1.setPlayerStateChangeListener(object : YouTubePlayer.PlayerStateChangeListener {
+                override fun onAdStarted() {}
+                override fun onLoading() {}
+                override fun onVideoStarted() {}
+                override fun onLoaded(p0: String?) {}
+
+                override fun onVideoEnded() {
+                    onVideoEnd()
+                }
+
+                override fun onError(p0: YouTubePlayer.ErrorReason?) {}
+            })
+            p1.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener{
+                override fun onSeekTo(p0: Int) {}
+                override fun onBuffering(p0: Boolean) {}
+                override fun onPlaying() {
+                    destroyPlayer()
+                }
+                override fun onStopped() {}
+                override fun onPaused() {}
+            })
             p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
             p1.loadVideo("blBV9No0xGo")
         }
@@ -73,19 +96,6 @@ class FragmentUnderstandVideo : Fragment(), Player.EventListener {
 
     private fun showVideo(video: String?) {
         video?.let {
-            /*player = ExoPlayerFactory.newSimpleInstance(
-                    DefaultRenderersFactory(activity),
-                    DefaultTrackSelector(),
-                    DefaultLoadControl()
-            )
-            player?.addListener(this)
-
-            exoPlayer.player = player
-            player?.playWhenReady = false
-
-            val uri = Uri.parse(video)
-            val mediaSource = buildMediaSource(uri)
-            player?.prepare(mediaSource, true, false)*/
             val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
             playerFragment.initialize(getString(R.string.youtube_api_key), videoListener)
         }
@@ -126,6 +136,7 @@ class FragmentUnderstandVideo : Fragment(), Player.EventListener {
 
     private fun setupNext() {
         next.setOnClickListener {
+            destroyPlayer()
             goToQuestions()
         }
         disableNext()
@@ -136,6 +147,9 @@ class FragmentUnderstandVideo : Fragment(), Player.EventListener {
     }
 
     private fun playAudio(audio: String) {
+        videoPlayer?.pause()
+        if(audioPlayer != null)
+            destroyPlayer()
         audioPlayer = MediaPlayer.create(activity, R.raw.voice)
         audioPlayer?.setOnCompletionListener {
             if (canAccessActivity) {
@@ -147,7 +161,7 @@ class FragmentUnderstandVideo : Fragment(), Player.EventListener {
     }
 
     private fun destroyPlayer() {
-//        player?.release()
+        audioPlayer?.release()
     }
 
     override fun onDestroy() {
@@ -157,49 +171,15 @@ class FragmentUnderstandVideo : Fragment(), Player.EventListener {
 
     private fun disableNext() {
         next.isEnabled = false
-        compat21(@TargetApi(21) {
-            next.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.disabled))
-        }, null)
     }
 
     private fun enableNext() {
         next.isEnabled = true
-        compat21(@TargetApi(21) {
-            next.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(activity, R.color.casa))
-        }, null)
     }
 
-    private fun buildMediaSource(uri: Uri): MediaSource =
-            ExtractorMediaSource(
-                    uri,
-                    DefaultHttpDataSourceFactory("ua"),
-                    DefaultExtractorsFactory(),
-                    null,
-                    null)
-
-    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {}
-
-    override fun onSeekProcessed() {}
-
-    override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {}
-
-    override fun onPlayerError(error: ExoPlaybackException?) {}
-
-    override fun onLoadingChanged(isLoading: Boolean) {}
-
-    override fun onPositionDiscontinuity(reason: Int) {}
-
-    override fun onRepeatModeChanged(repeatMode: Int) {}
-
-    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {}
-
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {}
-
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        if (playbackState == Player.STATE_ENDED) {
-            if (canAccessActivity)
-                enableNext()
-        }
+    private fun onVideoEnd() {
+        if (canAccessActivity)
+            enableNext()
     }
 
     companion object {

@@ -6,6 +6,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".App"
@@ -35,7 +36,15 @@
         <activity
             android:name=".activities.ActivityUnderstand"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.ActivitySpeak"></activity>
+        <activity
+            android:name=".activities.ActivitySpeak"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityRead"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityWrite"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

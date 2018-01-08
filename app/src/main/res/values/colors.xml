@@ -5,18 +5,20 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="transparentWhite">#44FFFFFF</color>
-    <color name="white">#FFF</color>
+    <color name="white">#ffffff</color>
     <color name="black">#000</color>
 
-    <color name="disabled">#909090</color>
+    <color name="disabled">#88FFFFFF</color>
     <color name="disabledText">#606060</color>
+    <color name="lightGrey">#BBB</color>
+    <color name="veryLightGrey">#DDD</color>
     <color name="grey">#606060</color>
     <color name="red">#F44336</color>
     <color name="green">#4CAF50</color>
 
     <!-- Unit colors -->
-    <color name="accoglienza">#37ABDF</color>
-    <color name="lavoro">#2C74B6</color>
+    <color name="accoglienza">#37abdf</color>
+    <color name="lavoro">#2c74b6</color>
     <color name="cibo">#72458E</color>
     <color name="telefono">#AE007D</color>
     <color name="stato">#D4145D</color>
