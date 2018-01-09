@@ -41,6 +41,14 @@ fun compatCheck(version: Int, compatible: (() -> Unit)?, incompatible: (() -> Un
 
 inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
 
+inline fun <T> `while`(nextValue: () -> T, condition: (T) -> Boolean, body: (T) -> Unit) {
+    var value = nextValue()
+    while (condition(value)) {
+        body(value)
+        value = nextValue()
+    }
+}
+
 fun readFile(context: Context, fileName: String): File {
     val path = context.filesDir.absolutePath + File.separator + fileName
     return File(path)
