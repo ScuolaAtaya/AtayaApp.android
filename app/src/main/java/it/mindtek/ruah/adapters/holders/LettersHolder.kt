@@ -10,4 +10,5 @@ import kotlinx.android.synthetic.main.item_letter_selected.view.*
 class LettersHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val letter = itemView.letter
     val card = itemView.card
+    val view = itemView
 }

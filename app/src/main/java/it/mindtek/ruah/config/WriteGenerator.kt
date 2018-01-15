@@ -14,7 +14,7 @@ object WriteGenerator {
                 0,
                 "",
                 "auricolari",
-                mutableListOf(Syllable(0,"a"), Syllable(1,"u"), Syllable(2,"r"), Syllable(3,"i"), Syllable(4,"c"),Syllable(5,"o"), Syllable(6,"l"), Syllable(7,"a"), Syllable(8,"r"), Syllable(9,"i"))
+                mutableListOf(Syllable(0,"au"), Syllable(1,"r"), Syllable(2,"i"), Syllable(3,"co"), Syllable(4,"la"),Syllable(5,"ri"))
         )
         writes.add(write1)
         return writes
