@@ -83,14 +83,34 @@ class FragmentWrite : Fragment() {
         val selectedCol = calculateColumns()
         compile.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size)
         available.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size)
-        selectedAdapter = SelectedLettersAdapter(stepWrite.word, stepWrite.letters, {})
+        selectedAdapter = SelectedLettersAdapter(stepWrite.word, stepWrite.letters, { letter ->
+            selectableAdapter?.unlockLetter(letter)
+            if (selectedAdapter?.completed() == true) {
+                complete()
+            } else {
+                reset()
+            }
+        })
         selectableAdapter = SelectableLettersAdapter(stepWrite.letters, { letters ->
             selectedAdapter?.select(letters)
+            if (selectedAdapter?.completed() == true) {
+                complete()
+            } else {
+                reset()
+            }
         })
         compile.adapter = selectedAdapter
         available.adapter = selectableAdapter
         compile.addItemDecoration(GridSpaceItemDecoration(dip(4), dip(4)))
         available.addItemDecoration(GridSpaceItemDecoration(dip(8), dip(8)))
+    }
+
+    private fun complete() {
+        next.isEnabled = true
+    }
+
+    private fun reset() {
+        next.isEnabled = false
     }
 
     private fun calculateColumns(): Int {

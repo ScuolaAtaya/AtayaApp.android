@@ -1,5 +1,6 @@
 package it.mindtek.ruah.adapters
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import it.mindtek.ruah.pojos.Syllable
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
-class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syllable>, val onLetterTap: (() -> Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syllable>, val onLetterTap: ((letter: String) -> Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var letters = MutableList(givenLetters.size, { "" })
 
     override fun getItemViewType(position: Int): Int {
@@ -37,7 +38,19 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
         } else {
             val cast = holder as LettersHolder
             val item = letters[position]
+            val previous = (0 until position).sumBy { givenLetters[it].text.length }
+            val right = item.equals(word.substring(previous, previous + item.length))
+            if (!right) {
+                cast.card.setCardBackgroundColor(ContextCompat.getColor(cast.card.context, R.color.red))
+            } else {
+                cast.card.setCardBackgroundColor(ContextCompat.getColor(cast.card.context, R.color.lavoro))
+            }
             cast.letter.text = item
+            cast.view.setOnClickListener {
+                letters[position] = ""
+                onLetterTap?.invoke(cast.letter.text.toString())
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -49,5 +62,15 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
             letters[firstEmpty] = letter
             notifyDataSetChanged()
         }
+    }
+
+    fun completed(): Boolean {
+        var wrong = false
+        letters.forEachIndexed { index, s ->
+            if(s != word[index].toString()){
+                wrong = true
+            }
+        }
+        return !wrong
     }
 }
