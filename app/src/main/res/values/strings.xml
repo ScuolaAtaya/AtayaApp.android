@@ -2,6 +2,7 @@
     <string name="youtube_api_key">AIzaSyCrZFKOBhSh7QqW90eP2NSeB6MfWWNrLYw</string>
 
     <string name="app_name">Ruah</string>
+    <string name="notification_channel">Download</string>
     <string name="background">background</string>
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
@@ -41,4 +42,5 @@
     <string name="congrats">Congratulazioni!</string>
     <string name="hold_to_record">Tieni premuto per registrare</string>
     <string name="listen_again">Riascolta</string>
+    <string name="downloading">Stiamo scaricando i file necessari, attendi...</string>
 </resources>

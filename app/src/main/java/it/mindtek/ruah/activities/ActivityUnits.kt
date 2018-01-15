@@ -1,8 +1,8 @@
 package it.mindtek.ruah.activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.UnitsAdapter
@@ -15,14 +15,27 @@ class ActivityUnits : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_units)
 
-        setup()
+        if (needsDownload()) {
+            download()
+        } else {
+            setup()
+        }
     }
 
-    private fun setup(){
+    private fun needsDownload(): Boolean{
+        return true
+    }
+
+    private fun download(){
+        val intent = Intent(this, ActivityDownload::class.java)
+        startActivity(intent)
+    }
+
+    private fun setup() {
         setupRecycler()
     }
 
-    private fun setupRecycler(){
+    private fun setupRecycler() {
         unitsRecycler.layoutManager = GridLayoutManager(this, 2)
         adapter = UnitsAdapter(this, { unit ->
             val intent = Intent(this@ActivityUnits, ActivityUnit::class.java)
