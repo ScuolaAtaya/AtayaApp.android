@@ -15,8 +15,6 @@ import android.support.v7.app.AppCompatActivity
 import it.mindtek.ruah.R
 import it.mindtek.ruah.pojos.Download
 import it.mindtek.ruah.services.DownloadService
-import kotlinx.android.synthetic.main.activity_download.*
-
 
 class ActivityDownload : AppCompatActivity() {
 

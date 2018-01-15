@@ -45,9 +45,9 @@ class DownloadService() : IntentService("Download service") {
     }
 
     private fun initDownload() {
-
+        val base_url = getString(R.string.api_base_url)
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://ipv4.download.thinkbroadband.com:8080/")
+                .baseUrl(base_url)
                 .build()
 
         val retrofitInterface = retrofit.create(FileDownloadInterface::class.java)
