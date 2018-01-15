@@ -23,7 +23,8 @@ class ActivityUnits : AppCompatActivity() {
     }
 
     private fun needsDownload(): Boolean{
-        return true
+        //Todo: Implement real check
+        return false
     }
 
     private fun download(){

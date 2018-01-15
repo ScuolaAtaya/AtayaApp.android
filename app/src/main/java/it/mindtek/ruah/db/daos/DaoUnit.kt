@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 import it.mindtek.ruah.db.models.ModelUnit
 
 /**
@@ -13,6 +14,9 @@ import it.mindtek.ruah.db.models.ModelUnit
 interface DaoUnit {
     @Insert
     fun saveUnits(units: MutableList<ModelUnit>)
+
+    @Update
+    fun updateUnit(unit: ModelUnit)
 
     @Query("SELECT * FROM units")
     fun getUnitsAsync(): LiveData<MutableList<ModelUnit>>

@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/iconCapiamo"
@@ -70,6 +70,7 @@
                 android:src="@drawable/capiamo" />
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iconCapiamo"
@@ -79,6 +80,14 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/capiamoDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iconCapiamo"
+                android:visibility="gone"
+                app:srcCompat="@drawable/check" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -125,7 +134,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/iconParliamo"
@@ -144,6 +153,14 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/parliamoDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iconParliamo"
+                android:visibility="gone"
+                app:srcCompat="@drawable/check" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -190,7 +207,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/iconLeggere"
@@ -209,6 +226,14 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/leggiamoDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iconLeggere"
+                android:visibility="gone"
+                app:srcCompat="@drawable/check" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -261,7 +286,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/iconScriviamo"
@@ -280,6 +305,14 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/scriviamoDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iconScriviamo"
+                android:visibility="gone"
+                app:srcCompat="@drawable/check" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

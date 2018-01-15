@@ -16,12 +16,14 @@ import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.activity_intro.*
 import org.jetbrains.anko.dip
+import java.util.zip.ZipInputStream
 
 class ActivityIntro : AppCompatActivity() {
     var unit_id: Int = -1
     var category: Category? = null
     var player: MediaPlayer? = null
     var finish: Boolean = false
+    var unitObject: ModelUnit? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,10 @@ class ActivityIntro : AppCompatActivity() {
             buttonNext.setGone()
             done.setVisible()
             sectionDescription.text = getString(R.string.congrats)
-            fabBack.setOnClickListener { goToCategory() }
+            fabBack.setOnClickListener {
+                completeCategory(category!!)
+                goToCategory()
+            }
         } else {
             done.setGone()
             fabBack.setOnClickListener { onBackPressed() }
@@ -58,6 +63,7 @@ class ActivityIntro : AppCompatActivity() {
         val unitObservable = db.unitDao().getUnitByIdAsync(unit_id)
         unitObservable.observe(this, Observer<ModelUnit> { unit ->
             unit?.let {
+                unitObject = unit
                 val color = ContextCompat.getColor(this, unit.color)
                 val colorDark = ContextCompat.getColor(this, unit.colorDark)
                 compat21(@TargetApi(21) {
@@ -74,6 +80,13 @@ class ActivityIntro : AppCompatActivity() {
                 buttonNext.setColor(color)
             }
         })
+    }
+
+    private fun completeCategory(category: Category){
+        unitObject?.let {
+            it.completed.add(category.value)
+            db.unitDao().updateUnit(it)
+        }
     }
 
     private fun playAudio() {

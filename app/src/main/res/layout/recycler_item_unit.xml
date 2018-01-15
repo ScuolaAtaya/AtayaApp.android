@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/unitBackground"
+    android:background="@color/accoglienza"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -28,6 +29,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/icons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -52,4 +54,14 @@
             android:textAllCaps="true"
             android:textColor="@color/white" />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/check"
+        android:layout_alignTop="@id/icons"
+        android:layout_toEndOf="@id/icons"
+        android:visibility="gone"
+        android:contentDescription="@string/unit_icon" />
 </RelativeLayout>

@@ -7,7 +7,7 @@
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
 
-    <string name="api_base_url">http://api-dev.ruah.mindtek.it/api/</string>
+    <string name="api_base_url">http://ipv4.download.thinkbroadband.com:8080/</string>
 
     <!-- Titoli unità -->
     <string name="accoglienza">accoglienza</string>

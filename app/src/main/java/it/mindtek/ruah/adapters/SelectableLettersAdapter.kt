@@ -12,7 +12,7 @@ import it.mindtek.ruah.pojos.Syllable
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
-class SelectableLettersAdapter(val syllables: MutableList<Syllable>, val onLetterTap: ((letters: String) -> Unit)?) : RecyclerView.Adapter<SyllablesHolder>() {
+class SelectableLettersAdapter(val syllables: MutableList<Syllable>, val onLetterTap: ((syllable: Syllable) -> Unit)?) : RecyclerView.Adapter<SyllablesHolder>() {
     override fun getItemCount(): Int = syllables.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllablesHolder {
@@ -33,14 +33,14 @@ class SelectableLettersAdapter(val syllables: MutableList<Syllable>, val onLette
         holder.view.setOnClickListener {
             if (syllable.enabled) {
                 syllable.enabled = false
-                onLetterTap?.invoke(holder.syllables.text.toString())
+                onLetterTap?.invoke(syllable)
                 notifyDataSetChanged()
             }
         }
     }
 
-    fun unlockLetter(letter: String){
-        syllables.first { it.text == letter && it.enabled == false }.enabled = true
+    fun unlockLetter(letter: Syllable){
+        syllables.first { it.id == letter.id }.enabled = true
         notifyDataSetChanged()
     }
 }

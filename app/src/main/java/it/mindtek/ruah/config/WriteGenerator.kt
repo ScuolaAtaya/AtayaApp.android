@@ -14,9 +14,18 @@ object WriteGenerator {
                 0,
                 "",
                 "auricolari",
-                mutableListOf(Syllable(0,"au"), Syllable(1,"r"), Syllable(2,"i"), Syllable(3,"co"), Syllable(4,"la"),Syllable(5,"ri"))
+                "basic",
+                mutableListOf(Syllable(0,"au", mutableListOf(0)), Syllable(1,"ri", mutableListOf(1, 4)), Syllable(3,"co", mutableListOf(2)), Syllable(4,"la", mutableListOf(3)),Syllable(5,"ri", mutableListOf(4, 1)))
         )
         writes.add(write1)
+        val write2 = ModelWrite(
+                1,
+                0,
+                "",
+                "pimpiripettenusa",
+                "advanced"
+        )
+        writes.add(write2)
         return writes
     }
 }

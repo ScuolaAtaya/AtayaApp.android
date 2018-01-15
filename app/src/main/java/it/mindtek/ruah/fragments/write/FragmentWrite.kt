@@ -2,10 +2,13 @@ package it.mindtek.ruah.fragments.write
 
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +24,8 @@ import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.disable
+import it.mindtek.ruah.kotlin.extensions.setGone
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.fragment_write.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.dip
@@ -69,12 +74,43 @@ class FragmentWrite : Fragment() {
         setupPicture()
         setupButtons()
         setupSteps()
-        setupRecyclers()
+        if (write[stepIndex].type == "basic") {
+            setupBasic()
+            setupRecyclers()
+        }else{
+            setupAdvanced()
+        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(activity, it.color)
             stepLayout.backgroundColor = color
+            editText.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
+    }
+
+    private fun setupBasic(){
+        editText.setGone()
+        compile.setVisible()
+        available.setVisible()
+    }
+
+    private fun setupAdvanced(){
+        compile.setGone()
+        available.setGone()
+        editText.setVisible()
+        editText.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                if(s.toString() == write[stepIndex].word){
+                    complete()
+                }else{
+                    reset()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     private fun setupRecyclers() {

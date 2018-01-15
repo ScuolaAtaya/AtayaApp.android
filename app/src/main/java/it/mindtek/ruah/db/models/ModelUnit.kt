@@ -2,8 +2,10 @@ package it.mindtek.ruah.db.models
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverters
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
+import it.mindtek.ruah.db.converters.IntArrayConverter
 
 /**
  * Created by alessandrogaboardi on 29/11/2017.
@@ -20,5 +22,7 @@ open class ModelUnit(
         var colorDark: Int = 0,
         var position: Int = 0,
         var advanced: Boolean = false,
-        var enabled: Boolean = false
+        var enabled: Boolean = false,
+        @TypeConverters(IntArrayConverter::class)
+        var completed: MutableList<Int> = mutableListOf()
 ) {}

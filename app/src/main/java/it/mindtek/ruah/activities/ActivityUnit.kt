@@ -16,6 +16,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.activity_unit.*
 import org.jetbrains.anko.dip
 
@@ -58,6 +59,18 @@ class ActivityUnit : AppCompatActivity() {
         val unitObservable = db.unitDao().getUnitByIdAsync(unit_id)
         unitObservable.observe(this, Observer<ModelUnit> { unit ->
             unit?.let {
+                if(it.completed.any { it == Category.UNDERSTAND.value }){
+                    capiamoDone.setVisible()
+                }
+                if(it.completed.any { it == Category.TALK.value }){
+                    parliamoDone.setVisible()
+                }
+                if(it.completed.any { it == Category.READ.value }){
+                    leggiamoDone.setVisible()
+                }
+                if(it.completed.any { it == Category.WRITE.value }){
+                    scriviamoDone.setVisible()
+                }
                 supportActionBar?.title = getString(unit.name).capitalize()
                 val color = ContextCompat.getColor(this, it.color)
                 val colorDark = ContextCompat.getColor(this, it.colorDark)

@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import it.mindtek.ruah.R
 import it.mindtek.ruah.pojos.Download
 import it.mindtek.ruah.services.DownloadService
+import kotlinx.android.synthetic.main.activity_download.*
 
 class ActivityDownload : AppCompatActivity() {
 
@@ -52,9 +53,9 @@ class ActivityDownload : AppCompatActivity() {
                 val download = intent.getParcelableExtra<Download>("download")
                 progress.progress = download.progress
                 if (download.progress == 100) {
-//                    mProgressText.setText("File Download Complete")
+                    progressText.text = "File Download Complete"
                 } else {
-//                    mProgressText.setText(String.format("Downloaded (%d/%d) MB", download.currentFileSize, download.totalFileSize))
+                    progressText.text = String.format("Downloaded (%d/%d) MB", download.currentFileSize, download.totalFileSize)
                 }
             }
         }

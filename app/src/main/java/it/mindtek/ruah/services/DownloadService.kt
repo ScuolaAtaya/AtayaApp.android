@@ -8,6 +8,7 @@ import android.os.Environment
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.widget.Toast
+import ir.mahdi.mzip.zip.ZipArchive
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityDownload
 import it.mindtek.ruah.interfaces.FileDownloadInterface
@@ -125,11 +126,20 @@ class DownloadService() : IntentService("Download service") {
         download.progress = 100
         sendIntent(download)
 
+        unzipFile()
+
         notificationManager?.cancel(0)
         notificationBuilder?.setProgress(0, 0, false)
         notificationBuilder?.setContentText("File Downloaded")
         notificationManager?.notify(0, notificationBuilder?.build())
 
+    }
+
+    private fun unzipFile(){
+        val inputFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "file.zip")
+        val outputFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "data")
+        ZipArchive.unzip(inputFile.absolutePath, outputFolder.absolutePath, "")
+        outputFolder.list().forEach { println(it) }
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {

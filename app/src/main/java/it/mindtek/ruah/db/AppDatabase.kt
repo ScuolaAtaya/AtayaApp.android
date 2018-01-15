@@ -3,6 +3,7 @@ package it.mindtek.ruah.db
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
+import it.mindtek.ruah.db.converters.IntArrayConverter
 import it.mindtek.ruah.db.converters.StringArrayConverter
 import it.mindtek.ruah.db.daos.*
 import it.mindtek.ruah.db.models.*
@@ -10,7 +11,7 @@ import it.mindtek.ruah.db.models.*
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
-@Database(version = 6, entities = [
+@Database(version = 9, entities = [
     ModelUnit::class,
     ModelUnderstand::class,
     ModelQuestion::class,
@@ -20,7 +21,7 @@ import it.mindtek.ruah.db.models.*
     ModelReadAnswer::class,
     ModelWrite::class
 ])
-@TypeConverters(StringArrayConverter::class)
+@TypeConverters(StringArrayConverter::class, IntArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unitDao(): DaoUnit
     abstract fun understandDao(): DaoUnderstand
