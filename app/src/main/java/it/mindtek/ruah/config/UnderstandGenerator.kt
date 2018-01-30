@@ -39,7 +39,6 @@ object UnderstandGenerator {
         val question1 = ModelQuestion(
                 0,
                 0,
-                "question 1",
                 "jaddlfaihfiafia",
                 "audio"
         )
@@ -47,7 +46,6 @@ object UnderstandGenerator {
         val question2 = ModelQuestion(
                 1,
                 0,
-                "question 2",
                 "jaddlfaihfiafia",
                 "audio"
         )
@@ -55,7 +53,6 @@ object UnderstandGenerator {
         val question3 = ModelQuestion(
                 2,
                 0,
-                "question 3",
                 "jaddlfaihfiafia",
                 "audio"
         )
@@ -63,7 +60,6 @@ object UnderstandGenerator {
         val question4 = ModelQuestion(
                 3,
                 1,
-                "question 4",
                 "jaddlfaihfiafia",
                 "audio"
         )
@@ -71,7 +67,6 @@ object UnderstandGenerator {
         val question5 = ModelQuestion(
                 4,
                 2,
-                "question 5",
                 "jaddlfaihfiafia",
                 "audio"
         )

@@ -15,6 +15,7 @@ object WriteGenerator {
                 "",
                 "auricolari",
                 "basic",
+                "audio.mp3",
                 mutableListOf(Syllable(0,"au", mutableListOf(0)), Syllable(1,"ri", mutableListOf(1, 4)), Syllable(3,"co", mutableListOf(2)), Syllable(4,"la", mutableListOf(3)),Syllable(5,"ri", mutableListOf(4, 1)))
         )
         writes.add(write1)
@@ -23,7 +24,8 @@ object WriteGenerator {
                 0,
                 "",
                 "pimpiripettenusa",
-                "advanced"
+                "advanced",
+                "audio.mp3"
         )
         writes.add(write2)
         return writes

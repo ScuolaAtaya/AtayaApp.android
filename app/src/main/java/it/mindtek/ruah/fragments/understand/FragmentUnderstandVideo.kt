@@ -1,27 +1,14 @@
 package it.mindtek.ruah.fragments.understand
 
 
-import android.annotation.TargetApi
 import android.arch.lifecycle.Observer
-import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.PlaybackParameters
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
@@ -29,10 +16,11 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
-import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.pojos.UnderstandPojo
 import kotlinx.android.synthetic.main.fragment_understand_video.*
+import java.io.File
 
 
 /**
@@ -42,6 +30,7 @@ class FragmentUnderstandVideo : Fragment() {
     private var unit_id: Int = -1
     var audioPlayer: MediaPlayer? = null
     var videoPlayer: YouTubePlayer? = null
+    var videoUrl: String = ""
     var communicator: UnderstandActivityInterface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -86,7 +75,8 @@ class FragmentUnderstandVideo : Fragment() {
                 override fun onPaused() {}
             })
             p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
-            p1.loadVideo("blBV9No0xGo")
+            p1.loadVideo(videoUrl)
+//            p1.loadVideo("v_nF8LrPBSg")
         }
 
         override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
@@ -96,6 +86,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun showVideo(video: String?) {
         video?.let {
+            videoUrl = video
             val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
             playerFragment.initialize(getString(R.string.youtube_api_key), videoListener)
         }
@@ -130,6 +121,7 @@ class FragmentUnderstandVideo : Fragment() {
         listen.setOnClickListener {
             audio?.let {
                 playAudio(it)
+//                playAudio()
             }
         }
     }
@@ -150,12 +142,25 @@ class FragmentUnderstandVideo : Fragment() {
         videoPlayer?.pause()
         if(audioPlayer != null)
             destroyPlayer()
-        audioPlayer = MediaPlayer.create(activity, R.raw.voice)
+        val audioFile = File(fileFolder.absolutePath, audio)
+        audioPlayer = MediaPlayer.create(activity, Uri.fromFile(audioFile))
         audioPlayer?.setOnCompletionListener {
             if (canAccessActivity) {
                 enableNext()
                 destroyPlayer()
             }
+        }
+        audioPlayer?.start()
+    }
+
+    private fun playAudio() {
+        videoPlayer?.pause()
+        if (audioPlayer != null)
+            destroyPlayer()
+        audioPlayer = MediaPlayer.create(activity, R.raw.voice)
+        audioPlayer?.setOnCompletionListener {
+            enableNext()
+            destroyPlayer()
         }
         audioPlayer?.start()
     }

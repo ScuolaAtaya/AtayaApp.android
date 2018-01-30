@@ -41,9 +41,9 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
             val syllable = givenLetters.first{ it.id == item }
             val right = syllable.order.any { it == position }
             if (!right) {
-                cast.card.setCardBackgroundColor(ContextCompat.getColor(cast.card.context, R.color.red))
+                cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_red)
             } else {
-                cast.card.setCardBackgroundColor(ContextCompat.getColor(cast.card.context, R.color.lavoro))
+                cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_blue)
             }
             cast.letter.text = syllable.text
             cast.view.setOnClickListener {

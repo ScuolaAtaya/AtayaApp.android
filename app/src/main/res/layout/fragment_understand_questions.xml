@@ -65,7 +65,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintStart_toEndOf="@+id/title"
             app:layout_constraintTop_toTopOf="@+id/title"
-            app:srcCompat="@drawable/volume" />
+            android:src="@drawable/volume" />
 
         <TextView
             android:id="@+id/description"

@@ -16,6 +16,7 @@ import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.activity_intro.*
 import org.jetbrains.anko.dip
+import java.io.File
 import java.util.zip.ZipInputStream
 
 class ActivityIntro : AppCompatActivity() {
@@ -96,6 +97,8 @@ class ActivityIntro : AppCompatActivity() {
         }
         player?.start()
     }
+
+
 
     private fun dispatch() {
         if (player != null)

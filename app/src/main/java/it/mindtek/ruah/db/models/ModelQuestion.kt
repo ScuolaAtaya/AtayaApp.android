@@ -11,7 +11,6 @@ open class ModelQuestion(
         @PrimaryKey
         var id: Int = -1,
         var section_id: Int = -1,
-        var title: String = "",
         var body: String = "",
         var audio: String = ""
 ) {}

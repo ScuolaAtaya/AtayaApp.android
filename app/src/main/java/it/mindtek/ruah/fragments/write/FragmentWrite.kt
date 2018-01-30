@@ -3,6 +3,8 @@ package it.mindtek.ruah.fragments.write
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -22,13 +24,11 @@ import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelWrite
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.interfaces.WriteActivityInterface
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.disable
-import it.mindtek.ruah.kotlin.extensions.setGone
-import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_write.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.dip
+import java.io.File
 
 
 /**
@@ -38,6 +38,7 @@ class FragmentWrite : Fragment() {
     var unitId: Int = -1
     var category: Category? = null
     var stepIndex: Int = -1
+    var player: MediaPlayer? = null
     var write: MutableList<ModelWrite> = mutableListOf()
     var communicator: WriteActivityInterface? = null
     var selectedAdapter: SelectedLettersAdapter? = null
@@ -59,9 +60,13 @@ class FragmentWrite : Fragment() {
         }
         if (unitId == -1 || category == null || stepIndex == -1)
             activity.finish()
-        initCommunicators()
         write = db.writeDao().getWriteByUnitId(unitId)
-        setup()
+        if (write.size == 0 || write.size <= stepIndex) {
+            activity.finish()
+        } else {
+            initCommunicators()
+            setup()
+        }
     }
 
     private fun initCommunicators() {
@@ -77,8 +82,10 @@ class FragmentWrite : Fragment() {
         if (write[stepIndex].type == "basic") {
             setupBasic()
             setupRecyclers()
-        }else{
+            setupAudio()
+        } else {
             setupAdvanced()
+            setupAudio()
         }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
@@ -88,22 +95,36 @@ class FragmentWrite : Fragment() {
         }
     }
 
-    private fun setupBasic(){
+    private fun setupAudio(){
+        audioButton.setOnClickListener {
+            if(write.size >= stepIndex){
+                val currentWrite = write[stepIndex]
+                playAudio(currentWrite.audio)
+            }
+        }
+    }
+
+    private fun setupBasic() {
         editText.setGone()
         compile.setVisible()
         available.setVisible()
     }
 
-    private fun setupAdvanced(){
+    private fun setupAdvanced() {
         compile.setGone()
         available.setGone()
         editText.setVisible()
-        editText.addTextChangedListener(object: TextWatcher{
+        editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(s.toString() == write[stepIndex].word){
+                clearDrawable()
+                if (s.toString().toLowerCase() == write[stepIndex].word.toLowerCase()) {
+                    showRight()
                     complete()
-                }else{
+                } else {
                     reset()
+                }
+                if(s.toString().isNotEmpty() && s.toString().toLowerCase() != write[stepIndex].word.substring(0, s.toString().length).toLowerCase()){
+                    showError()
                 }
             }
 
@@ -111,6 +132,18 @@ class FragmentWrite : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    fun clearDrawable(){
+        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+    }
+
+    fun showError(){
+        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.close), null)
+    }
+
+    fun showRight(){
+        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.done), null)
     }
 
     private fun setupRecyclers() {
@@ -166,11 +199,29 @@ class FragmentWrite : Fragment() {
     }
 
     private fun setupPicture() {
-        GlideApp.with(this).load("https://ichef-1.bbci.co.uk/news/976/media/images/83351000/jpg/_83351965_explorer273lincolnshirewoldssouthpicturebynicholassilkstone.jpg").placeholder(R.color.grey).into(picture)
+        val pictureFile = File(fileFolder.absolutePath, write[stepIndex].picture)
+        GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
+//        GlideApp.with(this).load(R.drawable.placeholder).placeholder(R.color.grey).into(picture)
+    }
+
+    private fun playAudio(audio: String) {
+        if (player != null)
+            destroyPlayer()
+        val audioFile = File(fileFolder.absolutePath, audio)
+        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        player?.setOnCompletionListener {
+            destroyPlayer()
+        }
+        player?.start()
+    }
+
+    private fun destroyPlayer() {
+        player?.release()
     }
 
     private fun setupButtons() {
         next.setOnClickListener {
+            destroyPlayer()
             dispatch()
         }
         next.disable()
@@ -190,6 +241,11 @@ class FragmentWrite : Fragment() {
 
     private fun finish() {
         communicator?.goToFinish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyPlayer()
     }
 
     private fun goToNext() {

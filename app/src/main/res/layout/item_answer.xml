@@ -40,7 +40,7 @@
             android:paddingStart="2dp"
             android:paddingTop="8dp"
             android:visibility="gone"
-            app:srcCompat="@drawable/close" />
+            android:src="@drawable/close" />
 
         <ImageView
             android:id="@+id/correct"
@@ -57,7 +57,7 @@
             android:paddingTop="8dp"
             android:tint="@color/green"
             android:visibility="gone"
-            app:srcCompat="@drawable/check" />
+            android:src="@drawable/check" />
     </RelativeLayout>
 
     <TextView
@@ -85,6 +85,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/volume" />
+        android:src="@drawable/volume" />
 
 </android.support.constraint.ConstraintLayout>

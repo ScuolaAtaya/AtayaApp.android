@@ -18,10 +18,10 @@ class App : MultiDexApplication() {
 
         initRoom()
         initUnits()
-        initUnderstand()
-        initSpeak()
-        initRead()
-        initWrite()
+//        initUnderstand()
+//        initSpeak()
+//        initRead()
+//        initWrite()
     }
 
     private fun initRoom() {

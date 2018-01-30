@@ -7,7 +7,7 @@
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
 
-    <string name="api_base_url">http://ipv4.download.thinkbroadband.com:8080/</string>
+    <string name="api_base_url">http://api-dev.ruah.mindtek.it/api/</string>
 
     <!-- Titoli unità -->
     <string name="accoglienza">accoglienza</string>
@@ -44,5 +44,9 @@
     <string name="congrats">Congratulazioni!</string>
     <string name="hold_to_record">Tieni premuto per registrare</string>
     <string name="listen_again">Riascolta</string>
-    <string name="downloading">Stiamo scaricando i file necessari, attendi...</string>
+    <string name="downloading">Stiamo scaricando i file necessari, non chiudere l\'applicazione</string>
+    <string name="download_permission_denied">Permesso negato, consenti per procedere</string>
+    <string name="downloaded">File scaricato, elaborando</string>
+    <string name="question">Domanda</string>
+    <string name="write">Scrivi</string>
 </resources>

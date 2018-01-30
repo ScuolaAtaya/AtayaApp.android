@@ -17,6 +17,7 @@ open class ModelWrite(
         var picture: String = "",
         var word: String = "",
         var type: String = "",
+        var audio: String = "",
         @TypeConverters(StringArrayConverter::class)
         var letters: MutableList<Syllable> = mutableListOf()
 ) {}

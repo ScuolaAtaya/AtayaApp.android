@@ -6,7 +6,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -20,13 +19,8 @@
         <activity
             android:name=".activities.ActivityUnits"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:noHistory="false"
+            android:theme="@style/AppThemeNoToolbar"/>
         <activity
             android:name=".activities.ActivityUnit"
             android:screenOrientation="portrait" />
@@ -45,13 +39,25 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityWrite"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityDownload"
+            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoToolbar" />
-        <service android:name=".services.DownloadService"/>
+
+        <service android:name=".services.DownloadService" />
+
+        <activity
+            android:name=".activities.ActivitySplash"
+            android:noHistory="true"
+            android:theme="@style/AppThemeNoToolbar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

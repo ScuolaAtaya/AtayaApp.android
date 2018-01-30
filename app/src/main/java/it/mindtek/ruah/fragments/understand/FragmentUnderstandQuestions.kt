@@ -1,12 +1,10 @@
 package it.mindtek.ruah.fragments.understand
 
 
-import android.annotation.TargetApi
-import android.content.res.ColorStateList
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +13,11 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.db.models.ModelAnswer
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
-import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
+import java.io.File
 
 
 /**
@@ -87,10 +86,21 @@ class FragmentUnderstandQuestions : Fragment() {
         }
     }
 
-    private fun playAudio(audio: Int) {
+    private fun playAudio(audio: String) {
         if (player != null)
             destroyPlayer()
-        player = MediaPlayer.create(activity, audio)
+        val audioFile = File(fileFolder.absolutePath, audio)
+        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        player?.setOnCompletionListener {
+            destroyPlayer()
+        }
+        player?.start()
+    }
+
+    private fun playAudio() {
+        if (player != null)
+            destroyPlayer()
+        player = MediaPlayer.create(activity, R.raw.voice)
         player?.setOnCompletionListener {
             destroyPlayer()
         }
@@ -102,26 +112,32 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupQuestion() {
-        val question = questions[question]
-        title.text = question.question?.title
-        description.text = question.question?.body
-        questionAudio.setOnClickListener {
-            //todo: replace fake audio with right one
-            playAudio(R.raw.voice)
+        if (questions.size >= question) {
+            val question = questions[question]
+            title.text = getString(R.string.question)
+            question.question?.let { q ->
+                description.text = q.body
+                questionAudio.setOnClickListener {
+                    playAudio(q.audio)
+//                playAudio()
+                }
+            }
         }
     }
 
     private fun setupAnswers() {
-        val question = questions[question]
-        val answers = question.answers
-        val adapter = AnswersAdapter(answers, { answer ->
-            handleAnswerSelected(answer)
-        }, { answer ->
-            //todo: Replace file with correct one
-            playAudio(R.raw.voice)
-        })
-        answersRecycler.layoutManager = LinearLayoutManager(activity)
-        answersRecycler.adapter = adapter
+        if (questions.size >= question) {
+            val question = questions[question]
+            val answers = question.answers
+            val adapter = AnswersAdapter(answers, { answer ->
+                handleAnswerSelected(answer)
+            }, { answer ->
+                playAudio(answer.audio)
+//            playAudio()
+            })
+            answersRecycler.layoutManager = LinearLayoutManager(activity)
+            answersRecycler.adapter = adapter
+        }
     }
 
     private fun handleAnswerSelected(answer: ModelAnswer) {

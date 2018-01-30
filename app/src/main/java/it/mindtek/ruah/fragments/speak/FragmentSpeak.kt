@@ -23,6 +23,7 @@ import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.disable
 import it.mindtek.ruah.kotlin.extensions.enable
+import it.mindtek.ruah.kotlin.extensions.fileFolder
 import kotlinx.android.synthetic.main.fragment_speak.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.dip
@@ -60,7 +61,11 @@ class FragmentSpeak : Fragment() {
             activity.finish()
         initCommunicators()
         speak = db.speakDao().getSpeakByUnitId(unitId)
-        setup()
+        if (speak.size == 0 || speak.size <= stepIndex) {
+            activity.finish()
+        } else {
+            setup()
+        }
     }
 
     private fun initCommunicators() {
@@ -82,7 +87,9 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun setupPicture() {
-        GlideApp.with(this).load("https://ichef-1.bbci.co.uk/news/976/media/images/83351000/jpg/_83351965_explorer273lincolnshirewoldssouthpicturebynicholassilkstone.jpg").placeholder(R.color.grey).into(stepImage)
+        val picture = File(fileFolder.absolutePath, speak[stepIndex].picture)
+        GlideApp.with(this).load(picture).placeholder(R.color.grey).into(stepImage)
+//        GlideApp.with(this).load(R.drawable.placeholder).placeholder(R.color.grey).into(stepImage)
     }
 
     private fun setupButtons() {
@@ -100,7 +107,8 @@ class FragmentSpeak : Fragment() {
             dispatch()
         }
         listenButton.setOnClickListener {
-            playAudio()
+            playAudio(speak[stepIndex].audio)
+//            playAudio()
         }
         listenAgain.setOnClickListener {
             playRecordedAudio()
@@ -173,6 +181,17 @@ class FragmentSpeak : Fragment() {
         listenAgain.enable()
         next.enable()
         record.setImageResource(R.drawable.mic)
+    }
+
+    private fun playAudio(audio: String) {
+        if (player != null)
+            destroyPlayer()
+        val audioFile = File(fileFolder.absolutePath, audio)
+        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        player?.setOnCompletionListener {
+            destroyPlayer()
+        }
+        player?.start()
     }
 
     private fun playAudio() {

@@ -23,12 +23,10 @@ class SelectableLettersAdapter(val syllables: MutableList<Syllable>, val onLette
     override fun onBindViewHolder(holder: SyllablesHolder, position: Int) {
         val syllable = syllables[position]
         holder.syllables.text = syllable.text
-        val disabled = ContextCompat.getColor(holder.view.context, R.color.grey)
-        val enabled = ContextCompat.getColor(holder.view.context, R.color.lavoro)
         if (syllable.enabled) {
-            holder.background.cardBackgroundColor = ColorStateList.valueOf(enabled)
+            holder.background.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_blue)
         } else {
-            holder.background.cardBackgroundColor = ColorStateList.valueOf(disabled)
+            holder.background.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_disabled)
         }
         holder.view.setOnClickListener {
             if (syllable.enabled) {

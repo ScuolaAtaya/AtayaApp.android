@@ -16,7 +16,7 @@
             android:layout_marginStart="-32dp"
             android:layout_marginTop="-32dp"
             android:contentDescription="@string/background"
-            app:srcCompat="@drawable/circle" />
+            android:src="@drawable/circle" />
 
         <TextView
             android:id="@+id/unitNumber"

@@ -16,11 +16,10 @@ android {
         applicationId "it.mindtek.ruah"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 2
-        versionName "1.0b2"
+        versionCode 3
+        versionName "1.0rc1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

@@ -2,8 +2,10 @@ package it.mindtek.ruah.fragments.read
 
 
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +18,11 @@ import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
+import org.jetbrains.anko.backgroundColor
+import java.io.File
 
 
 /**
@@ -62,7 +67,14 @@ class FragmentRead : Fragment() {
 
     private fun setup() {
         next.isEnabled = false
+
         val read = db.readDao().getReadByUnitId(unitId)
+        setupSteps(read)
+        val unit = db.unitDao().getUnitById(unitId)
+        unit?.let {
+            val color = ContextCompat.getColor(activity, it.color)
+            stepBackground.backgroundColor = color
+        }
         if (read.size > 0) {
             next.setOnClickListener {
                 if (stepIndex + 1 < read.size) {
@@ -75,12 +87,18 @@ class FragmentRead : Fragment() {
             }
             val currentRead = read[stepIndex]
             currentRead.read?.let {
-                GlideApp.with(this).load(it.picture).placeholder(R.color.grey).into(picture)
+                val pictureFile = File(fileFolder.absolutePath, it.picture)
+                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
+//                GlideApp.with(this).load(R.drawable.placeholder).placeholder(R.color.grey).into(picture)
             }
             setupAnswers(currentRead)
         } else {
             activity.finish()
         }
+    }
+
+    private fun setupSteps(read: MutableList<PojoRead>) {
+        step.text = "${stepIndex + 1}/${read.size}"
     }
 
     private fun setupAnswers(read: PojoRead) {
@@ -94,15 +112,27 @@ class FragmentRead : Fragment() {
             }
         }, { answer ->
             //Play answer audio
-            playAudio(R.raw.voice)
+            playAudio(answer.audio)
+//            playAudio()
         })
         answers.adapter = adapter
     }
 
-    private fun playAudio(audio: Int) {
+    private fun playAudio(audio: String) {
         if (player != null)
             destroyPlayer()
-        player = MediaPlayer.create(activity, audio)
+        val audioFile = File(fileFolder.absolutePath, audio)
+        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        player?.setOnCompletionListener {
+            destroyPlayer()
+        }
+        player?.start()
+    }
+
+    private fun playAudio() {
+        if (player != null)
+            destroyPlayer()
+        player = MediaPlayer.create(activity, R.raw.voice)
         player?.setOnCompletionListener {
             destroyPlayer()
         }

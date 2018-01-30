@@ -77,7 +77,7 @@
             android:layout_marginBottom="16dp"
             app:backgroundTint="@color/red"
             app:fabSize="normal"
-            app:srcCompat="@drawable/mic" />
+            android:src="@drawable/mic" />
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
     <TextView
