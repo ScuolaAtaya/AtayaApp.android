@@ -1,7 +1,7 @@
 <resources>
     <string name="youtube_api_key">AIzaSyCrZFKOBhSh7QqW90eP2NSeB6MfWWNrLYw</string>
 
-    <string name="app_name">Ruah</string>
+    <string name="app_name">Ataya-app</string>
     <string name="notification_channel">Download</string>
     <string name="background">background</string>
     <string name="unit_icon">Unit icon</string>

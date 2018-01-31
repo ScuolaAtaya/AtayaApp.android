@@ -50,6 +50,7 @@
 
         <activity
             android:name=".activities.ActivitySplash"
+            android:screenOrientation="portrait"
             android:noHistory="true"
             android:theme="@style/AppThemeNoToolbar">
             <intent-filter>
