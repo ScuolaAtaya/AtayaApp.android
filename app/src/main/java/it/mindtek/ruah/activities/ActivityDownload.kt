@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_download.*
 class ActivityDownload : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 1337
+    private val DOWNLOAD = "download"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,19 +54,18 @@ class ActivityDownload : AppCompatActivity() {
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == MESSAGE_PROGRESS) {
-                val download = intent.getParcelableExtra<Download>("download")
+                val download = intent.getParcelableExtra<Download>(DOWNLOAD)
                 progress.progress = download.progress
                 if (download.progress == 100) {
                     progressText.text = getString(R.string.downloaded)
                     progress.isIndeterminate = true
                 } else {
-                    progressText.text = String.format("Scaricati %d MB di %d MB", download.currentFileSize, download.totalFileSize)
+                    progressText.text = String.format(getString(R.string.downloaded_mb), download.currentFileSize, download.totalFileSize)
                 }
             } else if (intent.action == PARSE_COMPLETED) {
                 progress.isIndeterminate = false
                 progress.progress = 100
                 val intent = Intent(this@ActivityDownload, ActivityUnits::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 startActivity(intent)
                 finish()
             }

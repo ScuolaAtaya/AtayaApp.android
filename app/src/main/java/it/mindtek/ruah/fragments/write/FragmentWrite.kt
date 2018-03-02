@@ -160,6 +160,7 @@ class FragmentWrite : Fragment() {
                 reset()
             }
         })
+        stepWrite.letters.shuffle()
         selectableAdapter = SelectableLettersAdapter(stepWrite.letters, { letters ->
             selectedAdapter?.select(letters)
             if (selectedAdapter?.completed() == true) {

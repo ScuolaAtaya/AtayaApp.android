@@ -42,11 +42,12 @@
     <string name="next">avanti</string>
     <string name="button_video_audio">video/audio</string>
     <string name="congrats">Congratulazioni!</string>
-    <string name="hold_to_record">Tieni premuto per registrare</string>
+    <string name="hold_to_record">Premi per registrare</string>
     <string name="listen_again">Riascolta</string>
     <string name="downloading">Stiamo scaricando i file necessari, non chiudere l\'applicazione</string>
     <string name="download_permission_denied">Permesso negato, consenti per procedere</string>
     <string name="downloaded">File scaricato, elaborando</string>
     <string name="question">Domanda</string>
     <string name="write">Scrivi</string>
+    <string name="downloaded_mb">Scaricati %d MB di %d MB</string>
 </resources>

@@ -89,7 +89,6 @@ class FragmentRead : Fragment() {
             currentRead.read?.let {
                 val pictureFile = File(fileFolder.absolutePath, it.picture)
                 GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
-//                GlideApp.with(this).load(R.drawable.placeholder).placeholder(R.color.grey).into(picture)
             }
             setupAnswers(currentRead)
         } else {
@@ -111,7 +110,6 @@ class FragmentRead : Fragment() {
                 next.isEnabled = true
             }
         }, { answer ->
-            //Play answer audio
             playAudio(answer.audio)
 //            playAudio()
         })
