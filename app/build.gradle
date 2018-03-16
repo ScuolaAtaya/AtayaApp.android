@@ -11,13 +11,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "it.mindtek.ruah"
         minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 4
-        versionName "1.0rc2"
+        targetSdkVersion 27
+        versionCode 5
+        versionName "1.0rc3"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -27,7 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
@@ -39,18 +39,18 @@ dependencies {
     implementation "com.android.support:gridlayout-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
     implementation "com.android.support:cardview-v7:$supportVersion"
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'android.arch.lifecycle:extensions:1.0.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation "android.arch.persistence.room:runtime:$roomVersion"
-    implementation 'com.github.bumptech.glide:glide:4.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation 'com.google.guava:guava:23.5-android'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.ghost1372:Mzip-Android:0.4.0'
-    implementation 'com.android.support:support-v4:26.1.0'
-    kapt 'com.github.bumptech.glide:compiler:4.3.1'
+    implementation "com.android.support:support-v4:$supportVersion"
+    kapt 'com.github.bumptech.glide:compiler:4.6.1'
     kapt "android.arch.persistence.room:compiler:$roomVersion"
 }

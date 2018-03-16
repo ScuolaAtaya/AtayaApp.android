@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "speak")
 open class ModelSpeak(
         @PrimaryKey
-        var id: Int = 0,
+        var id: String = "",
         var unit_id: Int = 0,
         var picture: String = "",
         var audio: String = ""

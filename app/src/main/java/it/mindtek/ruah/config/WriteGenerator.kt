@@ -7,7 +7,7 @@ import it.mindtek.ruah.pojos.Syllable
  * Created by alessandrogaboardi on 08/01/2018.
  */
 object WriteGenerator {
-    fun getWrites() : MutableList<ModelWrite>{
+    /*fun getWrites() : MutableList<ModelWrite>{
         val writes = mutableListOf<ModelWrite>()
         val write1 = ModelWrite(
                 0,
@@ -29,5 +29,5 @@ object WriteGenerator {
         )
         writes.add(write2)
         return writes
-    }
+    }*/
 }

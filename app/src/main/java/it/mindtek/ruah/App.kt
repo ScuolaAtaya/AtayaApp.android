@@ -50,7 +50,7 @@ class App : MultiDexApplication() {
         }
     }
 
-    private fun initUnderstand(){
+    /*private fun initUnderstand(){
         if(db.understandDao().count() == 0){
             val understand = UnderstandGenerator.getUnderstand()
             val questions = UnderstandGenerator.getQuestions()
@@ -94,5 +94,9 @@ class App : MultiDexApplication() {
                 db.writeDao().saveCategories(write)
             }
         }
+    }*/
+
+    companion object {
+        const val API_KEY = "apiKey"
     }
 }

@@ -9,8 +9,8 @@ import android.arch.persistence.room.PrimaryKey
 @Entity
 open class ModelQuestion(
         @PrimaryKey
-        var id: Int = -1,
-        var section_id: Int = -1,
+        var id: String = "",
+        var section_id: String = "",
         var body: String = "",
         var audio: String = ""
 ) {}

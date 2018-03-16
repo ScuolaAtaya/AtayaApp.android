@@ -38,14 +38,14 @@ class FragmentUnderstandVideo : Fragment() {
         return inflater.inflate(R.layout.fragment_understand_video, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         getCommunicators()
 
         arguments?.let {
-            if (arguments.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
-                unit_id = arguments.getInt(ActivityUnit.EXTRA_UNIT_ID)
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
+                unit_id = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
         }
     }
@@ -101,7 +101,7 @@ class FragmentUnderstandVideo : Fragment() {
     override fun onResume() {
         super.onResume()
         if (unit_id == -1)
-            activity.finish()
+            activity?.finish()
         else {
             setupNext()
             val categoriesObservable = db.understandDao().getUnderstandAsync()

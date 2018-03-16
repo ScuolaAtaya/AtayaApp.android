@@ -11,7 +11,7 @@ import it.mindtek.ruah.db.models.*
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
-@Database(version = 10, entities = [
+@Database(version = 11, entities = [
     ModelUnit::class,
     ModelUnderstand::class,
     ModelQuestion::class,

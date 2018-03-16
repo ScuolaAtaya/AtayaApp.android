@@ -47,7 +47,7 @@ class FragmentSpeak : Fragment() {
         return inflater.inflate(R.layout.fragment_speak, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
@@ -58,11 +58,11 @@ class FragmentSpeak : Fragment() {
                 stepIndex = it.getInt(EXTRA_STEP)
         }
         if (unitId == -1 || category == null || stepIndex == -1)
-            activity.finish()
+            activity?.finish()
         initCommunicators()
         speak = db.speakDao().getSpeakByUnitId(unitId)
         if (speak.size == 0 || speak.size <= stepIndex) {
-            activity.finish()
+            activity?.finish()
         } else {
             setup()
         }
@@ -80,9 +80,11 @@ class FragmentSpeak : Fragment() {
         setupSteps()
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(activity, it.color)
-            stepBackground.backgroundColor = color
-            listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
+            activity?.let { activity ->
+                val color = ContextCompat.getColor(activity, it.color)
+                stepBackground.backgroundColor = color
+                listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
+            }
         }
     }
 
@@ -133,13 +135,15 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun initRecorder(): Boolean {
-        return if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-            setupRecorder()
-            true
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
-            false
-        }
+        activity?.let { activity ->
+            return if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                setupRecorder()
+                true
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
+                false
+            }
+        } ?: return false
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -168,9 +172,11 @@ class FragmentSpeak : Fragment() {
         recorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder!!.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
         recorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        val file = File(activity.filesDir, "recording")
-        recorder!!.setOutputFile(file.absolutePath)
-        recorder?.prepare()
+        activity?.let { activity ->
+            val file = File(activity.filesDir, "recording")
+            recorder!!.setOutputFile(file.absolutePath)
+            recorder?.prepare()
+        }
     }
 
     private fun endRecording() {
@@ -223,13 +229,15 @@ class FragmentSpeak : Fragment() {
     private fun playRecordedAudio() {
         if (player != null)
             destroyPlayer()
-        val record = File(activity.filesDir, "recording")
-        val uri = Uri.parse(record.absolutePath)
-        player = MediaPlayer.create(activity, uri)
-        player?.setOnCompletionListener {
-            destroyPlayer()
+        activity?.let { activity ->
+            val record = File(activity.filesDir, "recording")
+            val uri = Uri.parse(record.absolutePath)
+            player = MediaPlayer.create(activity, uri)
+            player?.setOnCompletionListener {
+                destroyPlayer()
+            }
+            player?.start()
         }
-        player?.start()
     }
 
     private fun destroyPlayer() {
@@ -241,9 +249,11 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun destroyFile() {
-        val file = File(activity.filesDir, "recording")
-        if (file.exists()) {
-            file.delete()
+        activity?.let { activity ->
+            val file = File(activity.filesDir, "recording")
+            if (file.exists()) {
+                file.delete()
+            }
         }
     }
 

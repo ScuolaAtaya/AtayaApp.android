@@ -42,7 +42,7 @@ class FragmentRead : Fragment() {
         return inflater.inflate(R.layout.fragment_read, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
@@ -54,7 +54,7 @@ class FragmentRead : Fragment() {
                 stepIndex = it.getInt(EXTRA_STEP)
         }
         if (unitId == -1 || category == null || stepIndex == -1)
-            activity.finish()
+            activity?.finish()
         initCommunicators()
 
         setup()
@@ -72,8 +72,10 @@ class FragmentRead : Fragment() {
         setupSteps(read)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(activity, it.color)
-            stepBackground.backgroundColor = color
+            activity?.let { activity ->
+                val color = ContextCompat.getColor(activity, it.color)
+                stepBackground.backgroundColor = color
+            }
         }
         if (read.size > 0) {
             next.setOnClickListener {
@@ -92,7 +94,7 @@ class FragmentRead : Fragment() {
             }
             setupAnswers(currentRead)
         } else {
-            activity.finish()
+            activity?.finish()
         }
     }
 

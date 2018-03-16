@@ -12,7 +12,7 @@ import it.mindtek.ruah.pojos.Syllable
 @Entity(tableName = "write")
 open class ModelWrite(
         @PrimaryKey
-        var id: Int = 0,
+        var id: String = "",
         var unit_id: Int = 0,
         var picture: String = "",
         var word: String = "",

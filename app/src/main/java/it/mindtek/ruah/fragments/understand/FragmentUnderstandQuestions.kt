@@ -37,7 +37,7 @@ class FragmentUnderstandQuestions : Fragment() {
         return inflater.inflate(R.layout.fragment_understand_questions, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         getCommunicators()
@@ -50,7 +50,7 @@ class FragmentUnderstandQuestions : Fragment() {
         }
 
         if (unit_id == -1)
-            activity.finish()
+            activity?.finish()
         else {
             val category = db.understandDao().getUnderstandByUnitId(unit_id)
             category?.let {

@@ -11,4 +11,4 @@ val Fragment.canAccessActivity: Boolean get() {
 }
 
 val Fragment.fileFolder: File
-    get() = File(activity.filesDir, "data")
+    get() = File(activity?.filesDir, "data")

@@ -7,7 +7,7 @@ import it.mindtek.ruah.db.models.ModelSpeak
  * Created by alessandrogaboardi on 18/12/2017.
  */
 object SpeakGenerator {
-    fun getSpeaks(): MutableList<ModelSpeak>{
+    /*fun getSpeaks(): MutableList<ModelSpeak>{
         val speaks: MutableList<ModelSpeak> = mutableListOf()
         val speak1 = ModelSpeak(
                 0,
@@ -108,5 +108,5 @@ object SpeakGenerator {
         )
         speaks.add(speak14)
         return speaks
-    }
+    }*/
 }

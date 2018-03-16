@@ -7,7 +7,7 @@ import it.mindtek.ruah.db.models.ModelReadAnswer
  * Created by alessandrogaboardi on 21/12/2017.
  */
 object ReadGenerator {
-    fun getRead(): MutableList<ModelRead>{
+    /*fun getRead(): MutableList<ModelRead>{
         val reads = mutableListOf<ModelRead>()
         val read1 = ModelRead(
                 0,
@@ -122,5 +122,5 @@ object ReadGenerator {
         )
         readAnswers.add(readAnswer12)
         return readAnswers
-    }
+    }*/
 }

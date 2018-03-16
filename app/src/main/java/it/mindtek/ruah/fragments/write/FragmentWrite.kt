@@ -48,7 +48,7 @@ class FragmentWrite : Fragment() {
         return inflater.inflate(R.layout.fragment_write, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
@@ -59,10 +59,10 @@ class FragmentWrite : Fragment() {
                 stepIndex = it.getInt(EXTRA_STEP)
         }
         if (unitId == -1 || category == null || stepIndex == -1)
-            activity.finish()
+            activity?.finish()
         write = db.writeDao().getWriteByUnitId(unitId)
         if (write.size == 0 || write.size <= stepIndex) {
-            activity.finish()
+            activity?.finish()
         } else {
             initCommunicators()
             setup()
@@ -89,15 +89,17 @@ class FragmentWrite : Fragment() {
         }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(activity, it.color)
-            stepLayout.backgroundColor = color
-            editText.supportBackgroundTintList = ColorStateList.valueOf(color)
+            activity?.let { activity ->
+                val color = ContextCompat.getColor(activity, it.color)
+                stepLayout.backgroundColor = color
+                editText.supportBackgroundTintList = ColorStateList.valueOf(color)
+            }
         }
     }
 
-    private fun setupAudio(){
+    private fun setupAudio() {
         audioButton.setOnClickListener {
-            if(write.size >= stepIndex){
+            if (write.size >= stepIndex) {
                 val currentWrite = write[stepIndex]
                 playAudio(currentWrite.audio)
             }
@@ -123,7 +125,7 @@ class FragmentWrite : Fragment() {
                 } else {
                     reset()
                 }
-                if(s.toString().isNotEmpty() && s.toString().toLowerCase() != write[stepIndex].word.substring(0, s.toString().length).toLowerCase()){
+                if (s.toString().isNotEmpty() && s.toString().toLowerCase() != write[stepIndex].word.substring(0, s.toString().length).toLowerCase()) {
                     showError()
                 }
             }
@@ -134,16 +136,20 @@ class FragmentWrite : Fragment() {
         })
     }
 
-    fun clearDrawable(){
+    fun clearDrawable() {
         editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
     }
 
-    fun showError(){
-        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.close), null)
+    fun showError() {
+        activity?.let { activity ->
+            editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.close), null)
+        }
     }
 
-    fun showRight(){
-        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.done), null)
+    fun showRight() {
+        activity?.let { activity ->
+            editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.done), null)
+        }
     }
 
     private fun setupRecyclers() {
@@ -184,19 +190,23 @@ class FragmentWrite : Fragment() {
     }
 
     private fun calculateColumns(): Int {
-        val displayMetrics = context.resources.displayMetrics
-        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-        val columns = ((dpWidth - 32) / 32) - 1
-        println(columns)
-        return columns.toInt()
+        context?.let { context ->
+            val displayMetrics = context.resources.displayMetrics
+            val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+            val columns = ((dpWidth - 32) / 32) - 1
+            println(columns)
+            return columns.toInt()
+        } ?: return 0
     }
 
     private fun calculateSelectableColumns(): Int {
-        val displayMetrics = context.resources.displayMetrics
-        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-        val columns = ((dpWidth - 32) / 40) - 1
-        println(columns)
-        return columns.toInt()
+        context?.let { context ->
+            val displayMetrics = context.resources.displayMetrics
+            val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+            val columns = ((dpWidth - 32) / 40) - 1
+            println(columns)
+            return columns.toInt()
+        } ?: return 0
     }
 
     private fun setupPicture() {

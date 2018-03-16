@@ -10,12 +10,15 @@ import it.mindtek.ruah.adapters.UnitsAdapter
 import it.mindtek.ruah.ws.interfaces.NeedsUpdateInterface
 import kotlinx.android.synthetic.main.activity_units.*
 import okhttp3.ResponseBody
+import org.jetbrains.anko.defaultSharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
 class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
+    private val TIMESTAMP = "timestamp"
+
     override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
         setup()
     }
@@ -54,7 +57,7 @@ class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
 
             val retrofitInterface = retrofit.create(NeedsUpdateInterface::class.java)
 
-            val request = retrofitInterface.needsUpdate()
+            val request = retrofitInterface.needsUpdate(defaultSharedPreferences.getLong(TIMESTAMP, 0))
             request.enqueue(this)
         }else{
             setup()

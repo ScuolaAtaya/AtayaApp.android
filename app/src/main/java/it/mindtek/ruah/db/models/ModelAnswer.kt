@@ -9,8 +9,8 @@ import android.arch.persistence.room.PrimaryKey
 @Entity
 open class ModelAnswer(
         @PrimaryKey
-        var id: Int = 0,
-        var question_id: Int = 0,
+        var id: String = "",
+        var question_id: String = "",
         var body: String = "",
         var audio: String = "",
         var correct: Boolean = false

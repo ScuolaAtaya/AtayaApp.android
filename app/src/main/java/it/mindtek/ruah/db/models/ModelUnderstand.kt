@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "understand")
 open class ModelUnderstand(
         @PrimaryKey
-        var id: Int = 0,
+        var id: String = "",
         var unit_id: Int = 0,
         var video_url: String = "",
         var audio: String = ""

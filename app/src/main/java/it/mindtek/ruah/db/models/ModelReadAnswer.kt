@@ -9,8 +9,8 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "readanswer")
 open class ModelReadAnswer(
         @PrimaryKey
-        var id: Int = 0,
-        var read_id: Int = 0,
+        var id: String = "",
+        var read_id: String = "",
         var body: String = "",
         var audio: String = "",
         var correct: Boolean = false

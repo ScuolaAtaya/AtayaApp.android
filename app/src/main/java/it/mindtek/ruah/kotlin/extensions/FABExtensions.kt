@@ -10,13 +10,13 @@ import android.support.v4.content.ContextCompat
 /**
  * Created by alessandrogaboardi on 05/12/2017.
  */
-fun FloatingActionButton.setTintPreLollipop(color: Int, @DrawableRes icon: Int) {
+fun FloatingActionButton.setTintPreLollipop(color: Int, @DrawableRes iconRes: Int) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
         setTint(color)
     }else{
-        val icon = ContextCompat.getDrawable(context, icon)
-        val copy = icon.constantState.newDrawable()
-        copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        val icon = ContextCompat.getDrawable(context, iconRes)
+        val copy = icon?.constantState?.newDrawable()
+        copy?.mutate()?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         setImageDrawable(copy)
     }
 }

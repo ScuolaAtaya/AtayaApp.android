@@ -8,7 +8,7 @@ import it.mindtek.ruah.db.models.ModelUnderstand
  * Created by alessandrogaboardi on 06/12/2017.
  */
 object UnderstandGenerator {
-    fun getUnderstand(): MutableList<ModelUnderstand>{
+    /*fun getUnderstand(): MutableList<ModelUnderstand>{
         val understands = mutableListOf<ModelUnderstand>()
         val understand1 = ModelUnderstand(
                 0,
@@ -141,5 +141,5 @@ object UnderstandGenerator {
         )
         answers.add(answer8)
         return answers
-    }
+    }*/
 }

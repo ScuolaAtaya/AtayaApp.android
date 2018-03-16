@@ -21,7 +21,7 @@ class PojoRead {
         answers.forEach {
             val answ = ModelAnswer(
                     it.id,
-                    -1,
+                    "",
                     it.body,
                     it.audio,
                     it.correct

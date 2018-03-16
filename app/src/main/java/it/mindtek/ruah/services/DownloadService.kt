@@ -21,6 +21,7 @@ import com.google.gson.Gson
 import it.mindtek.ruah.db.models.*
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fromJson
+import org.jetbrains.anko.defaultSharedPreferences
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
@@ -34,6 +35,7 @@ class DownloadService() : IntentService("Download service") {
     private var notificationManager: NotificationManager? = null
     private var totalFileSize: Int = 0
 
+    private val TIMESTAMP = "timestamp"
     private val UNDERSTANDS = "understand"
     private val QUESTIONS = "questions"
     private val ANSWERS = "answers"
@@ -169,6 +171,11 @@ class DownloadService() : IntentService("Download service") {
         saveSpeak(json.getJSONArray(SPEAK))
         saveRead(json.getJSONArray(READ))
         saveWrite(json.getJSONArray(WRITE))
+        saveTimestamp(json.getLong(TIMESTAMP))
+    }
+
+    private fun saveTimestamp(timestamp: Long){
+        defaultSharedPreferences.edit().putLong(TIMESTAMP, timestamp).apply()
     }
 
     private fun saveWrite(writeJson: JSONArray){
