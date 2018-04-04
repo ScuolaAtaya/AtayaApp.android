@@ -1,6 +1,5 @@
 package it.mindtek.ruah.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -27,6 +26,7 @@ class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
         if (response.isSuccessful) {
             response.body()?.let {
                 val result = String(it.bytes())
+                println(result)
                 if (result == "true") {
                     download()
                 } else {
@@ -48,20 +48,17 @@ class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     private fun checkUpdates() {
-        val updated = getSharedPreferences("Application", Context.MODE_PRIVATE).getBoolean("Updated", false)
-        if(!updated) {
-            val base_url = getString(R.string.api_base_url)
-            val retrofit = Retrofit.Builder()
-                    .baseUrl(base_url)
-                    .build()
+        val base_url = getString(R.string.api_base_url)
+        val retrofit = Retrofit.Builder()
+                .baseUrl(base_url)
+                .build()
 
-            val retrofitInterface = retrofit.create(NeedsUpdateInterface::class.java)
+        val retrofitInterface = retrofit.create(NeedsUpdateInterface::class.java)
 
-            val request = retrofitInterface.needsUpdate(defaultSharedPreferences.getLong(TIMESTAMP, 0))
-            request.enqueue(this)
-        }else{
-            setup()
-        }
+        val timestamp = defaultSharedPreferences.getLong(TIMESTAMP, 0)
+        println(timestamp)
+        val request = retrofitInterface.needsUpdate(timestamp)
+        request.enqueue(this)
     }
 
     private fun download() {
