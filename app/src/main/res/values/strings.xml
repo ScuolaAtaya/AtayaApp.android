@@ -1,8 +1,13 @@
 <resources>
-    <string name="app_name">Ruah</string>
+    <string name="youtube_api_key">AIzaSyCrZFKOBhSh7QqW90eP2NSeB6MfWWNrLYw</string>
+
+    <string name="app_name">Ataya-app</string>
+    <string name="notification_channel">Download</string>
     <string name="background">background</string>
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
+
+    <string name="api_base_url">http://api-dev.ruah.mindtek.it/api/</string>
 
     <!-- Titoli unità -->
     <string name="accoglienza">accoglienza</string>
@@ -17,4 +22,32 @@
     <string name="viaggio">il viaggio</string>
 
 
+    <string name="section_understand">capiamo</string>
+    <string name="section_talk">parliamo</string>
+    <string name="section_read">leggiamo</string>
+    <string name="section_write">scriviamo</string>
+
+    <string name="section_understand_description">Guarda il video e rispondi\nalle domande</string>
+    <string name="section_talk_description">Ascolta e ripeti la parola\nregistrandola</string>
+    <string name="section_read_description">Guarda l\'immagine e seleziona\nle parole corrispondenti</string>
+    <string name="section_write_description">Osserva l\'immagine e\nscrivi il suo nome</string>
+
+    <string name="start">COMINCIA</string>
+    <string name="back">INDIETRO</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="watch_video">Guarda il video per continuare</string>
+    <string name="listen">ascolta</string>
+    <string name="next">avanti</string>
+    <string name="button_video_audio">video/audio</string>
+    <string name="congrats">Congratulazioni!</string>
+    <string name="hold_to_record">Premi per registrare</string>
+    <string name="listen_again">Riascolta</string>
+    <string name="downloading">Stiamo scaricando i file necessari, non chiudere l\'applicazione</string>
+    <string name="download_permission_denied">Permesso negato, consenti per procedere</string>
+    <string name="downloaded">File scaricato, elaborando</string>
+    <string name="question">Domanda</string>
+    <string name="write">Scrivi</string>
+    <string name="downloaded_mb">Scaricati %d MB di %d MB</string>
 </resources>

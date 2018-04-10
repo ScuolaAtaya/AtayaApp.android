@@ -4,19 +4,53 @@
 
     <!-- PERMISSIONS -->
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.ActivityUnits"
+            android:screenOrientation="portrait"
+            android:noHistory="false"
+            android:theme="@style/AppThemeNoToolbar"/>
+        <activity
+            android:name=".activities.ActivityUnit"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityIntro"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoToolbar" />
+        <activity
+            android:name=".activities.ActivityUnderstand"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivitySpeak"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityRead"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityWrite"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ActivityDownload"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoToolbar" />
+
+        <service android:name=".services.DownloadService" />
+
+        <activity
+            android:name=".activities.ActivitySplash"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
             android:theme="@style/AppThemeNoToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
