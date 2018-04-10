@@ -3,6 +3,7 @@ package it.mindtek.ruah
 import android.app.Application
 import android.arch.persistence.room.Room
 import android.support.multidex.MultiDexApplication
+import com.bugsee.library.Bugsee
 import it.mindtek.ruah.config.*
 import it.mindtek.ruah.db.AppDatabase
 import it.mindtek.ruah.kotlin.extensions.db
@@ -16,12 +17,17 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
+        initBugsee()
+
         initRoom()
         initUnits()
-//        initUnderstand()
-//        initSpeak()
-//        initRead()
-//        initWrite()
+    }
+
+    private fun initBugsee(){
+        val options = HashMap<String, Any>()
+        options[Bugsee.Option.NotificationBarTrigger] = false
+        options[Bugsee.Option.ShakeToTrigger] = false
+        Bugsee.launch(this, "674ab8be-e65a-46f8-aec7-da49e35e8c62", options)
     }
 
     private fun initRoom() {
