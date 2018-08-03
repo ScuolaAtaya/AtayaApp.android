@@ -17,7 +17,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        initBugsee()
+//        initBugsee()
 
         initRoom()
         initUnits()
@@ -103,6 +103,6 @@ class App : MultiDexApplication() {
     }*/
 
     companion object {
-        const val API_KEY = "apiKey"
+        const val API_KEY = "892a487f-ccaf-4b99-94a6-733640bfb9cb"
     }
 }

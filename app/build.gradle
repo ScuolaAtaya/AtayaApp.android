@@ -21,6 +21,19 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    flavorDimensions( "buildType" )
+
+    productFlavors {
+        develop {
+            resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
+        }
+
+        production{
+            resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

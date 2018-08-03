@@ -13,10 +13,10 @@ import it.mindtek.ruah.pojos.Syllable
  * Created by alessandrogaboardi on 08/01/2018.
  */
 class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syllable>, val onLetterTap: ((syllable: Syllable) -> Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var letters = MutableList(givenLetters.size, { -1 })
+    var letters = MutableList(givenLetters.size, { "" })
 
     override fun getItemViewType(position: Int): Int {
-        if (letters[position] == -1)
+        if (letters[position].isEmpty())
             return 0
         else
             return 1
@@ -39,7 +39,7 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
             val cast = holder as LettersHolder
             val item = letters[position]
             val syllable = givenLetters.first{ it.id == item }
-            val right = syllable.order.any { it == position }
+            val right = syllable.occurences.any { it == position }
             if (!right) {
                 cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_red)
             } else {
@@ -47,7 +47,7 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
             }
             cast.letter.text = syllable.text
             cast.view.setOnClickListener {
-                letters[position] = -1
+                letters[position] = ""
                 onLetterTap?.invoke(syllable)
                 notifyDataSetChanged()
             }
@@ -57,7 +57,7 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
     override fun getItemCount(): Int = letters.size
 
     fun select(letter: Syllable) {
-        val firstEmpty = letters.indexOfFirst { it == -1 }
+        val firstEmpty = letters.indexOfFirst { it.isEmpty() }
         if (firstEmpty > -1) {
             letters[firstEmpty] = letter.id
             notifyDataSetChanged()
@@ -69,7 +69,7 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
         letters.forEachIndexed { index, i ->
             val syllable = givenLetters.firstOrNull { it.id == i }
             if(syllable != null) {
-                if(syllable.order.none{ it == index}){
+                if(syllable.occurences.none{ it == index}){
                     wrong = true
                 }
             }else{

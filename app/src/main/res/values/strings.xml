@@ -7,8 +7,6 @@
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
 
-    <string name="api_base_url">http://api-dev.ruah.mindtek.it/api/</string>
-
     <!-- Titoli unità -->
     <string name="accoglienza">accoglienza</string>
     <string name="lavoro">il lavoro</string>

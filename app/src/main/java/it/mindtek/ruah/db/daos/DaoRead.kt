@@ -3,6 +3,7 @@ package it.mindtek.ruah.db.daos
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import it.mindtek.ruah.db.models.ModelRead
 import it.mindtek.ruah.db.models.ModelReadAnswer
@@ -13,10 +14,10 @@ import it.mindtek.ruah.pojos.PojoRead
  */
 @Dao
 interface DaoRead {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveCategories(categories: MutableList<ModelRead>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAnswers(answers: MutableList<ModelReadAnswer>)
 
     @Query("SELECT * FROM read")
