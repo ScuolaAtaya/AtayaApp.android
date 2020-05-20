@@ -2,8 +2,8 @@ package it.mindtek.ruah.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.UnitsAdapter
 import it.mindtek.ruah.ws.interfaces.NeedsUpdateInterface

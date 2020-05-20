@@ -1,8 +1,8 @@
 package it.mindtek.ruah
 
 import android.app.Application
-import android.arch.persistence.room.Room
-import android.support.multidex.MultiDexApplication
+import androidx.room.Room
+import androidx.multidex.MultiDexApplication
 import com.bugsee.library.Bugsee
 import it.mindtek.ruah.config.*
 import it.mindtek.ruah.db.AppDatabase

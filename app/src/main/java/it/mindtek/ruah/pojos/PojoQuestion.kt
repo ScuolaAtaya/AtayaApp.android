@@ -1,7 +1,7 @@
 package it.mindtek.ruah.pojos
 
-import android.arch.persistence.room.Embedded
-import android.arch.persistence.room.Relation
+import androidx.room.Embedded
+import androidx.room.Relation
 import it.mindtek.ruah.db.models.ModelAnswer
 import it.mindtek.ruah.db.models.ModelQuestion
 

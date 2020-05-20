@@ -1,6 +1,6 @@
 package it.mindtek.ruah.pojos
 
-import android.arch.persistence.room.TypeConverters
+import androidx.room.TypeConverters
 import it.mindtek.ruah.db.converters.IntArrayConverter
 
 /**
