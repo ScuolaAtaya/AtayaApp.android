@@ -3,7 +3,7 @@ package it.mindtek.ruah.kotlin.extensions
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatButton
 import org.jetbrains.anko.dip
 
 /**
@@ -30,7 +30,7 @@ fun AppCompatButton.setDrawableColor(color: Int) {
 
 fun tint(drawable: Drawable?, color: Int, context: Context): Drawable? {
     drawable?.let {
-        val copy = drawable.constantState.newDrawable()
+        val copy = drawable.constantState!!.newDrawable()
         copy.setBounds(0, 0, context.dip(24), context.dip(24))
         copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         return copy

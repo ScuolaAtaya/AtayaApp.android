@@ -1,10 +1,10 @@
 package it.mindtek.ruah.db.models
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.TypeConverters
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import it.mindtek.ruah.db.converters.IntArrayConverter
 
 /**

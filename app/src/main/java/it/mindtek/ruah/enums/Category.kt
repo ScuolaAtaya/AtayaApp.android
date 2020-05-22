@@ -1,8 +1,8 @@
 package it.mindtek.ruah.enums
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.RawRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
+import androidx.annotation.StringRes
 import it.mindtek.ruah.R
 
 /**

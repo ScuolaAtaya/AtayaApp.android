@@ -3,9 +3,9 @@ package it.mindtek.ruah.kotlin.extensions
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Build
-import android.support.annotation.DrawableRes
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
+import androidx.annotation.DrawableRes
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
 
 /**
  * Created by alessandrogaboardi on 05/12/2017.

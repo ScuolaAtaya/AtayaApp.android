@@ -1,6 +1,6 @@
 package it.mindtek.ruah.adapters.holders
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.item_letter_selected.view.*
 
