@@ -27,8 +27,8 @@ interface DaoUnderstand {
     @Query("SELECT * FROM understand")
     fun getUnderstandAsync(): LiveData<MutableList<PojoUnderstand>>
 
-    @Query("SELECT * FROM understand WHERE unit_id = :unit_id LIMIT 1 ")
-    fun getUnderstandByUnitId(unit_id: Int): PojoUnderstand?
+    @Query("SELECT * FROM understand WHERE unit_id = :unitId LIMIT 1 ")
+    fun getUnderstandByUnitId(unitId: Int): PojoUnderstand?
 
     @Query("SELECT COUNT(*) FROM understand")
     fun count(): Int

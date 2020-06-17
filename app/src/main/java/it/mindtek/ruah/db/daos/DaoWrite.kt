@@ -18,8 +18,8 @@ interface DaoWrite {
     @Query("SELECT * FROM write")
     fun getWriteAsync(): LiveData<MutableList<ModelWrite>>
 
-    @Query("SELECT * FROM write WHERE unit_id = :unit_id")
-    fun getWriteByUnitId(unit_id: Int): MutableList<ModelWrite>
+    @Query("SELECT * FROM write WHERE unit_id = :unitId")
+    fun getWriteByUnitId(unitId: Int): MutableList<ModelWrite>
 
     @Query("SELECT COUNT(*) FROM write")
     fun count(): Int

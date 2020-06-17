@@ -18,8 +18,8 @@ interface DaoSpeak {
     @Query("SELECT * FROM speak")
     fun getSpeakAsync(): LiveData<MutableList<ModelSpeak>>
 
-    @Query("SELECT * FROM speak WHERE unit_id = :unit_id ")
-    fun getSpeakByUnitId(unit_id: Int): MutableList<ModelSpeak>
+    @Query("SELECT * FROM speak WHERE unit_id = :unitId ")
+    fun getSpeakByUnitId(unitId: Int): MutableList<ModelSpeak>
 
     @Query("SELECT COUNT(*) FROM speak")
     fun count(): Int
