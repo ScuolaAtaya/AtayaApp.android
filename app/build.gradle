@@ -22,14 +22,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    flavorDimensions( "buildType" )
+    flavorDimensions("buildType")
 
     productFlavors {
         develop {
             resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
         }
 
-        production{
+        production {
             resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
         }
     }
