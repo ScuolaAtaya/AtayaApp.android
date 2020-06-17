@@ -1,5 +1,6 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,6 +13,7 @@ open class ModelAnswer(
         var id: String = "",
         var question_id: String = "",
         var body: String = "",
-        var audio: String = "",
+        @Embedded(prefix = "audio_")
+        var audio: ModelMedia,
         var correct: Boolean = false
-) {}
+)

@@ -11,7 +11,7 @@ import it.mindtek.ruah.db.models.*
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
-@Database(version = 20, entities = [
+@Database(entities = [
     ModelUnit::class,
     ModelUnderstand::class,
     ModelQuestion::class,
@@ -20,7 +20,7 @@ import it.mindtek.ruah.db.models.*
     ModelRead::class,
     ModelReadAnswer::class,
     ModelWrite::class
-])
+], version = 21)
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unitDao(): DaoUnit

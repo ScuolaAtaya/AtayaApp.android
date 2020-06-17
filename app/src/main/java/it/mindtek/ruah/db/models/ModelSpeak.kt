@@ -1,5 +1,6 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +12,8 @@ open class ModelSpeak(
         @PrimaryKey
         var id: String = "",
         var unit_id: Int = 0,
-        var picture: String = "",
-        var audio: String = ""
-) {}
+        @Embedded(prefix = "audio_")
+        var audio: ModelMedia,
+        @Embedded(prefix = "picture_")
+        var picture: ModelMedia
+)

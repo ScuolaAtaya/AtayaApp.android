@@ -1,5 +1,6 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +12,6 @@ open class ModelRead(
         @PrimaryKey
         var id: String = "",
         var unit_id: Int = 0,
-        var picture: String = ""
-) {
-}
+        @Embedded(prefix = "picture_")
+        var picture: ModelMedia
+)
