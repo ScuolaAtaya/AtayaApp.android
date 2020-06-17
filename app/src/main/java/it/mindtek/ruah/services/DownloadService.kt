@@ -26,7 +26,6 @@ import java.io.*
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-
 /**
  * Created by alessandro on 09/01/2018.
  */
@@ -35,7 +34,7 @@ class DownloadService : IntentService("Download service") {
     private var notificationManager: NotificationManager? = null
     private var totalFileSize: Int = 0
     private val apiClient: ApiClient = ApiClient
-    private val TAG = javaClass.simpleName
+    private val tag = javaClass.simpleName
 
     override fun onHandleIntent(intent: Intent?) {
         notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -139,6 +138,7 @@ class DownloadService : IntentService("Download service") {
         saveSpeak(json.getJSONArray(SPEAK))
         saveRead(json.getJSONArray(READ))
         saveWrite(json.getJSONArray(WRITE))
+        saveFinalTest(json.getJSONArray(FINAL_TEST))
         saveTimestamp(json.getLong(TIMESTAMP))
     }
 
@@ -191,6 +191,21 @@ class DownloadService : IntentService("Download service") {
         db.understandDao().saveAnswers(answers)
     }
 
+    private fun saveFinalTest(finalTestJson: JSONArray) {
+        val finalTests = mutableListOf<ModelFinalTest>()
+        val questions = mutableListOf<ModelFinalTestQuestion>()
+        for (i in 0 until finalTestJson.length()) {
+            val currentFinalTestJson = finalTestJson.getJSONObject(i)
+            val currentQuestionsJson = currentFinalTestJson.getJSONArray(OPTIONS)
+            val finalTest = Gson().fromJson<ModelFinalTest>(currentFinalTestJson)
+            val currentQuestions = Gson().fromJson<MutableList<ModelFinalTestQuestion>>(currentQuestionsJson)
+            finalTests.add(finalTest)
+            questions.addAll(currentQuestions)
+        }
+        db.finalTestDao().saveCategories(finalTests)
+        db.finalTestDao().saveQuestions(questions)
+    }
+
     private fun getJSON(): String {
         val dir = File(filesDir, "data")
         val file = File(dir.absolutePath, "book.json")
@@ -198,19 +213,19 @@ class DownloadService : IntentService("Download service") {
         val length = file.length()
         if (length < 1 || length > Integer.MAX_VALUE) {
             result = ""
-            Log.w(TAG, "File is empty or huge: $file")
+            Log.w(tag, "File is empty or huge: $file")
         } else {
             try {
                 FileReader(file).use { `in` ->
                     val content = CharArray(length.toInt())
                     val numRead = `in`.read(content)
                     if (numRead.toLong() != length) {
-                        Log.e(TAG, "Incomplete read of $file. Read chars $numRead of $length")
+                        Log.e(tag, "Incomplete read of $file. Read chars $numRead of $length")
                     }
                     result = String(content, 0, numRead)
                 }
             } catch (ex: Exception) {
-                Log.e(TAG, "Failure reading $file", ex)
+                Log.e(tag, "Failure reading $file", ex)
                 result = ""
             }
         }
@@ -230,5 +245,6 @@ class DownloadService : IntentService("Download service") {
         const val READ = "read"
         const val OPTIONS = "options"
         const val WRITE = "write"
+        const val FINAL_TEST = "final"
     }
 }
