@@ -13,7 +13,7 @@ import retrofit2.http.Streaming
  */
 interface FileDownloadInterface {
     @Headers("X-API-KEY: " + App.API_KEY)
-    @GET("app/book")
+    @GET("app/book/v2")
     @Streaming
     fun downloadFile(): Call<ResponseBody>
 }

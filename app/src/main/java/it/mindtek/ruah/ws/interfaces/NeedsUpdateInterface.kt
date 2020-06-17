@@ -12,6 +12,6 @@ import retrofit2.http.Path
  */
 interface NeedsUpdateInterface {
     @Headers("X-API-KEY: " + App.API_KEY)
-    @GET("app/book/update/{timestamp}")
+    @GET("app/book/v2/update/{timestamp}")
     fun needsUpdate(@Path("timestamp") timestamp: Long): Call<ResponseBody>
 }
