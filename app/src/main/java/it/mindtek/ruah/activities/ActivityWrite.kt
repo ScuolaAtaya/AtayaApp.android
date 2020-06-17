@@ -19,36 +19,31 @@ import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
-
-    var unit_id: Int = -1
+    var unitId: Int = -1
     var category: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
-
-        intent?.let { intentNN ->
-            unit_id = intentNN.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(intentNN.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
+        intent?.let {
+            unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
+            category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
-
-        if (unit_id == -1 || category == null)
+        if (unitId == -1 || category == null)
             finish()
-
         setup()
-
-        val fragment = FragmentWrite.newInstance(unit_id, category!!, 0)
+        val fragment = FragmentWrite.newInstance(unitId, category!!, 0)
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
     override fun goToNext(id: Int) {
-        val fragment = FragmentWrite.newInstance(unit_id, category!!, id)
+        val fragment = FragmentWrite.newInstance(unitId, category!!, id)
         replaceFragment(fragment, R.id.placeholder)
     }
 
     override fun goToFinish() {
         val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
         intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)
         intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         startActivity(intent)
@@ -56,9 +51,9 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
 
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(category!!.title).capitalize()
-        val unitObservable = db.unitDao().getUnitByIdAsync(unit_id)
-        unitObservable.observe(this, Observer<ModelUnit> { unit ->
+        supportActionBar?.title = getString(category!!.title)
+        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
+        unitObservable.observe(this, Observer { unit ->
             unit?.let {
                 val color = ContextCompat.getColor(this, unit.color)
                 val colorDark = ContextCompat.getColor(this, unit.colorDark)
@@ -74,7 +69,7 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> onBackPressed()
         }
         return false
