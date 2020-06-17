@@ -1,19 +1,18 @@
 package it.mindtek.ruah.fragments.write
 
-
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityIntro
 import it.mindtek.ruah.activities.ActivityUnit
@@ -27,22 +26,19 @@ import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_write.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.dip
 import java.io.File
+import java.util.*
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class FragmentWrite : Fragment() {
-    var unitId: Int = -1
-    var category: Category? = null
-    var stepIndex: Int = -1
-    var player: MediaPlayer? = null
-    var write: MutableList<ModelWrite> = mutableListOf()
-    var communicator: WriteActivityInterface? = null
-    var selectedAdapter: SelectedLettersAdapter? = null
-    var selectableAdapter: SelectableLettersAdapter? = null
+    private var unitId: Int = -1
+    private var category: Category? = null
+    private var stepIndex: Int = -1
+    private var player: MediaPlayer? = null
+    private var write: MutableList<ModelWrite> = mutableListOf()
+    private var communicator: WriteActivityInterface? = null
+    private var selectedAdapter: SelectedLettersAdapter? = null
+    private var selectableAdapter: SelectableLettersAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_write, container, false)
@@ -101,7 +97,7 @@ class FragmentWrite : Fragment() {
         audioButton.setOnClickListener {
             if (write.size >= stepIndex) {
                 val currentWrite = write[stepIndex]
-                playAudio(currentWrite.audio)
+                playAudio(currentWrite.audio.value)
             }
         }
     }
@@ -119,13 +115,13 @@ class FragmentWrite : Fragment() {
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 clearDrawable()
-                if (s.toString().toLowerCase() == write[stepIndex].word.toLowerCase()) {
+                if (setLowerCase(s.toString()) == setLowerCase(write[stepIndex].word)) {
                     showRight()
                     complete()
                 } else {
                     reset()
                 }
-                if (s.toString().isNotEmpty() && s.toString().toLowerCase() != write[stepIndex].word.substring(0, s.toString().length).toLowerCase()) {
+                if (s.toString().isNotEmpty() && setLowerCase(s.toString()) != setLowerCase(write[stepIndex].word.substring(0, s.toString().length))) {
                     showError()
                 }
             }
@@ -158,27 +154,27 @@ class FragmentWrite : Fragment() {
         val selectedCol = calculateColumns()
         compile.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size)
         available.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size)
-        selectedAdapter = SelectedLettersAdapter(stepWrite.word, stepWrite.letters, { letter ->
+        selectedAdapter = SelectedLettersAdapter(stepWrite.word, stepWrite.letters) { letter ->
             selectableAdapter?.unlockLetter(letter)
             if (selectedAdapter?.completed() == true) {
                 complete()
             } else {
                 reset()
             }
-        })
+        }
         stepWrite.letters.shuffle()
-        selectableAdapter = SelectableLettersAdapter(stepWrite.letters, { letters ->
+        selectableAdapter = SelectableLettersAdapter(stepWrite.letters) { letters ->
             selectedAdapter?.select(letters)
             if (selectedAdapter?.completed() == true) {
                 complete()
             } else {
                 reset()
             }
-        })
+        }
         compile.adapter = selectedAdapter
         available.adapter = selectableAdapter
-        compile.addItemDecoration(GridSpaceItemDecoration(dip(4), dip(4)))
-        available.addItemDecoration(GridSpaceItemDecoration(dip(8), dip(8)))
+        compile.addItemDecoration(GridSpaceItemDecoration(requireActivity().dip(4), requireActivity().dip(4)))
+        available.addItemDecoration(GridSpaceItemDecoration(requireActivity().dip(8), requireActivity().dip(8)))
     }
 
     private fun complete() {
@@ -210,9 +206,8 @@ class FragmentWrite : Fragment() {
     }
 
     private fun setupPicture() {
-        val pictureFile = File(fileFolder.absolutePath, write[stepIndex].picture)
+        val pictureFile = File(fileFolder.absolutePath, write[stepIndex].picture.value)
         GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
-//        GlideApp.with(this).load(R.drawable.placeholder).placeholder(R.color.grey).into(picture)
     }
 
     private fun playAudio(audio: String) {
@@ -238,6 +233,7 @@ class FragmentWrite : Fragment() {
         next.disable()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupSteps() {
         step.text = "${stepIndex + 1}/${write.size}"
     }
@@ -263,10 +259,10 @@ class FragmentWrite : Fragment() {
         communicator?.goToNext(stepIndex + 1)
     }
 
-    companion object {
-        val EXTRA_STEP = "extra step int position"
+    private fun setLowerCase(text: String) = text.toLowerCase(Locale.ITALIAN)
 
-        fun newInstance(): FragmentWrite = FragmentWrite()
+    companion object {
+        const val EXTRA_STEP = "extra step int position"
 
         fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentWrite {
             val frag = FragmentWrite()

@@ -26,22 +26,21 @@ import it.mindtek.ruah.kotlin.extensions.enable
 import it.mindtek.ruah.kotlin.extensions.fileFolder
 import kotlinx.android.synthetic.main.fragment_speak.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.dip
 import java.io.File
 
 /**
  * Created by alessandrogaboardi on 15/12/2017.
  */
 class FragmentSpeak : Fragment() {
-    var unitId: Int = -1
-    var category: Category? = null
-    var stepIndex: Int = -1
-    var player: MediaPlayer? = null
-    var recorder: MediaRecorder? = null
-    var speak: MutableList<ModelSpeak> = mutableListOf()
-    var communicator: SpeakActivityInterface? = null
-    var recording = false
-    val REQUEST_PERMISSION_AUDIO = 20183
+    private var unitId: Int = -1
+    private var category: Category? = null
+    private var stepIndex: Int = -1
+    private var player: MediaPlayer? = null
+    private var recorder: MediaRecorder? = null
+    private var speak: MutableList<ModelSpeak> = mutableListOf()
+    private var communicator: SpeakActivityInterface? = null
+    private var recording = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_speak, container, false)
@@ -89,9 +88,8 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun setupPicture() {
-        val picture = File(fileFolder.absolutePath, speak[stepIndex].picture)
+        val picture = File(fileFolder.absolutePath, speak[stepIndex].picture.value)
         GlideApp.with(this).load(picture).placeholder(R.color.grey).into(stepImage)
-//        GlideApp.with(this).load(R.drawable.placeholder).placeholder(R.color.grey).into(stepImage)
     }
 
     private fun setupButtons() {
@@ -109,8 +107,7 @@ class FragmentSpeak : Fragment() {
             dispatch()
         }
         listenButton.setOnClickListener {
-            playAudio(speak[stepIndex].audio)
-//            playAudio()
+            playAudio(speak[stepIndex].audio.value)
         }
         listenAgain.setOnClickListener {
             playRecordedAudio()
@@ -119,6 +116,7 @@ class FragmentSpeak : Fragment() {
         next.disable()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupSteps() {
         step.text = "${stepIndex + 1}/${speak.size}"
     }
@@ -129,7 +127,7 @@ class FragmentSpeak : Fragment() {
             recording = true
             record.setImageResource(R.drawable.stop)
             pulsator.start()
-            record.compatElevation = dip(16f).toFloat()
+            record.compatElevation = requireActivity().dip(16f).toFloat()
             recorder?.start()
         }
     }
@@ -167,7 +165,6 @@ class FragmentSpeak : Fragment() {
     private fun setupRecorder() {
         if (recorder != null)
             destroyRecorder()
-
         recorder = MediaRecorder()
         recorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder!!.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
@@ -182,7 +179,7 @@ class FragmentSpeak : Fragment() {
     private fun endRecording() {
         recording = false
         pulsator.stop()
-        record.compatElevation = dip(8f).toFloat()
+        record.compatElevation = requireActivity().dip(8f).toFloat()
         recorder?.stop()
         listenAgain.enable()
         next.enable()
@@ -194,16 +191,6 @@ class FragmentSpeak : Fragment() {
             destroyPlayer()
         val audioFile = File(fileFolder.absolutePath, audio)
         player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
-    }
-
-    private fun playAudio() {
-        if (player != null)
-            destroyPlayer()
-        player = MediaPlayer.create(activity, R.raw.voice)
         player?.setOnCompletionListener {
             destroyPlayer()
         }
@@ -264,9 +251,8 @@ class FragmentSpeak : Fragment() {
     }
 
     companion object {
-        val EXTRA_STEP = "extra step int position"
-
-        fun newInstance(): FragmentSpeak = FragmentSpeak()
+        const val EXTRA_STEP = "extra step int position"
+        const val REQUEST_PERMISSION_AUDIO = 20183
 
         fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentSpeak {
             val frag = FragmentSpeak()

@@ -1,6 +1,5 @@
 package it.mindtek.ruah.fragments.understand
 
-
 import androidx.lifecycle.Observer
 import android.media.MediaPlayer
 import android.net.Uri
@@ -18,20 +17,47 @@ import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
-import it.mindtek.ruah.pojos.UnderstandPojo
 import kotlinx.android.synthetic.main.fragment_understand_video.*
 import java.io.File
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class FragmentUnderstandVideo : Fragment() {
-    private var unit_id: Int = -1
-    var audioPlayer: MediaPlayer? = null
-    var videoPlayer: YouTubePlayer? = null
-    var videoUrl: String = ""
-    var communicator: UnderstandActivityInterface? = null
+    private var unitId: Int = -1
+    private var audioPlayer: MediaPlayer? = null
+    private var videoPlayer: YouTubePlayer? = null
+    private var videoUrl: String = ""
+    private var communicator: UnderstandActivityInterface? = null
+    private val videoListener = object : YouTubePlayer.OnInitializedListener {
+        override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
+            videoPlayer = p1
+            p1.setPlayerStateChangeListener(object : YouTubePlayer.PlayerStateChangeListener {
+                override fun onAdStarted() {}
+                override fun onLoading() {}
+                override fun onVideoStarted() {}
+                override fun onLoaded(p0: String?) {}
+                override fun onVideoEnded() {
+                    onVideoEnd()
+                }
+
+                override fun onError(p0: YouTubePlayer.ErrorReason?) {}
+            })
+            p1.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener {
+                override fun onSeekTo(p0: Int) {}
+                override fun onBuffering(p0: Boolean) {}
+                override fun onPlaying() {
+                    destroyPlayer()
+                }
+
+                override fun onStopped() {}
+                override fun onPaused() {}
+            })
+            p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
+            p1.loadVideo(videoUrl)
+        }
+
+        override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+            println("YOUTUBE ERROR")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,47 +66,11 @@ class FragmentUnderstandVideo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         getCommunicators()
-
         arguments?.let {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
-                unit_id = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
+                unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
-        }
-    }
-
-    val videoListener = object : YouTubePlayer.OnInitializedListener {
-        override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
-            videoPlayer = p1
-            p1.setPlayerStateChangeListener(object : YouTubePlayer.PlayerStateChangeListener {
-                override fun onAdStarted() {}
-                override fun onLoading() {}
-                override fun onVideoStarted() {}
-                override fun onLoaded(p0: String?) {}
-
-                override fun onVideoEnded() {
-                    onVideoEnd()
-                }
-
-                override fun onError(p0: YouTubePlayer.ErrorReason?) {}
-            })
-            p1.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener{
-                override fun onSeekTo(p0: Int) {}
-                override fun onBuffering(p0: Boolean) {}
-                override fun onPlaying() {
-                    destroyPlayer()
-                }
-                override fun onStopped() {}
-                override fun onPaused() {}
-            })
-            p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
-            p1.loadVideo(videoUrl)
-//            p1.loadVideo("v_nF8LrPBSg")
-        }
-
-        override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
-            println("YOUTUBE ERROR")
         }
     }
 
@@ -100,19 +90,16 @@ class FragmentUnderstandVideo : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (unit_id == -1)
+        if (unitId == -1)
             activity?.finish()
         else {
             setupNext()
             val categoriesObservable = db.understandDao().getUnderstandAsync()
-            categoriesObservable.observe(this, Observer<MutableList<UnderstandPojo>> { categories ->
-                val cat = categories
-                println(categories)
-            })
-            val category = db.understandDao().getUnderstandByUnitId(unit_id)
+            categoriesObservable.observe(this, Observer { println(it) })
+            val category = db.understandDao().getUnderstandByUnitId(unitId)
             category?.let {
-                showVideo(it.category?.video_url)
-                setupListen(it.category?.audio)
+                showVideo(it.category?.video_url!!.value)
+                setupListen(it.category?.audio!!.value)
             }
         }
     }
@@ -121,7 +108,6 @@ class FragmentUnderstandVideo : Fragment() {
         listen.setOnClickListener {
             audio?.let {
                 playAudio(it)
-//                playAudio()
             }
         }
     }
@@ -140,7 +126,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun playAudio(audio: String) {
         videoPlayer?.pause()
-        if(audioPlayer != null)
+        if (audioPlayer != null)
             destroyPlayer()
         val audioFile = File(fileFolder.absolutePath, audio)
         audioPlayer = MediaPlayer.create(activity, Uri.fromFile(audioFile))
@@ -149,18 +135,6 @@ class FragmentUnderstandVideo : Fragment() {
                 enableNext()
                 destroyPlayer()
             }
-        }
-        audioPlayer?.start()
-    }
-
-    private fun playAudio() {
-        videoPlayer?.pause()
-        if (audioPlayer != null)
-            destroyPlayer()
-        audioPlayer = MediaPlayer.create(activity, R.raw.voice)
-        audioPlayer?.setOnCompletionListener {
-            enableNext()
-            destroyPlayer()
         }
         audioPlayer?.start()
     }
@@ -188,8 +162,6 @@ class FragmentUnderstandVideo : Fragment() {
     }
 
     companion object {
-        fun newInstance(): FragmentUnderstandVideo = FragmentUnderstandVideo()
-
         fun newInstance(unit_id: Int): FragmentUnderstandVideo {
             val fragment = FragmentUnderstandVideo()
             val bundle = Bundle()
