@@ -1,16 +1,16 @@
 package it.mindtek.ruah.fragments.understand
 
-import androidx.lifecycle.Observer
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import com.google.android.youtube.player.YouTubePlayerFragment
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
@@ -19,6 +19,7 @@ import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
 import kotlinx.android.synthetic.main.fragment_understand_video.*
 import java.io.File
+
 
 class FragmentUnderstandVideo : Fragment() {
     private var unitId: Int = -1
@@ -74,10 +75,12 @@ class FragmentUnderstandVideo : Fragment() {
         }
     }
 
+    // CAST_NEVER_SUCCEEDS can be ignored - happens because Youtube SDK's fragment is not androidx.Fragment, but Jetifier will take care of that and cast will succeed
+    @Suppress("CAST_NEVER_SUCCEEDS")
     private fun showVideo(video: String?) {
         video?.let {
-            videoUrl = video
-            val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
+            videoUrl = it
+            val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerFragment
             playerFragment.initialize(getString(R.string.youtube_api_key), videoListener)
         }
     }
