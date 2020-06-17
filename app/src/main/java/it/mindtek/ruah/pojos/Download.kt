@@ -4,7 +4,6 @@ import android.os.Parcelable
 import android.os.Parcel
 
 
-
 /**
  * Created by alessandro on 09/01/2018.
  */
@@ -16,8 +15,8 @@ class Download(
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readInt(),
-            parcel.readInt()) {
-    }
+            parcel.readInt()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(progress)

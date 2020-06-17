@@ -8,7 +8,7 @@ import androidx.room.Query
 import it.mindtek.ruah.db.models.ModelAnswer
 import it.mindtek.ruah.db.models.ModelQuestion
 import it.mindtek.ruah.db.models.ModelUnderstand
-import it.mindtek.ruah.pojos.UnderstandPojo
+import it.mindtek.ruah.pojos.PojoUnderstand
 
 /**
  * Created by alessandrogaboardi on 06/12/2017.
@@ -25,10 +25,10 @@ interface DaoUnderstand {
     fun saveAnswers(answers: MutableList<ModelAnswer>)
 
     @Query("SELECT * FROM understand")
-    fun getUnderstandAsync(): LiveData<MutableList<UnderstandPojo>>
+    fun getUnderstandAsync(): LiveData<MutableList<PojoUnderstand>>
 
     @Query("SELECT * FROM understand WHERE unit_id = :unit_id LIMIT 1 ")
-    fun getUnderstandByUnitId(unit_id: Int): UnderstandPojo?
+    fun getUnderstandByUnitId(unit_id: Int): PojoUnderstand?
 
     @Query("SELECT COUNT(*) FROM understand")
     fun count(): Int

@@ -39,7 +39,7 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
             val cast = holder as LettersHolder
             val item = letters[position]
             val syllable = givenLetters.first{ it.id == item }
-            val right = syllable.occurences.any { it == position }
+            val right = syllable.occurrences.any { it == position }
             if (!right) {
                 cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_red)
             } else {
@@ -69,7 +69,7 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
         letters.forEachIndexed { index, i ->
             val syllable = givenLetters.firstOrNull { it.id == i }
             if(syllable != null) {
-                if(syllable.occurences.none{ it == index}){
+                if(syllable.occurrences.none{ it == index}){
                     wrong = true
                 }
             }else{

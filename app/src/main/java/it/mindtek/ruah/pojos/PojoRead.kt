@@ -16,18 +16,12 @@ class PojoRead {
     @Relation(parentColumn = "id", entityColumn = "read_id", entity = ModelReadAnswer::class)
     var answers: MutableList<ModelReadAnswer> = mutableListOf()
 
-    val answersConverted: MutableList<ModelAnswer> get() {
-        val ans = mutableListOf<ModelAnswer>()
-        answers.forEach {
-            val answ = ModelAnswer(
-                    it.id,
-                    "",
-                    it.body,
-                    it.audio,
-                    it.correct
-            )
-            ans.add(answ)
+    val answersConverted: MutableList<ModelAnswer>
+        get() {
+            val answersList = mutableListOf<ModelAnswer>()
+            answers.forEach {
+                answersList.add(ModelAnswer(it.id, "", it.body, it.audio, it.correct))
+            }
+            return answersList
         }
-        return ans
-    }
 }

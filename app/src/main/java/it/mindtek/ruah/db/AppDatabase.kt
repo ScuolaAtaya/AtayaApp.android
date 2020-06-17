@@ -19,8 +19,10 @@ import it.mindtek.ruah.db.models.*
     ModelSpeak::class,
     ModelRead::class,
     ModelReadAnswer::class,
-    ModelWrite::class
-], version = 21)
+    ModelWrite::class,
+    ModelFinalTest::class,
+    ModelFinalTestQuestion::class
+], version = 22)
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unitDao(): DaoUnit
