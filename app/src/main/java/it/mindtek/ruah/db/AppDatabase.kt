@@ -30,6 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun speakDao(): DaoSpeak
     abstract fun readDao(): DaoRead
     abstract fun writeDao(): DaoWrite
+    abstract fun finalTestDao(): DaoFinalTest
 
     companion object {
         private var INSTANCE: AppDatabase? = null
