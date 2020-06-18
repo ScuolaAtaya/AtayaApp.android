@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "825644215066",
+    "firebase_url": "https://ruah-dev.firebaseio.com",
+    "project_id": "ruah-dev",
+    "storage_bucket": "ruah-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825644215066:android:bd8ca90a8c1ca84e901aa3",
+        "android_client_info": {
+          "package_name": "it.mindtek.ruah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825644215066-kpbj2o1262s0c9pbsn0him3dmpm2794a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDazjcFooMcMZTwuX4SBIMtv05LthaO1pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825644215066-kpbj2o1262s0c9pbsn0him3dmpm2794a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
