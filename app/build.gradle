@@ -2,13 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
-repositories {
-    maven {
-        url "http://dl.bintray.com/piasy/maven"
-    }
-    maven { url 'https://jitpack.io' }
-}
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
