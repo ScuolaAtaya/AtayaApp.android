@@ -16,8 +16,8 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-//        initBugsee()
-        ApiClient.init(applicationContext.getString(R.string.api_base_url))
+        // initBugsee()
+        ApiClient.init(applicationContext.getString(R.string.api_base_url), applicationContext.getString(R.string.api_key))
         initRoom()
         initUnits()
     }
@@ -52,55 +52,5 @@ class App : MultiDexApplication() {
                 e.printStackTrace()
             }
         }
-    }
-
-    /*private fun initUnderstand(){
-        if(db.understandDao().count() == 0){
-            val understand = UnderstandGenerator.getUnderstand()
-            val questions = UnderstandGenerator.getQuestions()
-            val answers = UnderstandGenerator.getAnswers()
-
-            ioThread {
-                db.understandDao().saveCategories(understand)
-                db.understandDao().saveQuestions(questions)
-                db.understandDao().saveAnswers(answers)
-            }
-        }
-    }
-
-    private fun initSpeak(){
-        if(db.speakDao().count() == 0){
-            val speak = SpeakGenerator.getSpeaks()
-
-            ioThread {
-                db.speakDao().saveCategories(speak)
-            }
-        }
-    }
-
-    private fun initRead(){
-        if(db.readDao().count() == 0){
-            val read = ReadGenerator.getRead()
-            val answers = ReadGenerator.getAnswers()
-
-            ioThread {
-                db.readDao().saveCategories(read)
-                db.readDao().saveAnswers(answers)
-            }
-        }
-    }
-
-    private fun initWrite(){
-        if(db.writeDao().count() == 0){
-            val write = WriteGenerator.getWrites()
-
-            ioThread {
-                db.writeDao().saveCategories(write)
-            }
-        }
-    }*/
-
-    companion object {
-        const val API_KEY = "892a487f-ccaf-4b99-94a6-733640bfb9cb"
     }
 }

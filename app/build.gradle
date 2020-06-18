@@ -27,10 +27,12 @@ android {
     productFlavors {
         develop {
             resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
+            resValue "string", "api_key", "apiKey"
         }
 
         production {
             resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
+            resValue "string", "api_key", "892a487f-ccaf-4b99-94a6-733640bfb9cb"
         }
     }
 
