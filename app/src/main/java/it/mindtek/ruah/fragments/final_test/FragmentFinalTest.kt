@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityIntro
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.kotlin.extensions.db
 
 class FragmentFinalTest : Fragment() {
     private var unitId: Int = -1
@@ -30,6 +32,17 @@ class FragmentFinalTest : Fragment() {
                 category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
             if (it.containsKey(EXTRA_STEP))
                 stepIndex = it.getInt(EXTRA_STEP)
+        }
+        if (unitId == -1 || category == null || stepIndex == -1)
+            requireActivity().finish()
+        setup()
+    }
+
+    private fun setup() {
+        val finalTest = db.finalTestDao().getFinalTestByUnitId(unitId)
+        val unit = db.unitDao().getUnitById(unitId)
+        unit?.let {
+            val color = ContextCompat.getColor(requireActivity(), it.color)
         }
     }
 

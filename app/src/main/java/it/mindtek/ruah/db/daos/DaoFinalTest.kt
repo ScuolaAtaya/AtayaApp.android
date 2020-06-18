@@ -18,10 +18,10 @@ interface DaoFinalTest {
     fun saveQuestions(questions: MutableList<ModelFinalTestQuestion>)
 
     @Query("SELECT * FROM final")
-    fun getWriteAsync(): LiveData<MutableList<PojoFinalTest>>
+    fun getFinalTestAsync(): LiveData<MutableList<PojoFinalTest>>
 
     @Query("SELECT * FROM final WHERE unit_id = :unitId")
-    fun getWriteByUnitId(unitId: Int): MutableList<PojoFinalTest>
+    fun getFinalTestByUnitId(unitId: Int): MutableList<PojoFinalTest>
 
     @Query("SELECT COUNT(*) FROM final")
     fun count(): Int
