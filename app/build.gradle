@@ -22,14 +22,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    flavorDimensions( "buildType" )
+    flavorDimensions("buildType")
 
     productFlavors {
         develop {
+            dimension "buildType"
+            applicationIdSuffix ".develop"
             resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
         }
 
-        production{
+        production {
+            dimension "buildType"
             resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
         }
     }
@@ -67,4 +70,5 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'androidx.room:room-compiler:2.2.5'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 }
