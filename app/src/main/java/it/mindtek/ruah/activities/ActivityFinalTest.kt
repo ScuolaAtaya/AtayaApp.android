@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
 import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.fragments.final_test.FragmentFinalTest
 import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivityFinalTest : AppCompatActivity() {
     var unitId: Int = -1
@@ -23,8 +25,8 @@ class ActivityFinalTest : AppCompatActivity() {
         unitId = intent.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         category = Category.from(intent.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         setup()
-        // val fragment = FragmentUnderstandVideo.newInstance(unitId)
-        // replaceFragment(fragment, R.id.placeholder, false)
+        val fragment = FragmentFinalTest.newInstance(unitId, category!!, 0)
+        replaceFragment(fragment, R.id.placeholder, false)
     }
 
     private fun setup() {
