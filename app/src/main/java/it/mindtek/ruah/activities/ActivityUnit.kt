@@ -1,22 +1,19 @@
 package it.mindtek.ruah.activities
 
-import androidx.lifecycle.Observer
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.activity_unit.*
-import org.jetbrains.anko.dip
 
 class ActivityUnit : AppCompatActivity() {
     var unitId: Int = -1

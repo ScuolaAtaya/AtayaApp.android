@@ -28,38 +28,6 @@ class FragmentUnderstandVideo : Fragment() {
     private var videoPlayer: YouTubePlayer? = null
     private var videoUrl: String = ""
     private var communicator: UnderstandActivityInterface? = null
-    private val videoListener = object : YouTubePlayer.OnInitializedListener {
-        override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
-            videoPlayer = p1
-            p1.setPlayerStateChangeListener(object : YouTubePlayer.PlayerStateChangeListener {
-                override fun onAdStarted() {}
-                override fun onLoading() {}
-                override fun onVideoStarted() {}
-                override fun onLoaded(p0: String?) {}
-                override fun onVideoEnded() {
-                    onVideoEnd()
-                }
-
-                override fun onError(p0: YouTubePlayer.ErrorReason?) {}
-            })
-            p1.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener {
-                override fun onSeekTo(p0: Int) {}
-                override fun onBuffering(p0: Boolean) {}
-                override fun onPlaying() {
-                    destroyPlayer()
-                }
-
-                override fun onStopped() {}
-                override fun onPaused() {}
-            })
-            p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
-            p1.loadVideo(videoUrl)
-        }
-
-        override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
-            println("YOUTUBE ERROR")
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -82,7 +50,38 @@ class FragmentUnderstandVideo : Fragment() {
         video?.let {
             videoUrl = it
             val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
-            playerFragment.initialize(getString(R.string.youtube_api_key), videoListener)
+            playerFragment.initialize(getString(R.string.youtube_api_key), object : YouTubePlayer.OnInitializedListener {
+                override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
+                    videoPlayer = p1
+                    p1.setPlayerStateChangeListener(object : YouTubePlayer.PlayerStateChangeListener {
+                        override fun onAdStarted() {}
+                        override fun onLoading() {}
+                        override fun onVideoStarted() {}
+                        override fun onLoaded(p0: String?) {}
+                        override fun onVideoEnded() {
+                            onVideoEnd()
+                        }
+
+                        override fun onError(p0: YouTubePlayer.ErrorReason?) {}
+                    })
+                    p1.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener {
+                        override fun onSeekTo(p0: Int) {}
+                        override fun onBuffering(p0: Boolean) {}
+                        override fun onPlaying() {
+                            destroyPlayer()
+                        }
+
+                        override fun onStopped() {}
+                        override fun onPaused() {}
+                    })
+                    p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
+                    p1.loadVideo(videoUrl)
+                }
+
+                override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+                    println("YOUTUBE ERROR")
+                }
+            })
         }
     }
 
