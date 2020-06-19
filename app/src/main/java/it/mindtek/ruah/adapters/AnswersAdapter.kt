@@ -10,7 +10,11 @@ import it.mindtek.ruah.db.models.ModelAnswer
 /**
  * Created by alessandrogaboardi on 07/12/2017.
  */
-class AnswersAdapter(val answers: MutableList<ModelAnswer>, val answerSelectedCallback: ((answer: ModelAnswer) -> Unit)?, val playAnswerCallback: ((answer: ModelAnswer) -> Unit)?): RecyclerView.Adapter<AnswerHolder>() {
+class AnswersAdapter(
+        val answers: MutableList<ModelAnswer>,
+        private val answerSelectedCallback: ((answer: ModelAnswer) -> Unit)?,
+        private val playAnswerCallback: ((answer: ModelAnswer) -> Unit)?
+) : RecyclerView.Adapter<AnswerHolder>() {
     override fun onBindViewHolder(holder: AnswerHolder, position: Int) {
         holder.bind(answers[position], answerSelectedCallback, playAnswerCallback)
     }

@@ -63,7 +63,6 @@ dependencies {
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.ghost1372:Mzip-Android:0.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.bugsee:bugsee-android:1.17.4'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'androidx.room:room-compiler:2.2.5'

@@ -7,7 +7,7 @@ import android.view.View
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
-class GridSpaceItemDecoration(val verticalSpacing: Int, val horizontalSpacing: Int) : RecyclerView.ItemDecoration() {
+class GridSpaceItemDecoration(private val verticalSpacing: Int, private val horizontalSpacing: Int) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         outRect.top = verticalSpacing / 2
         outRect.bottom = verticalSpacing / 2

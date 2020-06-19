@@ -12,33 +12,34 @@ import it.mindtek.ruah.pojos.Syllable
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
-class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syllable>, val onLetterTap: ((syllable: Syllable) -> Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var letters = MutableList(givenLetters.size, { "" })
+class SelectedLettersAdapter(
+        private val givenLetters: MutableList<Syllable>,
+        private val onLetterTap: ((syllable: Syllable) -> Unit)?
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var letters = MutableList(givenLetters.size) { "" }
 
     override fun getItemViewType(position: Int): Int {
-        if (letters[position].isEmpty())
-            return 0
+        return if (letters[position].isEmpty())
+            0
         else
-            return 1
+            1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 0) {
+        return if (viewType == 0) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false)
-            return EmptyLetterHolder(view)
+            EmptyLetterHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false)
-            return LettersHolder(view)
+            LettersHolder(view)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType == 0) {
-
-        } else {
+        if (holder.itemViewType != 0) {
             val cast = holder as LettersHolder
             val item = letters[position]
-            val syllable = givenLetters.first{ it.id == item }
+            val syllable = givenLetters.first { it.id == item }
             val right = syllable.occurences.any { it == position }
             if (!right) {
                 cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_red)
@@ -68,11 +69,11 @@ class SelectedLettersAdapter(val word: String, val givenLetters: MutableList<Syl
         var wrong = false
         letters.forEachIndexed { index, i ->
             val syllable = givenLetters.firstOrNull { it.id == i }
-            if(syllable != null) {
-                if(syllable.occurences.none{ it == index}){
+            if (syllable != null) {
+                if (syllable.occurences.none { it == index }) {
                     wrong = true
                 }
-            }else{
+            } else {
                 wrong = true
             }
         }

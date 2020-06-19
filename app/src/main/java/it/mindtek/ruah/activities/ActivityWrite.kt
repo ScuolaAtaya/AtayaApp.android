@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import android.view.MenuItem
 import android.view.WindowManager
 import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.write.FragmentWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface

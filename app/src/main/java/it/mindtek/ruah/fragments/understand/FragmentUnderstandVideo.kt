@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerFragment
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit

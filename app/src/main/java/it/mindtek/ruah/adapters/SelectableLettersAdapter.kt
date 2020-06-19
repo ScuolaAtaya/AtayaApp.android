@@ -1,10 +1,9 @@
 package it.mindtek.ruah.adapters
 
-import android.content.res.ColorStateList
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.holders.SyllablesHolder
 import it.mindtek.ruah.pojos.Syllable
@@ -12,7 +11,10 @@ import it.mindtek.ruah.pojos.Syllable
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
-class SelectableLettersAdapter(val syllables: MutableList<Syllable>, val onLetterTap: ((syllable: Syllable) -> Unit)?) : RecyclerView.Adapter<SyllablesHolder>() {
+class SelectableLettersAdapter(
+        private val syllables: MutableList<Syllable>,
+        private val onLetterTap: ((syllable: Syllable) -> Unit)?
+) : RecyclerView.Adapter<SyllablesHolder>() {
     override fun getItemCount(): Int = syllables.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllablesHolder {
@@ -37,7 +39,7 @@ class SelectableLettersAdapter(val syllables: MutableList<Syllable>, val onLette
         }
     }
 
-    fun unlockLetter(letter: Syllable){
+    fun unlockLetter(letter: Syllable) {
         syllables.first { it.id == letter.id }.enabled = true
         notifyDataSetChanged()
     }

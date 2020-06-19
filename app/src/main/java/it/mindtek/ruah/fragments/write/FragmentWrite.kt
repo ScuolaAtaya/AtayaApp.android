@@ -154,7 +154,7 @@ class FragmentWrite : Fragment() {
         val selectedCol = calculateColumns()
         compile.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size)
         available.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size)
-        selectedAdapter = SelectedLettersAdapter(stepWrite.word, stepWrite.letters) { letter ->
+        selectedAdapter = SelectedLettersAdapter(stepWrite.letters) { letter ->
             selectableAdapter?.unlockLetter(letter)
             if (selectedAdapter?.completed() == true) {
                 complete()

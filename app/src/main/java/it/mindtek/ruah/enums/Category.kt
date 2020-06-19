@@ -15,6 +15,6 @@ enum class Category(val value: Int, @StringRes val title: Int, @DrawableRes val 
     WRITE(3, R.string.section_write, R.drawable.edit, R.string.section_write_description, R.raw.scriviamo);
 
     companion object {
-        fun from(value: Int): Category? = Category.values().firstOrNull { it.value == value }
+        fun from(value: Int): Category? = values().firstOrNull { it.value == value }
     }
 }

@@ -14,12 +14,12 @@ import it.mindtek.ruah.kotlin.extensions.db
  * Created by alessandrogaboardi on 29/11/2017.
  */
 class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit) -> Unit)?) : RecyclerView.Adapter<UnitHolder>() {
-    var units: MutableList<ModelUnit> = mutableListOf()
+    private var units: MutableList<ModelUnit> = mutableListOf()
 
     init {
         try {
             val data = db.unitDao().getUnitsAsync()
-            data.observe(owner, Observer<MutableList<ModelUnit>> { unitsAsync ->
+            data.observe(owner, Observer { unitsAsync ->
                 unitsAsync?.let {
                     units = it
                     notifyDataSetChanged()
