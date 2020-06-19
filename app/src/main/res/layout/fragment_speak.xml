@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,9 +8,9 @@
         android:id="@+id/stepImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:src="@color/black"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,11 +22,11 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:drawablePadding="-26dp"
+        android:layout_marginEnd="8dp"
         android:drawableStart="@drawable/volume"
+        android:drawablePadding="-26dp"
         android:text="@string/listen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,11 +43,10 @@
             android:id="@+id/step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:paddingTop="4dp"
-            android:text="1/10"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
             android:textColor="@color/white" />
     </FrameLayout>
 
@@ -56,8 +54,8 @@
         android:id="@+id/pulsator"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,18 +73,18 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginBottom="16dp"
+            android:src="@drawable/mic"
             app:backgroundTint="@color/red"
-            app:fabSize="normal"
-            android:src="@drawable/mic" />
+            app:fabSize="normal" />
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
     <TextView
         android:id="@+id/guideText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/hold_to_record"
         app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,9 +94,9 @@
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -107,22 +105,22 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/listenAgain"
-            android:theme="@style/ButtonCasa"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/play"
-            android:text="@string/listen_again" />
+            android:text="@string/listen_again"
+            android:theme="@style/ButtonCasa" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:theme="@style/ButtonAccoglienza"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/check"
-            android:text="@string/next" />
+            android:text="@string/next"
+            android:theme="@style/ButtonAccoglienza" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
