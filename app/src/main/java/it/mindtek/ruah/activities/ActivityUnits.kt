@@ -6,17 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.UnitsAdapter
-import it.mindtek.ruah.ws.interfaces.NeedsUpdateInterface
+import it.mindtek.ruah.ws.interfaces.ApiClient
 import kotlinx.android.synthetic.main.activity_units.*
 import okhttp3.ResponseBody
 import org.jetbrains.anko.defaultSharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 
 class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
-    private val TIMESTAMP = "timestamp"
+    private val apiClient: ApiClient = ApiClient
+    private var adapter: UnitsAdapter? = null
 
     override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
         setup()
@@ -38,26 +38,16 @@ class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
         }
     }
 
-    var adapter: UnitsAdapter? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_units)
-
         checkUpdates()
     }
 
     private fun checkUpdates() {
-        val base_url = getString(R.string.api_base_url)
-        val retrofit = Retrofit.Builder()
-                .baseUrl(base_url)
-                .build()
-
-        val retrofitInterface = retrofit.create(NeedsUpdateInterface::class.java)
-
         val timestamp = defaultSharedPreferences.getLong(TIMESTAMP, 0)
         println(timestamp)
-        val request = retrofitInterface.needsUpdate(timestamp)
+        val request = apiClient.needsUpdate(timestamp)
         request.enqueue(this)
     }
 
@@ -79,5 +69,9 @@ class ActivityUnits : AppCompatActivity(), Callback<ResponseBody> {
             startActivity(intent)
         })
         unitsRecycler.adapter = adapter
+    }
+
+    companion object {
+        const val TIMESTAMP = "timestamp"
     }
 }

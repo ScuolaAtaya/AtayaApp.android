@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="it.mindtek.ruah">
-
-    <!-- PERMISSIONS -->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,13 +12,18 @@
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="m">
+        <activity
+            android:name=".activities.ActivityFinalTest"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityUnits"
-            android:screenOrientation="portrait"
             android:noHistory="false"
-            android:theme="@style/AppThemeNoToolbar"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoToolbar" />
         <activity
             android:name=".activities.ActivityUnit"
             android:screenOrientation="portrait" />
@@ -44,20 +48,17 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoToolbar" />
-
-        <service android:name=".services.DownloadService" />
-
         <activity
             android:name=".activities.ActivitySplash"
-            android:screenOrientation="portrait"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <service android:name=".services.DownloadService" />
+    </application>
 </manifest>

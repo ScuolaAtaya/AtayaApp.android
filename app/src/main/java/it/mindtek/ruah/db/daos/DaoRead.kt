@@ -23,8 +23,8 @@ interface DaoRead {
     @Query("SELECT * FROM read")
     fun getReadAsync(): LiveData<MutableList<PojoRead>>
 
-    @Query("SELECT * FROM read WHERE unit_id = :unit_id")
-    fun getReadByUnitId(unit_id: Int): MutableList<PojoRead>
+    @Query("SELECT * FROM read WHERE unit_id = :unitId")
+    fun getReadByUnitId(unitId: Int): MutableList<PojoRead>
 
     @Query("SELECT COUNT(*) FROM read")
     fun count(): Int

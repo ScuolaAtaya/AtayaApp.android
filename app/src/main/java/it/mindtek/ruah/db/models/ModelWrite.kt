@@ -1,5 +1,6 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -14,10 +15,12 @@ open class ModelWrite(
         @PrimaryKey
         var id: String = "",
         var unit_id: Int = 0,
-        var picture: String = "",
         var word: String = "",
         var type: String = "",
-        var audio: String = "",
+        @Embedded(prefix = "audio_")
+        var audio: ModelMedia,
+        @Embedded(prefix = "picture_")
+        var picture: ModelMedia,
         @TypeConverters(StringArrayConverter::class)
         var letters: MutableList<Syllable> = mutableListOf()
-) {}
+)

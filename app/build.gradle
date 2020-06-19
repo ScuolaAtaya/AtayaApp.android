@@ -2,13 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
-repositories {
-    maven {
-        url "http://dl.bintray.com/piasy/maven"
-    }
-    maven { url 'https://jitpack.io' }
-}
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -29,11 +24,13 @@ android {
             dimension "buildType"
             applicationIdSuffix ".develop"
             resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
+            resValue "string", "api_key", "apiKey"
         }
 
         production {
             dimension "buildType"
             resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
+            resValue "string", "api_key", "892a487f-ccaf-4b99-94a6-733640bfb9cb"
         }
     }
 

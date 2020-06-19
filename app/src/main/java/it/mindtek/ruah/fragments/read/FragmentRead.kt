@@ -1,6 +1,6 @@
 package it.mindtek.ruah.fragments.read
 
-
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -24,18 +24,14 @@ import kotlinx.android.synthetic.main.fragment_read.*
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class FragmentRead : Fragment() {
-    var unitId: Int = -1
-    var category: Category? = null
-    var stepIndex: Int = -1
-    var adapter: AnswersAdapter? = null
-    var correctCount = 0
-    var player: MediaPlayer? = null
-    var communicator: ReadActivityInterface? = null
+    private var unitId: Int = -1
+    private var category: Category? = null
+    private var stepIndex: Int = -1
+    private var adapter: AnswersAdapter? = null
+    private var correctCount = 0
+    private var player: MediaPlayer? = null
+    private var communicator: ReadActivityInterface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,7 +40,6 @@ class FragmentRead : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         arguments?.let {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
@@ -56,7 +51,6 @@ class FragmentRead : Fragment() {
         if (unitId == -1 || category == null || stepIndex == -1)
             activity?.finish()
         initCommunicators()
-
         setup()
     }
 
@@ -67,7 +61,6 @@ class FragmentRead : Fragment() {
 
     private fun setup() {
         next.isEnabled = false
-
         val read = db.readDao().getReadByUnitId(unitId)
         setupSteps(read)
         val unit = db.unitDao().getUnitById(unitId)
@@ -89,7 +82,7 @@ class FragmentRead : Fragment() {
             }
             val currentRead = read[stepIndex]
             currentRead.read?.let {
-                val pictureFile = File(fileFolder.absolutePath, it.picture)
+                val pictureFile = File(fileFolder.absolutePath, it.picture.value)
                 GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
             }
             setupAnswers(currentRead)
@@ -98,6 +91,7 @@ class FragmentRead : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupSteps(read: MutableList<PojoRead>) {
         step.text = "${stepIndex + 1}/${read.size}"
     }
@@ -112,8 +106,7 @@ class FragmentRead : Fragment() {
                 next.isEnabled = true
             }
         }, { answer ->
-            playAudio(answer.audio)
-//            playAudio()
+            playAudio(answer.audio.value)
         })
         answers.adapter = adapter
     }
@@ -123,16 +116,6 @@ class FragmentRead : Fragment() {
             destroyPlayer()
         val audioFile = File(fileFolder.absolutePath, audio)
         player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
-    }
-
-    private fun playAudio() {
-        if (player != null)
-            destroyPlayer()
-        player = MediaPlayer.create(activity, R.raw.voice)
         player?.setOnCompletionListener {
             destroyPlayer()
         }
@@ -149,9 +132,7 @@ class FragmentRead : Fragment() {
     }
 
     companion object {
-        val EXTRA_STEP = "extra_current_step_number"
-
-        fun newInstance(): FragmentRead = FragmentRead()
+        const val EXTRA_STEP = "extra_current_step_number"
 
         fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentRead {
             val frag = FragmentRead()

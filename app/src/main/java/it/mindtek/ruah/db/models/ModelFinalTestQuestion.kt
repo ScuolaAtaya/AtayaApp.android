@@ -4,16 +4,15 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**
- * Created by alessandrogaboardi on 06/12/2017.
- */
-@Entity
-open class ModelAnswer(
+@Entity(tableName = "final_question")
+open class ModelFinalTestQuestion (
         @PrimaryKey
         var id: String = "",
-        var question_id: String = "",
+        var section_id: String = "",
         var body: String = "",
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
+        @Embedded(prefix = "picture_")
+        var picture: ModelMedia,
         var correct: Boolean = false
 )

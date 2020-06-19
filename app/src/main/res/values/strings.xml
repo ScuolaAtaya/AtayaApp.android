@@ -8,37 +8,36 @@
     <string name="database_name">db_ruah</string>
 
     <!-- Titoli unità -->
-    <string name="accoglienza">accoglienza</string>
-    <string name="lavoro">il lavoro</string>
-    <string name="cibo">il cibo</string>
-    <string name="telefono">pronto?</string>
-    <string name="stato">come sei?\ncome stai?</string>
-    <string name="salute">la salute</string>
-    <string name="citta">la città e i\nsuoi servizi</string>
-    <string name="mezzi">i mezzi di\ntrasporto</string>
-    <string name="casa">la cura della\ncasa</string>
-    <string name="viaggio">il viaggio</string>
+    <string name="accoglienza">Accoglienza</string>
+    <string name="lavoro">Il lavoro</string>
+    <string name="cibo">Il cibo</string>
+    <string name="telefono">Pronto?</string>
+    <string name="stato">Come sei?\ncome stai?</string>
+    <string name="salute">La salute</string>
+    <string name="citta">La città e i\nsuoi servizi</string>
+    <string name="mezzi">I mezzi di\ntrasporto</string>
+    <string name="casa">La cura della\ncasa</string>
+    <string name="viaggio">Il viaggio</string>
 
 
-    <string name="section_understand">capiamo</string>
-    <string name="section_talk">parliamo</string>
-    <string name="section_read">leggiamo</string>
-    <string name="section_write">scriviamo</string>
+    <string name="section_understand">Capiamo</string>
+    <string name="section_talk">Parliamo</string>
+    <string name="section_read">Leggiamo</string>
+    <string name="section_write">Scriviamo</string>
+    <string name="section_final_test">Verifica finale</string>
 
     <string name="section_understand_description">Guarda il video e rispondi\nalle domande</string>
     <string name="section_talk_description">Ascolta e ripeti la parola\nregistrandola</string>
     <string name="section_read_description">Guarda l\'immagine e seleziona\nle parole corrispondenti</string>
     <string name="section_write_description">Osserva l\'immagine e\nscrivi il suo nome</string>
 
-    <string name="start">COMINCIA</string>
-    <string name="back">INDIETRO</string>
+    <string name="start">Comincia</string>
+    <string name="back">Indietro</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="watch_video">Guarda il video per continuare</string>
-    <string name="listen">ascolta</string>
-    <string name="next">avanti</string>
-    <string name="button_video_audio">video/audio</string>
+    <string name="listen">Ascolta</string>
+    <string name="next">Avanti</string>
+    <string name="button_video_audio">Video/audio</string>
     <string name="congrats">Congratulazioni!</string>
     <string name="hold_to_record">Premi per registrare</string>
     <string name="listen_again">Riascolta</string>

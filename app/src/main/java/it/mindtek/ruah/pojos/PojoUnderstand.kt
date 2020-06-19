@@ -8,7 +8,7 @@ import it.mindtek.ruah.db.models.ModelUnderstand
 /**
  * Created by alessandrogaboardi on 06/12/2017.
  */
-class UnderstandPojo {
+class PojoUnderstand {
     @Embedded
     var category: ModelUnderstand? = null
 

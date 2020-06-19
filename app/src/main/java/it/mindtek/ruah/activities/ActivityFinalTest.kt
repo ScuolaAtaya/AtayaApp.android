@@ -1,52 +1,32 @@
 package it.mindtek.ruah.activities
 
 import android.annotation.TargetApi
-import androidx.lifecycle.Observer
-import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.write.FragmentWrite
-import it.mindtek.ruah.interfaces.WriteActivityInterface
+import it.mindtek.ruah.fragments.final_test.FragmentFinalTest
 import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
-class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
+class ActivityFinalTest : AppCompatActivity() {
     var unitId: Int = -1
     var category: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_write)
-        intent?.let {
-            unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
-        }
-        if (unitId == -1 || category == null)
-            finish()
+        setContentView(R.layout.activity_final_test)
+        unitId = intent.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
+        category = Category.from(intent.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         setup()
-        val fragment = FragmentWrite.newInstance(unitId, category!!, 0)
+        val fragment = FragmentFinalTest.newInstance(unitId, category!!, 0)
         replaceFragment(fragment, R.id.placeholder, false)
-    }
-
-    override fun goToNext(id: Int) {
-        val fragment = FragmentWrite.newInstance(unitId, category!!, id)
-        replaceFragment(fragment, R.id.placeholder)
-    }
-
-    override fun goToFinish() {
-        val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)
-        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
-        startActivity(intent)
     }
 
     private fun setup() {

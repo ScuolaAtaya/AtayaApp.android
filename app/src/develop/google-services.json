@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:825644215066:android:bd8ca90a8c1ca84e901aa3",
+        "mobilesdk_app_id": "1:825644215066:android:dce807f0cf886a85901aa3",
         "android_client_info": {
-          "package_name": "it.mindtek.ruah"
+          "package_name": "it.mindtek.ruah.develop"
         }
       },
       "oauth_client": [

@@ -1,6 +1,6 @@
 package it.mindtek.ruah.fragments.understand
 
-
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -19,40 +19,31 @@ import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
 import java.io.File
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class FragmentUnderstandQuestions : Fragment() {
-    var unit_id: Int = -1
-    var question: Int = -1
-    var questions: MutableList<PojoQuestion> = mutableListOf()
-    var communicator: UnderstandActivityInterface? = null
-
-    var player: MediaPlayer? = null
+    private var unitId: Int = -1
+    private var question: Int = -1
+    private var questions: MutableList<PojoQuestion> = mutableListOf()
+    private var communicator: UnderstandActivityInterface? = null
+    private var player: MediaPlayer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_understand_questions, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         getCommunicators()
-
         arguments?.let {
             if (it.containsKey(EXTRA_UNIT_ID))
-                unit_id = it.getInt(EXTRA_UNIT_ID, -1)
+                unitId = it.getInt(EXTRA_UNIT_ID, -1)
             if (it.containsKey(EXTRA_QUESTION_NUMBER))
                 question = it.getInt(EXTRA_QUESTION_NUMBER, -1)
         }
-
-        if (unit_id == -1)
+        if (unitId == -1)
             activity?.finish()
         else {
-            val category = db.understandDao().getUnderstandByUnitId(unit_id)
+            val category = db.understandDao().getUnderstandByUnitId(unitId)
             category?.let {
                 questions = it.questions
                 disableNext()
@@ -75,6 +66,7 @@ class FragmentUnderstandQuestions : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupSection() {
         step.text = "${question + 1}/${questions.size}"
         next.setOnClickListener {
@@ -97,16 +89,6 @@ class FragmentUnderstandQuestions : Fragment() {
         player?.start()
     }
 
-    private fun playAudio() {
-        if (player != null)
-            destroyPlayer()
-        player = MediaPlayer.create(activity, R.raw.voice)
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
-    }
-
     private fun finish() {
         communicator?.finishSection()
     }
@@ -118,8 +100,7 @@ class FragmentUnderstandQuestions : Fragment() {
             question.question?.let { q ->
                 description.text = q.body
                 questionAudio.setOnClickListener {
-                    playAudio(q.audio)
-//                playAudio()
+                    playAudio(q.audio.value)
                 }
             }
         }
@@ -132,8 +113,7 @@ class FragmentUnderstandQuestions : Fragment() {
             val adapter = AnswersAdapter(answers, { answer ->
                 handleAnswerSelected(answer)
             }, { answer ->
-                playAudio(answer.audio)
-//            playAudio()
+                playAudio(answer.audio.value)
             })
             answersRecycler.layoutManager = LinearLayoutManager(activity)
             answersRecycler.adapter = adapter
@@ -164,10 +144,8 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     companion object {
-        val EXTRA_QUESTION_NUMBER = "question_number_extra"
-        val EXTRA_UNIT_ID = "unit_id_extra"
-
-        fun newInstance(): FragmentUnderstandQuestions = FragmentUnderstandQuestions()
+        const val EXTRA_QUESTION_NUMBER = "question_number_extra"
+        const val EXTRA_UNIT_ID = "unit_id_extra"
 
         fun newInstance(question: Int, unit_id: Int): FragmentUnderstandQuestions {
             val fragment = FragmentUnderstandQuestions()

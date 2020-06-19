@@ -83,8 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iconCapiamo"
-                android:visibility="gone"
-                android:src="@drawable/check" />
+                android:src="@drawable/check"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -153,8 +153,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iconParliamo"
-                android:visibility="gone"
-                android:src="@drawable/check" />
+                android:src="@drawable/check"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -223,8 +223,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iconLeggere"
-                android:visibility="gone"
-                android:src="@drawable/check" />
+                android:src="@drawable/check"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -299,8 +299,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iconScriviamo"
-                android:visibility="gone"
-                android:src="@drawable/check" />
+                android:src="@drawable/check"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,4 +25,4 @@ open class ModelUnit(
         var enabled: Boolean = false,
         @TypeConverters(IntArrayConverter::class)
         var completed: MutableList<Int> = mutableListOf()
-) {}
+)

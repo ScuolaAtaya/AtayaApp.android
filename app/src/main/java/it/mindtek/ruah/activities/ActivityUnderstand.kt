@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.WindowManager
 import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.understand.FragmentUnderstandQuestions
 import it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo
@@ -20,27 +19,47 @@ import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
-    var unit_id: Int = -1
+    var unitId: Int = -1
     var category: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_understand)
-
-        unit_id = intent.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
+        unitId = intent.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         category = Category.from(intent.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
-
-        val fragment = FragmentUnderstandVideo.newInstance(unit_id)
+        setup()
+        val fragment = FragmentUnderstandVideo.newInstance(unitId)
         replaceFragment(fragment, R.id.placeholder, false)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
-        category?.let {
-            supportActionBar?.title = getString(it.title).capitalize()
+    override fun openQuestion(question: Int) {
+        replaceFragment(FragmentUnderstandQuestions.newInstance(question, unitId), R.id.placeholder)
+    }
+
+    override fun openVideo() {}
+
+    override fun goToStart() {
+        val manager = supportFragmentManager
+        for (i in 0..manager.backStackEntryCount) {
+            manager.popBackStack()
         }
+        replaceFragment(FragmentUnderstandVideo.newInstance(unitId), R.id.placeholder, false)
+    }
 
-        val unitObservable = db.unitDao().getUnitByIdAsync(unit_id)
-        unitObservable.observe(this, Observer<ModelUnit> { unit ->
+    override fun finishSection() {
+        val intent = Intent(this, ActivityIntro::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)
+        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
+        startActivity(intent)
+    }
+
+    private fun setup() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(category!!.title)
+        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
+        unitObservable.observe(this, Observer { unit ->
             unit?.let {
                 val color = ContextCompat.getColor(this, unit.color)
                 val colorDark = ContextCompat.getColor(this, unit.colorDark)
@@ -53,30 +72,6 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
                 }, {})
             }
         })
-    }
-
-    override fun openQuestion(question: Int) {
-        replaceFragment(FragmentUnderstandQuestions.newInstance(question, unit_id), R.id.placeholder)
-    }
-
-    override fun openVideo() {
-
-    }
-
-    override fun goToStart() {
-        val manager = supportFragmentManager
-        for (i in 0..manager.backStackEntryCount){
-            manager.popBackStack()
-        }
-        replaceFragment(FragmentUnderstandVideo.newInstance(unit_id), R.id.placeholder, false)
-    }
-
-    override fun finishSection() {
-        val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit_id)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)
-        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
-        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
