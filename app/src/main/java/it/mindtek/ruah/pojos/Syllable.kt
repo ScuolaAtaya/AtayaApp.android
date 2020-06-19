@@ -10,6 +10,6 @@ class Syllable(
         var id: String = "",
         var text: String = "",
         @TypeConverters(IntArrayConverter::class)
-        var occurrences: MutableList<Int> = mutableListOf(),
+        var occurences: MutableList<Int> = mutableListOf(),
         var enabled: Boolean = true
 )
