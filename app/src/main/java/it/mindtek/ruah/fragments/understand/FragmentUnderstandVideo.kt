@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
@@ -80,7 +81,7 @@ class FragmentUnderstandVideo : Fragment() {
     private fun showVideo(video: String?) {
         video?.let {
             videoUrl = it
-            val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerFragment
+            val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
             playerFragment.initialize(getString(R.string.youtube_api_key), videoListener)
         }
     }
