@@ -196,7 +196,7 @@ class DownloadService : IntentService("Download service") {
         val questions = mutableListOf<ModelFinalTestQuestion>()
         for (i in 0 until finalTestJson.length()) {
             val currentFinalTestJson = finalTestJson.getJSONObject(i)
-            val currentQuestionsJson = currentFinalTestJson.getJSONArray(OPTIONS)
+            val currentQuestionsJson = currentFinalTestJson.getJSONArray(QUESTIONS)
             val finalTest = Gson().fromJson<ModelFinalTest>(currentFinalTestJson)
             val currentQuestions = Gson().fromJson<MutableList<ModelFinalTestQuestion>>(currentQuestionsJson)
             finalTests.add(finalTest)

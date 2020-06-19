@@ -9,6 +9,6 @@ class PojoFinalTest {
     @Embedded
     var finalTest: ModelFinalTest? = null
 
-    @Relation(parentColumn = "id", entityColumn = "final_test_id", entity = ModelFinalTestQuestion::class)
+    @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelFinalTestQuestion::class)
     var questions: MutableList<ModelFinalTestQuestion> = mutableListOf()
 }

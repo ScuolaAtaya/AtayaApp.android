@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 open class ModelFinalTestQuestion (
         @PrimaryKey
         var id: String = "",
-        var final_test_id: String = "",
+        var section_id: String = "",
         var body: String = "",
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
