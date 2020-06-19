@@ -9,14 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
+import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelAnswer
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
+import kotlinx.android.synthetic.main.fragment_understand_questions.next
+import kotlinx.android.synthetic.main.fragment_understand_questions.step
+import org.jetbrains.anko.backgroundColor
 import java.io.File
 
 class FragmentUnderstandQuestions : Fragment() {
@@ -41,8 +47,15 @@ class FragmentUnderstandQuestions : Fragment() {
                 question = it.getInt(EXTRA_QUESTION_NUMBER, -1)
         }
         if (unitId == -1)
-            activity?.finish()
+            requireActivity().finish()
         else {
+            val unit = db.unitDao().getUnitById(unitId)
+            unit?.let {
+                requireActivity().let { activity ->
+                    val color = ContextCompat.getColor(activity, it.color)
+                    stepLayout.backgroundColor = color
+                }
+            }
             val category = db.understandDao().getUnderstandByUnitId(unitId)
             category?.let {
                 questions = it.questions
@@ -56,8 +69,8 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun getCommunicators() {
-        if (activity is UnderstandActivityInterface)
-            communicator = activity as UnderstandActivityInterface
+        if (requireActivity() is UnderstandActivityInterface)
+            communicator = requireActivity() as UnderstandActivityInterface
     }
 
     private fun setupBack() {
@@ -99,6 +112,7 @@ class FragmentUnderstandQuestions : Fragment() {
             title.text = getString(R.string.question)
             question.question?.let { q ->
                 description.text = q.body
+                setupPicture(q.picture.value)
                 questionAudio.setOnClickListener {
                     playAudio(q.audio.value)
                 }
@@ -117,6 +131,14 @@ class FragmentUnderstandQuestions : Fragment() {
             })
             answersRecycler.layoutManager = LinearLayoutManager(activity)
             answersRecycler.adapter = adapter
+        }
+    }
+
+    private fun setupPicture(picture: String) {
+        if (picture.isNotEmpty()) {
+            stepImage.setVisible()
+            val pictureFile = File(fileFolder.absolutePath, picture)
+            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
         }
     }
 

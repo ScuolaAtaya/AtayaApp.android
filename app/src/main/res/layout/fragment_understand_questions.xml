@@ -13,36 +13,48 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reset"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:drawablePadding="4dp"
+            android:layout_margin="8dp"
             android:drawableStart="@drawable/play_circle"
+            android:drawablePadding="4dp"
             android:text="@string/button_video_audio"
             android:textColor="@color/white"
             android:theme="@style/ButtonAccoglienza"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/stepImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reset" />
 
         <FrameLayout
             android:id="@+id/stepLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@color/accoglienza"
-            app:layout_constraintBottom_toBottomOf="@+id/reset"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/reset">
+            app:layout_constraintTop_toBottomOf="@+id/reset">
 
             <TextView
                 android:id="@+id/step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/white" />
         </FrameLayout>
 
@@ -53,7 +65,7 @@
             android:layout_marginTop="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             app:layout_constraintStart_toStartOf="@+id/answersRecycler"
-            app:layout_constraintTop_toBottomOf="@+id/reset" />
+            app:layout_constraintTop_toBottomOf="@+id/stepImage" />
 
         <ImageView
             android:id="@+id/questionAudio"
@@ -61,11 +73,11 @@
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
             android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/volume"
             android:tint="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintStart_toEndOf="@+id/title"
-            app:layout_constraintTop_toTopOf="@+id/title"
-            android:src="@drawable/volume" />
+            app:layout_constraintTop_toTopOf="@+id/title" />
 
         <TextView
             android:id="@+id/description"
@@ -80,9 +92,9 @@
             android:id="@+id/answersRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/description" />
@@ -92,10 +104,10 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
-            android:drawablePadding="4dp"
+            android:layout_marginEnd="8dp"
             android:drawableStart="@drawable/check"
+            android:drawablePadding="4dp"
             android:text="@string/next"
             android:theme="@style/ButtonCasa"
             app:layout_constraintEnd_toEndOf="parent"
