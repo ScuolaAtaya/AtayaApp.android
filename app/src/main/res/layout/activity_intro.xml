@@ -39,13 +39,15 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topText">
+        app:layout_constraintTop_toTopOf="@+id/topText"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/sectionIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/volume" />
+            android:src="@drawable/volume"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/sectionName"
@@ -75,14 +77,16 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
-            android:src="@drawable/lavoro" />
+            android:src="@drawable/lavoro"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/done"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_toEndOf="@+id/unitIcon"
-            android:src="@drawable/check" />
+            android:src="@drawable/check"
+            tools:ignore="ContentDescription" />
     </RelativeLayout>
 
     <TextView

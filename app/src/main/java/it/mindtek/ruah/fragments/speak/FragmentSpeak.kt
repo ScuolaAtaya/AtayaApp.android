@@ -210,7 +210,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun goToNext() {
-        communicator?.goToSpeak(stepIndex + 1)
+        communicator?.goToNext(stepIndex + 1)
     }
 
     private fun playRecordedAudio() {

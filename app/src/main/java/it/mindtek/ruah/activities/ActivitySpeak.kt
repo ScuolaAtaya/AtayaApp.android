@@ -35,7 +35,7 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
-    override fun goToSpeak(index: Int) {
+    override fun goToNext(index: Int) {
         val fragment = FragmentSpeak.newInstance(unitId, category!!, index)
         replaceFragment(fragment, R.id.placeholder)
     }

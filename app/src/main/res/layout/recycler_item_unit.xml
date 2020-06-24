@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/unitBackground"
-    android:background="@color/accoglienza"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/accoglienza">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -33,16 +32,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="56dp"
-        android:layout_marginTop="56dp">
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="56dp">
 
         <ImageView
             android:id="@+id/unitIcon"
             android:layout_width="70dp"
             android:layout_height="64dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/accoglienza"
-            android:contentDescription="@string/unit_icon" />
+            android:contentDescription="@string/unit_icon"
+            android:src="@drawable/accoglienza" />
 
         <TextView
             android:id="@+id/unitText"
@@ -59,9 +58,9 @@
         android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/check"
         android:layout_alignTop="@id/icons"
         android:layout_toEndOf="@id/icons"
-        android:visibility="gone"
-        android:contentDescription="@string/unit_icon" />
+        android:contentDescription="@string/unit_icon"
+        android:src="@drawable/check"
+        android:visibility="gone" />
 </RelativeLayout>

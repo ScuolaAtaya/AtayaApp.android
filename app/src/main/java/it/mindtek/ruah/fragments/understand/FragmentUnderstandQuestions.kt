@@ -103,7 +103,7 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun finish() {
-        communicator?.finishSection()
+        communicator?.goToFinish()
     }
 
     private fun setupQuestion() {

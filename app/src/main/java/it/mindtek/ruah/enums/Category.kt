@@ -13,6 +13,7 @@ enum class Category(val value: Int, @StringRes val title: Int, @DrawableRes val 
     TALK(1, R.string.section_talk, R.drawable.mic, R.string.section_talk_description, R.raw.parliamo),
     READ(2, R.string.section_read, R.drawable.eye, R.string.section_read_description, R.raw.leggiamo),
     WRITE(3, R.string.section_write, R.drawable.edit, R.string.section_write_description, R.raw.scriviamo);
+    // TODO add FINAL_TEST
 
     companion object {
         fun from(value: Int): Category? = values().firstOrNull { it.value == value }

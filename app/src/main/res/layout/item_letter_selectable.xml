@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAllCaps="true"
-            android:text="au"
             android:textColor="@color/white"
             android:textSize="22sp" />
     </FrameLayout>

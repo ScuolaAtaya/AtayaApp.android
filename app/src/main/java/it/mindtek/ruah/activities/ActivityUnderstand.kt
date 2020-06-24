@@ -37,8 +37,6 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
         replaceFragment(FragmentUnderstandQuestions.newInstance(question, unitId), R.id.placeholder)
     }
 
-    override fun openVideo() {}
-
     override fun goToStart() {
         val manager = supportFragmentManager
         for (i in 0..manager.backStackEntryCount) {
@@ -47,7 +45,7 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
         replaceFragment(FragmentUnderstandVideo.newInstance(unitId), R.id.placeholder, false)
     }
 
-    override fun finishSection() {
+    override fun goToFinish() {
         val intent = Intent(this, ActivityIntro::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
         intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)

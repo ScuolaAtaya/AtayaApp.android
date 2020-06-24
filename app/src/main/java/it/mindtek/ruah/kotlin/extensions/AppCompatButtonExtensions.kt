@@ -9,10 +9,10 @@ import org.jetbrains.anko.dip
 /**
  * Created by alessandrogaboardi on 05/12/2017.
  */
-val LEFT = 0
-val TOP = 1
-val RIGHT = 2
-val BOTTOM = 3
+const val LEFT = 0
+const val TOP = 1
+const val RIGHT = 2
+const val BOTTOM = 3
 
 fun AppCompatButton.setColor(color: Int) {
     setTextColor(color)

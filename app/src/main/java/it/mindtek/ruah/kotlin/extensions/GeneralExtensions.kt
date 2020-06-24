@@ -1,15 +1,11 @@
 package it.mindtek.ruah.kotlin.extensions
 
-import android.content.Context
 import android.os.Build
-import android.os.Environment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import it.mindtek.ruah.db.AppDatabase
-import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 import java.util.concurrent.Executors
 
 /**
@@ -42,11 +38,11 @@ fun compatCheck(version: Int, compatible: (() -> Unit)?, incompatible: (() -> Un
     }
 }
 
-inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson(json, object: TypeToken<T>() {}.type)
 
-inline fun <reified T> Gson.fromJson(json: JSONObject) = this.fromJson<T>(json.toString(), object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: JSONObject): T  = this.fromJson(json.toString(), object: TypeToken<T>() {}.type)
 
-inline fun <reified T> Gson.fromJson(json: JSONArray) = this.fromJson<T>(json.toString(), object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: JSONArray): T  = this.fromJson(json.toString(), object: TypeToken<T>() {}.type)
 
 inline fun <T> `while`(nextValue: () -> T, condition: (T) -> Boolean, body: (T) -> Unit) {
     var value = nextValue()
@@ -54,17 +50,4 @@ inline fun <T> `while`(nextValue: () -> T, condition: (T) -> Boolean, body: (T) 
         body(value)
         value = nextValue()
     }
-}
-
-fun readFile(context: Context, fileName: String): File {
-    val path = context.filesDir.absolutePath + File.separator + fileName
-    return File(path)
-}
-
-fun replaceFile(context: Context, file: File) {
-
-}
-
-fun deleteFile(file: File): Boolean {
-    return file.delete()
 }

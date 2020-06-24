@@ -91,6 +91,7 @@ class UnitGenerator {
                     R.color.viaggio_dark,
                     10
             ))
+            // TODO add the 4 new units
             return units
         }
     }

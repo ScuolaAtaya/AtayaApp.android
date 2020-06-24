@@ -5,7 +5,6 @@ package it.mindtek.ruah.interfaces
  */
 interface UnderstandActivityInterface {
     fun openQuestion(question: Int)
-    fun openVideo()
-    fun finishSection()
+    fun goToFinish()
     fun goToStart()
 }
