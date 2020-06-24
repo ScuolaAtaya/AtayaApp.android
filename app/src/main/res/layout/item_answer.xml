@@ -42,7 +42,7 @@
             android:paddingBottom="8dp"
             android:src="@drawable/close"
             android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
         <ImageView
             android:id="@+id/correct"
@@ -59,7 +59,8 @@
             android:paddingBottom="8dp"
             android:src="@drawable/check"
             android:tint="@color/green"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
     </RelativeLayout>
 
     <TextView
