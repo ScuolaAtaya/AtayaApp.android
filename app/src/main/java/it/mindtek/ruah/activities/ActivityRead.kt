@@ -28,8 +28,6 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
-        if (unitId == -1 || category == null)
-            finish()
         setup()
         val fragment = FragmentRead.newInstance(unitId, category!!, 0)
         replaceFragment(fragment, R.id.placeholder, false)
@@ -49,6 +47,9 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
     }
 
     private fun setup() {
+        if (unitId == -1 || category == null) {
+            finish()
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(category!!.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

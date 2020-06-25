@@ -94,8 +94,9 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun dispatch() {
-        if (player != null)
+        if (player != null) {
             destroyPlayer()
+        }
         when (category?.value) {
             Category.UNDERSTAND.value -> goToUnderstand()
             Category.TALK.value -> goToSpeak()

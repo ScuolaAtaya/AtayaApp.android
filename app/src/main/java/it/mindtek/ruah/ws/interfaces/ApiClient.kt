@@ -37,8 +37,7 @@ object ApiClient {
     private fun getHttpClient(apiKey: String): OkHttpClient {
         val okHttpBuilder = OkHttpClient.Builder()
         okHttpBuilder.addInterceptor { chain ->
-            val request = chain.request().newBuilder()
-                    .addHeader("X-API-KEY", apiKey)
+            val request = chain.request().newBuilder().addHeader("X-API-KEY", apiKey)
             chain.proceed(request.build())
         }
         return okHttpBuilder.build()

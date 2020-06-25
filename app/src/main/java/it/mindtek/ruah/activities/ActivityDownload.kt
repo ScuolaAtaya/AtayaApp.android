@@ -13,17 +13,11 @@ import it.mindtek.ruah.services.DownloadService
 import kotlinx.android.synthetic.main.activity_download.*
 
 class ActivityDownload : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download)
         registerReceiver()
-        startDownload()
-    }
-
-    private fun startDownload() {
-        val intent = Intent(this, DownloadService::class.java)
-        startService(intent)
+        startService(Intent(this, DownloadService::class.java))
     }
 
     private fun registerReceiver() {

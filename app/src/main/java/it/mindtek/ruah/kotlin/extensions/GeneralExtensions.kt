@@ -38,11 +38,11 @@ fun compatCheck(version: Int, compatible: (() -> Unit)?, incompatible: (() -> Un
     }
 }
 
-inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson(json, object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson(json, object : TypeToken<T>() {}.type)
 
-inline fun <reified T> Gson.fromJson(json: JSONObject): T  = this.fromJson(json.toString(), object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: JSONObject): T = this.fromJson(json.toString(), object : TypeToken<T>() {}.type)
 
-inline fun <reified T> Gson.fromJson(json: JSONArray): T  = this.fromJson(json.toString(), object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: JSONArray): T = this.fromJson(json.toString(), object : TypeToken<T>() {}.type)
 
 inline fun <T> `while`(nextValue: () -> T, condition: (T) -> Boolean, body: (T) -> Unit) {
     var value = nextValue()

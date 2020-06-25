@@ -22,14 +22,19 @@ class ActivityFinalTest : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_final_test)
-        unitId = intent.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-        category = Category.from(intent.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
+        intent?.let {
+            unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
+            category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
+        }
         setup()
         val fragment = FragmentFinalTest.newInstance(unitId, category!!, 0)
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
     private fun setup() {
+        if (unitId == -1 || category == null) {
+            finish()
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(category!!.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

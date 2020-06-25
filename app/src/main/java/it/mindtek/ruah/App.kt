@@ -12,7 +12,6 @@ import it.mindtek.ruah.ws.interfaces.ApiClient
  * Created by alessandrogaboardi on 29/11/2017.
  */
 class App : MultiDexApplication() {
-
     override fun onCreate() {
         super.onCreate()
         ApiClient.init(applicationContext.getString(R.string.api_base_url), applicationContext.getString(R.string.api_key))
@@ -36,9 +35,7 @@ class App : MultiDexApplication() {
         if (db.unitDao().count() == 0) {
             val units = UnitGenerator.getUnits()
             try {
-                ioThread {
-                    db.unitDao().saveUnits(units)
-                }
+                ioThread { db.unitDao().saveUnits(units) }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

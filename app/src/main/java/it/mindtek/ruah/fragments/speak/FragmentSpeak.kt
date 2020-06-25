@@ -49,41 +49,39 @@ class FragmentSpeak : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID))
+            }
+            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
                 category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            if (it.containsKey(EXTRA_STEP))
+            }
+            if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
+            }
         }
-        if (unitId == -1 || category == null || stepIndex == -1)
-            activity?.finish()
-        initCommunicators()
-        speak = db.speakDao().getSpeakByUnitId(unitId)
-        if (speak.size == 0 || speak.size <= stepIndex) {
-            activity?.finish()
-        } else {
-            setup()
-        }
-    }
-
-    private fun initCommunicators() {
-        if (activity is SpeakActivityInterface)
-            communicator = activity as SpeakActivityInterface
+        setup()
     }
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
+        if (unitId == -1 || category == null || stepIndex == -1) {
+            requireActivity().finish()
+        }
+        if (requireActivity() is SpeakActivityInterface) {
+            communicator = requireActivity() as SpeakActivityInterface
+        }
+        speak = db.speakDao().getSpeakByUnitId(unitId)
+        if (speak.size == 0 || speak.size <= stepIndex) {
+            requireActivity().finish()
+        }
         setupPicture()
         setupButtons()
         setupSteps()
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            activity?.let { activity ->
-                val color = ContextCompat.getColor(activity, it.color)
-                stepBackground.backgroundColor = color
-                listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
-            }
+            val color = ContextCompat.getColor(requireActivity(), it.color)
+            stepBackground.backgroundColor = color
+            listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
     }
 
@@ -101,8 +99,9 @@ class FragmentSpeak : Fragment() {
             }
         }
         next.setOnClickListener {
-            if (recording)
+            if (recording) {
                 endRecording()
+            }
             destroyFile()
             dispatch()
         }
@@ -133,15 +132,13 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun initRecorder(): Boolean {
-        activity?.let { activity ->
-            return if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                setupRecorder()
-                true
-            } else {
-                requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
-                false
-            }
-        } ?: return false
+        return if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            setupRecorder()
+            true
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
+            false
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -149,31 +146,27 @@ class FragmentSpeak : Fragment() {
         if (requestCode == REQUEST_PERMISSION_AUDIO) {
             permissions.forEachIndexed { index, s ->
                 if (s == Manifest.permission.RECORD_AUDIO) {
-                    if (grantResults[index] == PackageManager.PERMISSION_GRANTED)
+                    if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
                         setupRecorder()
-                    else
-                        disableRecorder()
+                    } else {
+                        record.isEnabled = false
+                    }
                 }
             }
         }
     }
 
-    private fun disableRecorder() {
-        record.isEnabled = false
-    }
-
     private fun setupRecorder() {
-        if (recorder != null)
-            destroyRecorder()
+        if (recorder != null) {
+            recorder?.release()
+        }
         recorder = MediaRecorder()
         recorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder!!.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
         recorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        activity?.let { activity ->
-            val file = File(activity.filesDir, "recording")
-            recorder!!.setOutputFile(file.absolutePath)
-            recorder?.prepare()
-        }
+        val file = File(requireActivity().filesDir, "recording")
+        recorder!!.setOutputFile(file.absolutePath)
+        recorder?.prepare()
     }
 
     private fun endRecording() {
@@ -187,8 +180,9 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun playAudio(audio: String) {
-        if (player != null)
+        if (player != null) {
             destroyPlayer()
+        }
         val audioFile = File(fileFolder.absolutePath, audio)
         player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
         player?.setOnCompletionListener {
@@ -199,48 +193,33 @@ class FragmentSpeak : Fragment() {
 
     private fun dispatch() {
         if (stepIndex + 1 < speak.size) {
-            goToNext()
+            communicator?.goToNext(stepIndex + 1)
         } else {
-            finish()
+            communicator?.goToFinish()
         }
-    }
-
-    private fun finish() {
-        communicator?.goToFinish()
-    }
-
-    private fun goToNext() {
-        communicator?.goToNext(stepIndex + 1)
     }
 
     private fun playRecordedAudio() {
-        if (player != null)
+        if (player != null) {
             destroyPlayer()
-        activity?.let { activity ->
-            val record = File(activity.filesDir, "recording")
-            val uri = Uri.parse(record.absolutePath)
-            player = MediaPlayer.create(activity, uri)
-            player?.setOnCompletionListener {
-                destroyPlayer()
-            }
-            player?.start()
         }
+        val record = File(requireActivity().filesDir, "recording")
+        val uri = Uri.parse(record.absolutePath)
+        player = MediaPlayer.create(requireActivity(), uri)
+        player?.setOnCompletionListener {
+            destroyPlayer()
+        }
+        player?.start()
     }
 
     private fun destroyPlayer() {
         player?.release()
     }
 
-    private fun destroyRecorder() {
-        recorder?.release()
-    }
-
     private fun destroyFile() {
-        activity?.let { activity ->
-            val file = File(activity.filesDir, "recording")
-            if (file.exists()) {
-                file.delete()
-            }
+        val file = File(requireActivity().filesDir, "recording")
+        if (file.exists()) {
+            file.delete()
         }
     }
 

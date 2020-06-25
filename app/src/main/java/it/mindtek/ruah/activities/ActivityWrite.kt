@@ -28,8 +28,6 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
-        if (unitId == -1 || category == null)
-            finish()
         setup()
         val fragment = FragmentWrite.newInstance(unitId, category!!, 0)
         replaceFragment(fragment, R.id.placeholder, false)
@@ -49,6 +47,9 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     }
 
     private fun setup() {
+        if (unitId == -1 || category == null) {
+            finish()
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(category!!.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

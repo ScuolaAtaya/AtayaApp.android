@@ -33,62 +33,59 @@ class FragmentRead : Fragment() {
     private var player: MediaPlayer? = null
     private var communicator: ReadActivityInterface? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_read, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID))
+            }
+            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
                 category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            if (it.containsKey(EXTRA_STEP))
+            }
+            if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
+            }
         }
-        if (unitId == -1 || category == null || stepIndex == -1)
-            activity?.finish()
-        initCommunicators()
         setup()
     }
 
-    private fun initCommunicators() {
-        if (activity is ReadActivityInterface)
-            communicator = activity as ReadActivityInterface
-    }
-
     private fun setup() {
-        next.isEnabled = false
+        if (unitId == -1 || category == null || stepIndex == -1) {
+            requireActivity().finish()
+        }
+        if (requireActivity() is ReadActivityInterface) {
+            communicator = requireActivity() as ReadActivityInterface
+        }
         val read = db.readDao().getReadByUnitId(unitId)
+        if (read.size == 0 || read.size <= stepIndex) {
+            requireActivity().finish()
+        }
+        next.isEnabled = false
         setupSteps(read)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            activity?.let { activity ->
-                val color = ContextCompat.getColor(activity, it.color)
-                stepBackground.backgroundColor = color
+            val color = ContextCompat.getColor(requireActivity(), it.color)
+            stepBackground.backgroundColor = color
+        }
+        next.setOnClickListener {
+            if (stepIndex + 1 < read.size) {
+                if (player != null)
+                    destroyPlayer()
+                communicator?.goToNext(stepIndex + 1)
+            } else {
+                communicator?.goToFinish()
             }
         }
-        if (read.size > 0) {
-            next.setOnClickListener {
-                if (stepIndex + 1 < read.size) {
-                    if (player != null)
-                        destroyPlayer()
-                    communicator?.goToNext(stepIndex + 1)
-                } else {
-                    communicator?.goToFinish()
-                }
-            }
-            val currentRead = read[stepIndex]
-            currentRead.read?.let {
-                val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
-            }
-            setupAnswers(currentRead)
-        } else {
-            activity?.finish()
+        val currentRead = read[stepIndex]
+        currentRead.read?.let {
+            val pictureFile = File(fileFolder.absolutePath, it.picture.value)
+            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
         }
+        setupAnswers(currentRead)
     }
 
     @SuppressLint("SetTextI18n")
@@ -97,25 +94,27 @@ class FragmentRead : Fragment() {
     }
 
     private fun setupAnswers(read: PojoRead) {
-        answers.layoutManager = LinearLayoutManager(activity)
+        answers.layoutManager = LinearLayoutManager(requireActivity())
         adapter = AnswersAdapter(read.answersConverted, { answer ->
             val correctNum = read.answersConverted.map { it.correct }.count { it }
-            if (answer.correct)
+            if (answer.correct) {
                 correctCount += 1
+            }
             if (correctCount >= correctNum) {
                 next.isEnabled = true
             }
-        }, { answer ->
-            playAudio(answer.audio.value)
+        }, {
+            playAudio(it.audio.value)
         })
         answers.adapter = adapter
     }
 
     private fun playAudio(audio: String) {
-        if (player != null)
+        if (player != null) {
             destroyPlayer()
+        }
         val audioFile = File(fileFolder.absolutePath, audio)
-        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player?.setOnCompletionListener {
             destroyPlayer()
         }

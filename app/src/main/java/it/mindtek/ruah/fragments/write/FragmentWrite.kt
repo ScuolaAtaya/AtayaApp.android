@@ -47,35 +47,35 @@ class FragmentWrite : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID))
+            }
+            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
                 category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            if (it.containsKey(EXTRA_STEP))
+            }
+            if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
+            }
         }
-        if (unitId == -1 || category == null || stepIndex == -1)
-            activity?.finish()
-        write = db.writeDao().getWriteByUnitId(unitId)
-        if (write.size == 0 || write.size <= stepIndex) {
-            activity?.finish()
-        } else {
-            initCommunicators()
-            setup()
-        }
-    }
-
-    private fun initCommunicators() {
-        if (activity is WriteActivityInterface)
-            communicator = activity as WriteActivityInterface
+        setup()
     }
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
+        if (unitId == -1 || category == null || stepIndex == -1) {
+            requireActivity().finish()
+        }
+        if (requireActivity() is WriteActivityInterface) {
+            communicator = requireActivity() as WriteActivityInterface
+        }
+        write = db.writeDao().getWriteByUnitId(unitId)
+        if (write.size == 0 || write.size <= stepIndex) {
+            requireActivity().finish()
+        }
         setupPicture()
         setupButtons()
         setupSteps()
-        if (write[stepIndex].type == "basic") {
+        if (write[stepIndex].type == BASIC) {
             setupBasic()
             setupRecyclers()
             setupAudio()
@@ -85,11 +85,9 @@ class FragmentWrite : Fragment() {
         }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            activity?.let { activity ->
-                val color = ContextCompat.getColor(activity, it.color)
-                stepLayout.backgroundColor = color
-                editText.supportBackgroundTintList = ColorStateList.valueOf(color)
-            }
+            val color = ContextCompat.getColor(requireActivity(), it.color)
+            stepLayout.backgroundColor = color
+            editText.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
     }
 
@@ -117,9 +115,9 @@ class FragmentWrite : Fragment() {
                 clearDrawable()
                 if (setLowerCase(s.toString()) == setLowerCase(write[stepIndex].word)) {
                     showRight()
-                    complete()
+                    next.isEnabled = true
                 } else {
-                    reset()
+                    next.isEnabled = false
                 }
                 if (s.toString().isNotEmpty() && setLowerCase(s.toString()) != setLowerCase(write[stepIndex].word.substring(0, s.toString().length))) {
                     showError()
@@ -137,39 +135,27 @@ class FragmentWrite : Fragment() {
     }
 
     fun showError() {
-        activity?.let { activity ->
-            editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.close), null)
-        }
+        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(), R.drawable.close), null)
     }
 
     fun showRight() {
-        activity?.let { activity ->
-            editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(activity, R.drawable.done), null)
-        }
+        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(), R.drawable.done), null)
     }
 
     private fun setupRecyclers() {
         val stepWrite = write[stepIndex]
         val selectableCol = calculateSelectableColumns()
         val selectedCol = calculateColumns()
-        compile.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size)
-        available.layoutManager = GridLayoutManager(activity, if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size)
+        compile.layoutManager = GridLayoutManager(requireActivity(), if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size)
+        available.layoutManager = GridLayoutManager(requireActivity(), if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size)
         selectedAdapter = SelectedLettersAdapter(stepWrite.letters) { letter ->
             selectableAdapter?.unlockLetter(letter)
-            if (selectedAdapter?.completed() == true) {
-                complete()
-            } else {
-                reset()
-            }
+            next.isEnabled = selectedAdapter?.completed() == true
         }
         stepWrite.letters.shuffle()
         selectableAdapter = SelectableLettersAdapter(stepWrite.letters) { letters ->
             selectedAdapter?.select(letters)
-            if (selectedAdapter?.completed() == true) {
-                complete()
-            } else {
-                reset()
-            }
+            next.isEnabled = selectedAdapter?.completed() == true
         }
         compile.adapter = selectedAdapter
         available.adapter = selectableAdapter
@@ -177,32 +163,20 @@ class FragmentWrite : Fragment() {
         available.addItemDecoration(GridSpaceItemDecoration(requireActivity().dip(8), requireActivity().dip(8)))
     }
 
-    private fun complete() {
-        next.isEnabled = true
-    }
-
-    private fun reset() {
-        next.isEnabled = false
-    }
-
     private fun calculateColumns(): Int {
-        context?.let { context ->
-            val displayMetrics = context.resources.displayMetrics
-            val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-            val columns = ((dpWidth - 32) / 32) - 1
-            println(columns)
-            return columns.toInt()
-        } ?: return 0
+        val displayMetrics = requireContext().resources.displayMetrics
+        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+        val columns = ((dpWidth - 32) / 32) - 1
+        println(columns)
+        return columns.toInt()
     }
 
     private fun calculateSelectableColumns(): Int {
-        context?.let { context ->
-            val displayMetrics = context.resources.displayMetrics
-            val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-            val columns = ((dpWidth - 32) / 40) - 1
-            println(columns)
-            return columns.toInt()
-        } ?: return 0
+        val displayMetrics = requireContext().resources.displayMetrics
+        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+        val columns = ((dpWidth - 32) / 40) - 1
+        println(columns)
+        return columns.toInt()
     }
 
     private fun setupPicture() {
@@ -211,10 +185,11 @@ class FragmentWrite : Fragment() {
     }
 
     private fun playAudio(audio: String) {
-        if (player != null)
+        if (player != null) {
             destroyPlayer()
+        }
         val audioFile = File(fileFolder.absolutePath, audio)
-        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player?.setOnCompletionListener {
             destroyPlayer()
         }
@@ -230,7 +205,7 @@ class FragmentWrite : Fragment() {
             destroyPlayer()
             dispatch()
         }
-        next.disable()
+        next.isEnabled = false
     }
 
     @SuppressLint("SetTextI18n")
@@ -240,14 +215,10 @@ class FragmentWrite : Fragment() {
 
     private fun dispatch() {
         if (stepIndex + 1 < write.size) {
-            goToNext()
+            communicator?.goToNext(stepIndex + 1)
         } else {
-            finish()
+            communicator?.goToFinish()
         }
-    }
-
-    private fun finish() {
-        communicator?.goToFinish()
     }
 
     override fun onDestroy() {
@@ -255,14 +226,11 @@ class FragmentWrite : Fragment() {
         destroyPlayer()
     }
 
-    private fun goToNext() {
-        communicator?.goToNext(stepIndex + 1)
-    }
-
     private fun setLowerCase(text: String) = text.toLowerCase(Locale.ITALIAN)
 
     companion object {
         const val EXTRA_STEP = "extra step int position"
+        const val BASIC = "basic"
 
         fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentWrite {
             val frag = FragmentWrite()

@@ -18,28 +18,34 @@ class FragmentFinalTest : Fragment() {
     private var category: Category? = null
     private var stepIndex: Int = -1
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_final_test, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID))
+            }
+            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
                 category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            if (it.containsKey(EXTRA_STEP))
+            }
+            if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
+            }
         }
-        if (unitId == -1 || category == null || stepIndex == -1)
-            requireActivity().finish()
         setup()
     }
 
     private fun setup() {
+        if (unitId == -1 || category == null || stepIndex == -1) {
+            requireActivity().finish()
+        }
         val finalTest = db.finalTestDao().getFinalTestByUnitId(unitId)
+        if (finalTest.size == 0 || finalTest.size <= stepIndex) {
+            requireActivity().finish()
+        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)

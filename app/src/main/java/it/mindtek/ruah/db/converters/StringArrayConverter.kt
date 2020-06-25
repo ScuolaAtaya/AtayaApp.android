@@ -11,7 +11,7 @@ import it.mindtek.ruah.pojos.Syllable
 class StringArrayConverter {
     @TypeConverter
     fun toArray(string: String): MutableList<Syllable> {
-        return Gson().fromJson<MutableList<Syllable>>(string)
+        return Gson().fromJson(string)
     }
 
     @TypeConverter

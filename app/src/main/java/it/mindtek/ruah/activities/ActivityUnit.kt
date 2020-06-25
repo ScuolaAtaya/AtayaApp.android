@@ -21,7 +21,9 @@ class ActivityUnit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unit)
-        unitId = intent.getIntExtra(EXTRA_UNIT_ID, -1)
+        intent?.let {
+            unitId = it.getIntExtra(EXTRA_UNIT_ID, -1)
+        }
         setup()
     }
 

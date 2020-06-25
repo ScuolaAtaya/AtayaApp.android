@@ -10,7 +10,7 @@ import it.mindtek.ruah.kotlin.extensions.fromJson
 class IntArrayConverter {
     @TypeConverter
     fun toArray(string: String): MutableList<Int> {
-        return Gson().fromJson<MutableList<Int>>(string)
+        return Gson().fromJson(string)
     }
 
     @TypeConverter

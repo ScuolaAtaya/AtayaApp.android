@@ -28,18 +28,19 @@ class FragmentUnderstandVideo : Fragment() {
     private var videoUrl: String = ""
     private var communicator: UnderstandActivityInterface? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_understand_video, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getCommunicators()
         arguments?.let {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
+        }
+        if (requireActivity() is UnderstandActivityInterface) {
+            communicator = requireActivity() as UnderstandActivityInterface
         }
     }
 
@@ -58,7 +59,9 @@ class FragmentUnderstandVideo : Fragment() {
                         override fun onVideoStarted() {}
                         override fun onLoaded(p0: String?) {}
                         override fun onVideoEnded() {
-                            onVideoEnd()
+                            if (canAccessActivity) {
+                                next.isEnabled = true
+                            }
                         }
 
                         override fun onError(p0: YouTubePlayer.ErrorReason?) {}
@@ -84,25 +87,18 @@ class FragmentUnderstandVideo : Fragment() {
         }
     }
 
-    private fun getCommunicators() {
-        if (activity is UnderstandActivityInterface) {
-            communicator = activity as UnderstandActivityInterface
-        }
-    }
-
     override fun onResume() {
         super.onResume()
-        if (unitId == -1)
-            activity?.finish()
-        else {
-            setupNext()
-            val categoriesObservable = db.understandDao().getUnderstandAsync()
-            categoriesObservable.observe(this, Observer { println(it) })
-            val category = db.understandDao().getUnderstandByUnitId(unitId)
-            category?.let {
-                showVideo(it.category?.video_url!!.value)
-                setupListen(it.category?.audio!!.value)
-            }
+        if (unitId == -1) {
+            requireActivity().finish()
+        }
+        setupNext()
+        val categoriesObservable = db.understandDao().getUnderstandAsync()
+        categoriesObservable.observe(this, Observer { println(it) })
+        val category = db.understandDao().getUnderstandByUnitId(unitId)
+        category?.let {
+            showVideo(it.category?.video_url!!.value)
+            setupListen(it.category?.audio!!.value)
         }
     }
 
@@ -117,13 +113,9 @@ class FragmentUnderstandVideo : Fragment() {
     private fun setupNext() {
         next.setOnClickListener {
             destroyPlayer()
-            goToQuestions()
+            communicator?.openQuestion(0)
         }
-        disableNext()
-    }
-
-    private fun goToQuestions() {
-        communicator?.openQuestion(0)
+        next.isEnabled = false
     }
 
     private fun playAudio(audio: String) {
@@ -131,10 +123,10 @@ class FragmentUnderstandVideo : Fragment() {
         if (audioPlayer != null)
             destroyPlayer()
         val audioFile = File(fileFolder.absolutePath, audio)
-        audioPlayer = MediaPlayer.create(activity, Uri.fromFile(audioFile))
+        audioPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         audioPlayer?.setOnCompletionListener {
             if (canAccessActivity) {
-                enableNext()
+                next.isEnabled = true
                 destroyPlayer()
             }
         }
@@ -148,19 +140,6 @@ class FragmentUnderstandVideo : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         destroyPlayer()
-    }
-
-    private fun disableNext() {
-        next.isEnabled = false
-    }
-
-    private fun enableNext() {
-        next.isEnabled = true
-    }
-
-    private fun onVideoEnd() {
-        if (canAccessActivity)
-            enableNext()
     }
 
     companion object {

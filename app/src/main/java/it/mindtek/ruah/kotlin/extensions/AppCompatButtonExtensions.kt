@@ -1,10 +1,14 @@
 package it.mindtek.ruah.kotlin.extensions
 
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.appcompat.widget.AppCompatButton
 import org.jetbrains.anko.dip
+
 
 /**
  * Created by alessandrogaboardi on 05/12/2017.
@@ -28,11 +32,16 @@ fun AppCompatButton.setDrawableColor(color: Int) {
     this.setCompoundDrawables(left, top, right, bottom)
 }
 
+@Suppress("DEPRECATION")
 fun tint(drawable: Drawable?, color: Int, context: Context): Drawable? {
     drawable?.let {
         val copy = drawable.constantState!!.newDrawable()
         copy.setBounds(0, 0, context.dip(24), context.dip(24))
-        copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            copy.mutate().colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
+        } else {
+            copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
         return copy
     } ?: return null
 }
