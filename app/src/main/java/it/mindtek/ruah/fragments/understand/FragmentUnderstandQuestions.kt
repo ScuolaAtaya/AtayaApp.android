@@ -106,7 +106,7 @@ class FragmentUnderstandQuestions : Fragment() {
             title.text = getString(R.string.question)
             question.question?.let { q ->
                 description.text = q.body
-                setupPicture(q.picture.value)
+                setupPicture(q.picture?.value!!)
                 questionAudio.setOnClickListener {
                     playAudio(q.audio.value)
                 }

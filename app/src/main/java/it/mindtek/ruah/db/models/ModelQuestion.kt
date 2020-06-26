@@ -16,5 +16,5 @@ open class ModelQuestion(
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
         @Embedded(prefix = "picture_")
-        var picture: ModelMedia
+        var picture: ModelMedia?
 )
