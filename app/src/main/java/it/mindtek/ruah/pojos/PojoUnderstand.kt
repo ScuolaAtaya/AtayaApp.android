@@ -10,7 +10,7 @@ import it.mindtek.ruah.db.models.ModelUnderstand
  */
 class PojoUnderstand {
     @Embedded
-    var category: ModelUnderstand? = null
+    var understand: ModelUnderstand? = null
 
     @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelQuestion::class)
     var questions: MutableList<PojoQuestion> = mutableListOf()

@@ -19,47 +19,50 @@ import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
-    var unitId: Int = -1
-    var category: Category? = null
+    private var unitId: Int = -1
+    private var understandSize: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_understand)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
         setup()
-        val fragment = FragmentUnderstandVideo.newInstance(unitId)
+        val fragment = FragmentUnderstandVideo.newInstance(unitId, 0)
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
-    override fun openQuestion(question: Int) {
-        replaceFragment(FragmentUnderstandQuestions.newInstance(question, unitId), R.id.placeholder)
+    override fun openQuestion(questionIndex: Int, index: Int) {
+        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, index), R.id.placeholder)
     }
 
-    override fun goToStart() {
+    override fun goToVideo(index: Int) {
+        if (understandSize <= index) {
+            goToFinish()
+        }
         val manager = supportFragmentManager
         for (i in 0..manager.backStackEntryCount) {
             manager.popBackStack()
         }
-        replaceFragment(FragmentUnderstandVideo.newInstance(unitId), R.id.placeholder, false)
+        replaceFragment(FragmentUnderstandVideo.newInstance(unitId, index), R.id.placeholder, false)
     }
 
     override fun goToFinish() {
         val intent = Intent(this, ActivityIntro::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)
+        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
         intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         startActivity(intent)
     }
 
     private fun setup() {
-        if (unitId == -1 || category == null) {
+        if (unitId == -1) {
             finish()
         }
+        understandSize = db.understandDao().count()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(category!!.title)
+        supportActionBar?.title = getString(Category.UNDERSTAND.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this, Observer { unit ->
             unit?.let {

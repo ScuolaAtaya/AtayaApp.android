@@ -4,7 +4,7 @@ package it.mindtek.ruah.interfaces
  * Created by alessandrogaboardi on 07/12/2017.
  */
 interface UnderstandActivityInterface {
-    fun openQuestion(question: Int)
+    fun openQuestion(questionIndex: Int, index: Int)
     fun goToFinish()
-    fun goToStart()
+    fun goToVideo(index: Int)
 }

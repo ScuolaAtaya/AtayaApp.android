@@ -26,7 +26,8 @@ import java.io.File
 
 class FragmentUnderstandQuestions : Fragment() {
     private var unitId: Int = -1
-    private var question: Int = -1
+    private var questionIndex: Int = -1
+    private var stepIndex: Int = -1
     private var questions: MutableList<PojoQuestion> = mutableListOf()
     private var communicator: UnderstandActivityInterface? = null
     private var player: MediaPlayer? = null
@@ -42,14 +43,17 @@ class FragmentUnderstandQuestions : Fragment() {
                 unitId = it.getInt(EXTRA_UNIT_ID, -1)
             }
             if (it.containsKey(EXTRA_QUESTION_NUMBER)) {
-                question = it.getInt(EXTRA_QUESTION_NUMBER, -1)
+                questionIndex = it.getInt(EXTRA_QUESTION_NUMBER, -1)
+            }
+            if (it.containsKey(EXTRA_STEP)) {
+                stepIndex = it.getInt(EXTRA_STEP, -1)
             }
         }
         setup()
     }
 
     private fun setup() {
-        if (unitId == -1) {
+        if (unitId == -1 || stepIndex == -1) {
             requireActivity().finish()
         }
         if (requireActivity() is UnderstandActivityInterface) {
@@ -60,38 +64,38 @@ class FragmentUnderstandQuestions : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
         }
-        val category = db.understandDao().getUnderstandByUnitId(unitId)
-        category?.let {
-            questions = it.questions
-            next.isEnabled = false
-            setupBack()
-            setupSection()
-            setupQuestion()
-            setupAnswers()
-        }
+        val understand = db.understandDao().getUnderstandByUnitId(unitId)
+        questions = understand[stepIndex].questions
+        next.isEnabled = false
+        setupBack()
+        setupSection()
+        setupQuestion()
+        setupAnswers()
     }
 
     private fun setupBack() {
         reset.setOnClickListener {
-            communicator?.goToStart()
+            communicator?.goToVideo(stepIndex)
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
-        step.text = "${question + 1}/${questions.size}"
+        step.text = "${questionIndex + 1}/${questions.size}"
         next.setOnClickListener {
             destroyPlayer()
-            if (question + 1 < questions.size)
-                communicator?.openQuestion(question + 1)
-            else
-                communicator?.goToFinish()
+            if (questionIndex + 1 < questions.size) {
+                communicator?.openQuestion(questionIndex + 1, stepIndex)
+            } else {
+                communicator?.goToVideo(stepIndex + 1)
+            }
         }
     }
 
     private fun playAudio(audio: String) {
-        if (player != null)
+        if (player != null) {
             destroyPlayer()
+        }
         val audioFile = File(fileFolder.absolutePath, audio)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player?.setOnCompletionListener {
@@ -101,12 +105,12 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupQuestion() {
-        if (questions.size >= question) {
-            val question = questions[question]
+        if (questions.size >= questionIndex) {
+            val question = questions[questionIndex]
             title.text = getString(R.string.question)
             question.question?.let { q ->
                 description.text = q.body
-                setupPicture(q.picture?.value!!)
+                setupPicture(q.picture?.value)
                 questionAudio.setOnClickListener {
                     playAudio(q.audio.value)
                 }
@@ -115,8 +119,8 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupAnswers() {
-        if (questions.size >= question) {
-            val question = questions[question]
+        if (questions.size >= questionIndex) {
+            val question = questions[questionIndex]
             val answers = question.answers
             val adapter = AnswersAdapter(answers, { answer ->
                 if (answer.correct) {
@@ -130,8 +134,8 @@ class FragmentUnderstandQuestions : Fragment() {
         }
     }
 
-    private fun setupPicture(picture: String) {
-        if (picture.isNotEmpty()) {
+    private fun setupPicture(picture: String?) {
+        if (!picture.isNullOrEmpty()) {
             stepImage.setVisible()
             val pictureFile = File(fileFolder.absolutePath, picture)
             GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
@@ -150,12 +154,14 @@ class FragmentUnderstandQuestions : Fragment() {
     companion object {
         const val EXTRA_QUESTION_NUMBER = "question_number_extra"
         const val EXTRA_UNIT_ID = "unit_id_extra"
+        const val EXTRA_STEP = "extra step int position"
 
-        fun newInstance(question: Int, unit_id: Int): FragmentUnderstandQuestions {
+        fun newInstance(questionIndex: Int, unitId: Int, stepIndex: Int): FragmentUnderstandQuestions {
             val fragment = FragmentUnderstandQuestions()
             val bundle = Bundle()
-            bundle.putInt(EXTRA_QUESTION_NUMBER, question)
-            bundle.putInt(EXTRA_UNIT_ID, unit_id)
+            bundle.putInt(EXTRA_QUESTION_NUMBER, questionIndex)
+            bundle.putInt(EXTRA_UNIT_ID, unitId)
+            bundle.putInt(EXTRA_STEP, stepIndex)
             fragment.arguments = bundle
             return fragment
         }
