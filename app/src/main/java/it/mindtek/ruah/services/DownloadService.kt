@@ -148,6 +148,11 @@ class DownloadService : IntentService("Download service") {
 
     private fun saveWrite(writeJson: JSONArray) {
         val writes = Gson().fromJson<MutableList<ModelWrite>>(writeJson)
+        writes.map {
+            if (it.type == ADVANCED) {
+                it.letters = mutableListOf()
+            }
+        }
         db.writeDao().saveCategories(writes)
     }
 
@@ -246,5 +251,6 @@ class DownloadService : IntentService("Download service") {
         const val OPTIONS = "options"
         const val WRITE = "write"
         const val FINAL_TEST = "final"
+        const val ADVANCED = "advanced"
     }
 }

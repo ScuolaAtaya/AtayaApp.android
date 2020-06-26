@@ -117,11 +117,12 @@ class FragmentWrite : Fragment() {
                     showRight()
                     next.isEnabled = true
                 } else {
+                    if (s.toString().isNotEmpty()) {
+                        showError()
+                    }
                     next.isEnabled = false
                 }
-                if (s.toString().isNotEmpty() && setLowerCase(s.toString()) != setLowerCase(write[stepIndex].word.substring(0, s.toString().length))) {
-                    showError()
-                }
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
