@@ -14,16 +14,17 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import it.mindtek.ruah.R
-import it.mindtek.ruah.activities.ActivityIntro
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.SelectableLettersAdapter
 import it.mindtek.ruah.adapters.SelectedLettersAdapter
 import it.mindtek.ruah.adapters.dividers.GridSpaceItemDecoration
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelWrite
-import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.interfaces.WriteActivityInterface
-import it.mindtek.ruah.kotlin.extensions.*
+import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.setGone
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.fragment_write.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
@@ -32,7 +33,6 @@ import java.util.*
 
 class FragmentWrite : Fragment() {
     private var unitId: Int = -1
-    private var category: Category? = null
     private var stepIndex: Int = -1
     private var player: MediaPlayer? = null
     private var write: MutableList<ModelWrite> = mutableListOf()
@@ -50,9 +50,6 @@ class FragmentWrite : Fragment() {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
-                category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            }
             if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
             }
@@ -62,7 +59,7 @@ class FragmentWrite : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
-        if (unitId == -1 || category == null || stepIndex == -1) {
+        if (unitId == -1 || stepIndex == -1) {
             requireActivity().finish()
         }
         if (requireActivity() is WriteActivityInterface) {
@@ -233,11 +230,10 @@ class FragmentWrite : Fragment() {
         const val EXTRA_STEP = "extra step int position"
         const val BASIC = "basic"
 
-        fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentWrite {
+        fun newInstance(unitId: Int, stepIndex: Int): FragmentWrite {
             val frag = FragmentWrite()
             val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unit_id)
-            bundle.putInt(ActivityIntro.EXTRA_CATEGORY_ID, category.value)
+            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
             bundle.putInt(EXTRA_STEP, stepIndex)
             frag.arguments = bundle
             return frag

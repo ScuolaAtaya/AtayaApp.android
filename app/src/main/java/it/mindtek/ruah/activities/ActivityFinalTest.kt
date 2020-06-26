@@ -27,7 +27,7 @@ class ActivityFinalTest : AppCompatActivity() {
             category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
         setup()
-        val fragment = FragmentFinalTest.newInstance(unitId, category!!, 0)
+        val fragment = FragmentFinalTest.newInstance(unitId,0)
         replaceFragment(fragment, R.id.placeholder, false)
     }
 

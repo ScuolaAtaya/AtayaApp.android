@@ -4,18 +4,16 @@ import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
-import it.mindtek.ruah.activities.ActivityIntro
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
-import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
@@ -26,7 +24,6 @@ import java.io.File
 
 class FragmentRead : Fragment() {
     private var unitId: Int = -1
-    private var category: Category? = null
     private var stepIndex: Int = -1
     private var adapter: AnswersAdapter? = null
     private var correctCount = 0
@@ -43,9 +40,6 @@ class FragmentRead : Fragment() {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
-                category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            }
             if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
             }
@@ -54,7 +48,7 @@ class FragmentRead : Fragment() {
     }
 
     private fun setup() {
-        if (unitId == -1 || category == null || stepIndex == -1) {
+        if (unitId == -1 || stepIndex == -1) {
             requireActivity().finish()
         }
         if (requireActivity() is ReadActivityInterface) {
@@ -133,11 +127,10 @@ class FragmentRead : Fragment() {
     companion object {
         const val EXTRA_STEP = "extra_current_step_number"
 
-        fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentRead {
+        fun newInstance(unitId: Int, stepIndex: Int): FragmentRead {
             val frag = FragmentRead()
             val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unit_id)
-            bundle.putInt(ActivityIntro.EXTRA_CATEGORY_ID, category.value)
+            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
             bundle.putInt(EXTRA_STEP, stepIndex)
             frag.arguments = bundle
             return frag

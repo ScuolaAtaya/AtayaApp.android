@@ -116,28 +116,24 @@ class ActivityIntro : AppCompatActivity() {
     private fun goToSpeak() {
         val intent = Intent(this, ActivitySpeak::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
         startActivity(intent)
     }
 
     private fun goToUnderstand() {
         val intent = Intent(this, ActivityUnderstand::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
         startActivity(intent)
     }
 
     private fun goToRead() {
         val intent = Intent(this, ActivityRead::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
         startActivity(intent)
     }
 
     private fun goToWrite() {
         val intent = Intent(this, ActivityWrite::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(EXTRA_CATEGORY_ID, category?.value ?: -1)
         startActivity(intent)
     }
 

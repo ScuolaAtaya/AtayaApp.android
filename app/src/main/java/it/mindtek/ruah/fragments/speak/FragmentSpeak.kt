@@ -8,17 +8,15 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import it.mindtek.ruah.R
-import it.mindtek.ruah.activities.ActivityIntro
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelSpeak
-import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.disable
@@ -34,7 +32,6 @@ import java.io.File
  */
 class FragmentSpeak : Fragment() {
     private var unitId: Int = -1
-    private var category: Category? = null
     private var stepIndex: Int = -1
     private var player: MediaPlayer? = null
     private var recorder: MediaRecorder? = null
@@ -52,9 +49,6 @@ class FragmentSpeak : Fragment() {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
-            if (it.containsKey(ActivityIntro.EXTRA_CATEGORY_ID)) {
-                category = Category.from(it.getInt(ActivityIntro.EXTRA_CATEGORY_ID))
-            }
             if (it.containsKey(EXTRA_STEP)) {
                 stepIndex = it.getInt(EXTRA_STEP)
             }
@@ -64,7 +58,7 @@ class FragmentSpeak : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
-        if (unitId == -1 || category == null || stepIndex == -1) {
+        if (unitId == -1 || stepIndex == -1) {
             requireActivity().finish()
         }
         if (requireActivity() is SpeakActivityInterface) {
@@ -233,11 +227,10 @@ class FragmentSpeak : Fragment() {
         const val EXTRA_STEP = "extra step int position"
         const val REQUEST_PERMISSION_AUDIO = 20183
 
-        fun newInstance(unit_id: Int, category: Category, stepIndex: Int): FragmentSpeak {
+        fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak {
             val frag = FragmentSpeak()
             val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unit_id)
-            bundle.putInt(ActivityIntro.EXTRA_CATEGORY_ID, category.value)
+            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
             bundle.putInt(EXTRA_STEP, stepIndex)
             frag.arguments = bundle
             return frag

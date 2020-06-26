@@ -19,39 +19,37 @@ import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
     var unitId: Int = -1
-    var category: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_speak)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
         setup()
-        val fragment = FragmentSpeak.newInstance(unitId, category!!, 0)
+        val fragment = FragmentSpeak.newInstance(unitId, 0)
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
     override fun goToNext(index: Int) {
-        val fragment = FragmentSpeak.newInstance(unitId, category!!, index)
+        val fragment = FragmentSpeak.newInstance(unitId, index)
         replaceFragment(fragment, R.id.placeholder)
     }
 
     override fun goToFinish() {
         val intent = Intent(this, ActivityIntro::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category?.value ?: -1)
+        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.TALK.value)
         intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         startActivity(intent)
     }
 
     private fun setup() {
-        if (unitId == -1 || category == null) {
+        if (unitId == -1) {
             finish()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(category!!.title)
+        supportActionBar?.title = getString(Category.TALK.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this, Observer { unit ->
             unit?.let {
