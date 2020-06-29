@@ -30,8 +30,9 @@ import java.io.File
 class FragmentUnderstandQuestions : Fragment() {
     private var unitId: Int = -1
     private var questionIndex: Int = -1
-    private var stepIndex: Int = -1
+    private var understandIndex: Int = -1
     private var questions: MutableList<PojoQuestion> = mutableListOf()
+    private var understandSize: Int = -1
     private var communicator: UnderstandActivityInterface? = null
     private var questionPlayer: MediaPlayer? = null
     private var answersPlayers: MutableList<MediaPlayer> = mutableListOf()
@@ -50,14 +51,14 @@ class FragmentUnderstandQuestions : Fragment() {
                 questionIndex = it.getInt(EXTRA_QUESTION_NUMBER, -1)
             }
             if (it.containsKey(EXTRA_STEP)) {
-                stepIndex = it.getInt(EXTRA_STEP, -1)
+                understandIndex = it.getInt(EXTRA_STEP, -1)
             }
         }
         setup()
     }
 
     private fun setup() {
-        if (unitId == -1 || stepIndex == -1) {
+        if (unitId == -1 || understandIndex == -1) {
             requireActivity().finish()
         }
         if (requireActivity() is UnderstandActivityInterface) {
@@ -68,8 +69,9 @@ class FragmentUnderstandQuestions : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
         }
+        understandSize = db.understandDao().count()
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
-        questions = understand[stepIndex].questions
+        questions = understand[understandIndex].questions
         next.isEnabled = false
         setupBack()
         setupSection()
@@ -79,7 +81,7 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun setupBack() {
         reset.setOnClickListener {
-            communicator?.goToVideo(stepIndex)
+            communicator?.goToVideo(understandIndex)
         }
     }
 
@@ -89,9 +91,13 @@ class FragmentUnderstandQuestions : Fragment() {
         next.setOnClickListener {
             destroyPlayers()
             if (questionIndex + 1 < questions.size) {
-                communicator?.openQuestion(questionIndex + 1, stepIndex)
+                communicator?.goToNextQuestion(questionIndex + 1)
             } else {
-                communicator?.goToVideo(stepIndex + 1)
+                if (understandIndex + 1 < understandSize) {
+                    communicator?.goToVideo(understandIndex + 1)
+                } else {
+                    communicator?.goToFinish()
+                }
             }
         }
     }

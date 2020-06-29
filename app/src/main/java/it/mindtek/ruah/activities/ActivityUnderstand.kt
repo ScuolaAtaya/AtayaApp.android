@@ -1,63 +1,40 @@
 package it.mindtek.ruah.activities
 
 import android.annotation.TargetApi
-import androidx.lifecycle.Observer
-import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.WindowManager
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.understand.FragmentUnderstandQuestions
 import it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo
-import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
-class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
+class ActivityUnderstand : AppCompatActivity() {
     private var unitId: Int = -1
-    private var understandSize: Int = -1
+    private var stepIndex: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_understand)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
+            stepIndex = it.getIntExtra(STEP_INDEX, -1)
         }
         setup()
-        val fragment = FragmentUnderstandVideo.newInstance(unitId, 0)
+        val fragment = FragmentUnderstandVideo.newInstance(unitId, stepIndex)
         replaceFragment(fragment, R.id.placeholder, false)
-    }
-
-    override fun openQuestion(questionIndex: Int, index: Int) {
-        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, index), R.id.placeholder, true)
-    }
-
-    override fun goToVideo(index: Int) {
-        if (understandSize <= index) {
-            goToFinish()
-        }
-        replaceFragment(FragmentUnderstandVideo.newInstance(unitId, index), R.id.placeholder, true)
-    }
-
-    override fun goToFinish() {
-        val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
-        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
-        startActivity(intent)
     }
 
     private fun setup() {
         if (unitId == -1) {
             finish()
         }
-        understandSize = db.understandDao().count()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
@@ -81,5 +58,9 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
             android.R.id.home -> onBackPressed()
         }
         return false
+    }
+
+    companion object {
+        const val STEP_INDEX ="step_index"
     }
 }

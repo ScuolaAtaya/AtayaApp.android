@@ -122,6 +122,7 @@ class ActivityIntro : AppCompatActivity() {
     private fun goToUnderstand() {
         val intent = Intent(this, ActivityUnderstand::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+        intent.putExtra(ActivityUnderstand.STEP_INDEX, 0)
         startActivity(intent)
     }
 

@@ -1,6 +1,7 @@
 package it.mindtek.ruah.fragments.understand
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -13,9 +14,10 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import it.mindtek.ruah.R
+import it.mindtek.ruah.activities.ActivityUnderstand
+import it.mindtek.ruah.activities.ActivityUnderstandQuestion
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.fragments.write.FragmentWrite
-import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
@@ -30,7 +32,6 @@ class FragmentUnderstandVideo : Fragment() {
     private var stepIndex: Int = -1
     private var audioPlayer: MediaPlayer? = null
     private var videoPlayer: YouTubePlayer? = null
-    private var communicator: UnderstandActivityInterface? = null
     private var understand: MutableList<PojoUnderstand> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,9 +59,6 @@ class FragmentUnderstandVideo : Fragment() {
     private fun setup() {
         if (unitId == -1 || stepIndex == -1) {
             requireActivity().finish()
-        }
-        if (requireActivity() is UnderstandActivityInterface) {
-            communicator = requireActivity() as UnderstandActivityInterface
         }
         understand = db.understandDao().getUnderstandByUnitId(unitId)
         if (understand.size == 0 || understand.size <= stepIndex) {
@@ -138,8 +136,10 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setupNext() {
         next.setOnClickListener {
-            audioPlayer?.release()
-            communicator?.openQuestion(0, stepIndex)
+            val intent = Intent(requireActivity(), ActivityUnderstandQuestion::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
+            startActivity(intent)
         }
         next.isEnabled = false
     }
@@ -165,6 +165,7 @@ class FragmentUnderstandVideo : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         audioPlayer?.release()
+        videoPlayer?.release()
     }
 
     companion object {
