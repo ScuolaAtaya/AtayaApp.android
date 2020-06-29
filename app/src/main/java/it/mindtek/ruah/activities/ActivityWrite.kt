@@ -32,8 +32,7 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     }
 
     override fun goToNext(index: Int) {
-        val fragment = FragmentWrite.newInstance(unitId, index)
-        replaceFragment(fragment, R.id.placeholder)
+        replaceFragment(FragmentWrite.newInstance(unitId, index), R.id.placeholder, true)
     }
 
     override fun goToFinish() {

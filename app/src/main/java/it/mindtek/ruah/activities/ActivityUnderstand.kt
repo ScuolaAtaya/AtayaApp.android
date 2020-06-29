@@ -34,7 +34,7 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
     }
 
     override fun openQuestion(questionIndex: Int, index: Int) {
-        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, index), R.id.placeholder)
+        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, index), R.id.placeholder, true)
     }
 
     override fun goToVideo(index: Int) {
@@ -45,7 +45,7 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
         for (i in 0..manager.backStackEntryCount) {
             manager.popBackStack()
         }
-        replaceFragment(FragmentUnderstandVideo.newInstance(unitId, index), R.id.placeholder, false)
+        replaceFragment(FragmentUnderstandVideo.newInstance(unitId, index), R.id.placeholder, true)
     }
 
     override fun goToFinish() {
