@@ -108,7 +108,7 @@ class FragmentUnderstandVideo : Fragment() {
                     override fun onSeekTo(p0: Int) {}
                     override fun onBuffering(p0: Boolean) {}
                     override fun onPlaying() {
-                        destroyPlayer()
+                        audioPlayer?.pause()
                     }
 
                     override fun onStopped() {}
@@ -139,7 +139,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setupNext() {
         next.setOnClickListener {
-            destroyPlayer()
+            audioPlayer?.release()
             communicator?.openQuestion(0, stepIndex)
         }
         next.isEnabled = false
@@ -147,27 +147,26 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun playAudio(audio: String) {
         videoPlayer?.pause()
-        if (audioPlayer != null) {
-            destroyPlayer()
-        }
-        val audioFile = File(fileFolder.absolutePath, audio)
-        audioPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        audioPlayer?.setOnCompletionListener {
-            if (canAccessActivity) {
-                next.isEnabled = true
-                destroyPlayer()
+        when {
+            audioPlayer == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                audioPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                audioPlayer!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        next.isEnabled = true
+                        audioPlayer!!.pause()
+                    }
+                }
+                audioPlayer!!.start()
             }
+            audioPlayer!!.isPlaying -> audioPlayer!!.pause()
+            else -> audioPlayer!!.start()
         }
-        audioPlayer?.start()
-    }
-
-    private fun destroyPlayer() {
-        audioPlayer?.release()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayer()
+        audioPlayer?.release()
     }
 
     companion object {

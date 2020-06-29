@@ -18,11 +18,11 @@ import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.disable
-import it.mindtek.ruah.kotlin.extensions.enable
-import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_speak.*
+import kotlinx.android.synthetic.main.fragment_speak.next
+import kotlinx.android.synthetic.main.fragment_speak.step
+import kotlinx.android.synthetic.main.fragment_speak.stepImage
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -34,6 +34,7 @@ class FragmentSpeak : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var player: MediaPlayer? = null
+    private var recodedPlayer: MediaPlayer? = null
     private var recorder: MediaRecorder? = null
     private var speak: MutableList<ModelSpeak> = mutableListOf()
     private var communicator: SpeakActivityInterface? = null
@@ -96,6 +97,7 @@ class FragmentSpeak : Fragment() {
             if (recording) {
                 endRecording()
             }
+            destroyPlayers()
             destroyFile()
             dispatch()
         }
@@ -115,7 +117,8 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun startRecording() {
-        destroyPlayer()
+        player?.pause()
+        recodedPlayer?.pause()
         if (initRecorder()) {
             recording = true
             record.setImageResource(R.drawable.stop)
@@ -174,15 +177,22 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun playAudio(audio: String) {
-        if (player != null) {
-            destroyPlayer()
+        recodedPlayer?.pause()
+        when {
+            player == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        next.isEnabled = true
+                        player!!.pause()
+                    }
+                }
+                player!!.start()
+            }
+            player!!.isPlaying -> player!!.pause()
+            else -> player!!.start()
         }
-        val audioFile = File(fileFolder.absolutePath, audio)
-        player = MediaPlayer.create(activity, Uri.fromFile(audioFile))
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
     }
 
     private fun dispatch() {
@@ -194,20 +204,26 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun playRecordedAudio() {
-        if (player != null) {
-            destroyPlayer()
+        player?.pause()
+        when {
+            recodedPlayer == null -> {
+                val audioFile = File(fileFolder.absolutePath, "recording")
+                recodedPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                recodedPlayer!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        recodedPlayer!!.pause()
+                    }
+                }
+                recodedPlayer!!.start()
+            }
+            recodedPlayer!!.isPlaying -> recodedPlayer!!.pause()
+            else -> recodedPlayer!!.start()
         }
-        val record = File(requireActivity().filesDir, "recording")
-        val uri = Uri.parse(record.absolutePath)
-        player = MediaPlayer.create(requireActivity(), uri)
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
     }
 
-    private fun destroyPlayer() {
+    private fun destroyPlayers() {
         player?.release()
+        recodedPlayer?.release()
     }
 
     private fun destroyFile() {
@@ -219,7 +235,7 @@ class FragmentSpeak : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayer()
+        destroyPlayers()
         destroyFile()
     }
 

@@ -21,11 +21,11 @@ import it.mindtek.ruah.adapters.dividers.GridSpaceItemDecoration
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.fileFolder
-import it.mindtek.ruah.kotlin.extensions.setGone
-import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_write.*
+import kotlinx.android.synthetic.main.fragment_write.next
+import kotlinx.android.synthetic.main.fragment_write.step
+import kotlinx.android.synthetic.main.fragment_write.stepLayout
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -183,24 +183,26 @@ class FragmentWrite : Fragment() {
     }
 
     private fun playAudio(audio: String) {
-        if (player != null) {
-            destroyPlayer()
+        when {
+            player == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        next.isEnabled = true
+                        player!!.pause()
+                    }
+                }
+                player!!.start()
+            }
+            player!!.isPlaying -> player!!.pause()
+            else -> player!!.start()
         }
-        val audioFile = File(fileFolder.absolutePath, audio)
-        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
-    }
-
-    private fun destroyPlayer() {
-        player?.release()
     }
 
     private fun setupButtons() {
         next.setOnClickListener {
-            destroyPlayer()
+            player?.release()
             dispatch()
         }
         next.isEnabled = false
@@ -221,7 +223,7 @@ class FragmentWrite : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayer()
+        player?.release()
     }
 
     private fun setLowerCase(text: String) = text.toLowerCase(Locale.ITALIAN)
