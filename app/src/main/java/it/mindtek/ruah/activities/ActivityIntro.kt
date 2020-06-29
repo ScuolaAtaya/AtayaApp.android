@@ -142,6 +142,11 @@ class ActivityIntro : AppCompatActivity() {
         player?.release()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        goToCategory()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         destroyPlayer()
