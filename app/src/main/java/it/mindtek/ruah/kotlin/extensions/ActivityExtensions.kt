@@ -10,7 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 fun AppCompatActivity.replaceFragment(fragment: Fragment, @IdRes placeholder: Int, backStack: Boolean = false) {
     val transaction = supportFragmentManager.beginTransaction()
     transaction.replace(placeholder, fragment)
-    if (backStack)
+    if (backStack) {
         transaction.addToBackStack(fragment.javaClass.canonicalName)
+    }
     transaction.commit()
 }

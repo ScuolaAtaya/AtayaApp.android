@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.fragment.app.FragmentManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.understand.FragmentUnderstandQuestions
@@ -40,10 +41,6 @@ class ActivityUnderstand : AppCompatActivity(), UnderstandActivityInterface {
     override fun goToVideo(index: Int) {
         if (understandSize <= index) {
             goToFinish()
-        }
-        val manager = supportFragmentManager
-        for (i in 0..manager.backStackEntryCount) {
-            manager.popBackStack()
         }
         replaceFragment(FragmentUnderstandVideo.newInstance(unitId, index), R.id.placeholder, true)
     }

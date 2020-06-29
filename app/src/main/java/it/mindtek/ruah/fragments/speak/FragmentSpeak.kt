@@ -184,7 +184,6 @@ class FragmentSpeak : Fragment() {
                 player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
                 player!!.setOnCompletionListener {
                     if (canAccessActivity) {
-                        next.isEnabled = true
                         player!!.pause()
                     }
                 }
@@ -207,7 +206,7 @@ class FragmentSpeak : Fragment() {
         player?.pause()
         when {
             recodedPlayer == null -> {
-                val audioFile = File(fileFolder.absolutePath, "recording")
+                val audioFile = File(requireActivity().filesDir, "recording")
                 recodedPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
                 recodedPlayer!!.setOnCompletionListener {
                     if (canAccessActivity) {

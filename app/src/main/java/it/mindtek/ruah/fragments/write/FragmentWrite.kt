@@ -189,7 +189,6 @@ class FragmentWrite : Fragment() {
                 player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
                 player!!.setOnCompletionListener {
                     if (canAccessActivity) {
-                        next.isEnabled = true
                         player!!.pause()
                     }
                 }

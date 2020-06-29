@@ -14,6 +14,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
+import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.kotlin.extensions.setVisible
@@ -21,6 +22,8 @@ import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
 import kotlinx.android.synthetic.main.fragment_understand_questions.next
 import kotlinx.android.synthetic.main.fragment_understand_questions.step
+import kotlinx.android.synthetic.main.fragment_understand_questions.stepLayout
+import kotlinx.android.synthetic.main.fragment_understand_questions.title
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
@@ -30,7 +33,8 @@ class FragmentUnderstandQuestions : Fragment() {
     private var stepIndex: Int = -1
     private var questions: MutableList<PojoQuestion> = mutableListOf()
     private var communicator: UnderstandActivityInterface? = null
-    private var player: MediaPlayer? = null
+    private var questionPlayer: MediaPlayer? = null
+    private var answersPlayers: MutableList<MediaPlayer> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_understand_questions, container, false)
@@ -83,25 +87,13 @@ class FragmentUnderstandQuestions : Fragment() {
     private fun setupSection() {
         step.text = "${questionIndex + 1}/${questions.size}"
         next.setOnClickListener {
-            destroyPlayer()
+            destroyPlayers()
             if (questionIndex + 1 < questions.size) {
                 communicator?.openQuestion(questionIndex + 1, stepIndex)
             } else {
                 communicator?.goToVideo(stepIndex + 1)
             }
         }
-    }
-
-    private fun playAudio(audio: String) {
-        if (player != null) {
-            destroyPlayer()
-        }
-        val audioFile = File(fileFolder.absolutePath, audio)
-        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
     }
 
     private fun setupQuestion() {
@@ -112,25 +104,73 @@ class FragmentUnderstandQuestions : Fragment() {
                 description.text = q.body
                 setupPicture(q.picture?.value)
                 questionAudio.setOnClickListener {
-                    playAudio(q.audio.value)
+                    playQuestionAudio(q.audio.value)
                 }
             }
         }
     }
 
+    private fun playQuestionAudio(audio: String) {
+        pausePlayers()
+        when {
+            questionPlayer == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                questionPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                questionPlayer!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        questionPlayer!!.pause()
+                    }
+                }
+                questionPlayer!!.start()
+            }
+            questionPlayer!!.isPlaying -> questionPlayer!!.pause()
+            else -> questionPlayer!!.start()
+        }
+    }
+
     private fun setupAnswers() {
         if (questions.size >= questionIndex) {
-            val question = questions[questionIndex]
-            val answers = question.answers
-            val adapter = AnswersAdapter(answers, { answer ->
-                if (answer.correct) {
+            val answers = questions[questionIndex].answers
+            answers.forEach {
+                val audioFile = File(fileFolder.absolutePath, it.audio.value)
+                val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        player.pause()
+                    }
+                }
+
+            }
+            val adapter = AnswersAdapter(answers, {
+                if (it.correct) {
                     next.isEnabled = true
                 }
-            }, { answer ->
-                playAudio(answer.audio.value)
+            }, {
+                playAnswerAudio(answers.indexOf(it), it.audio.value)
             })
             answersRecycler.layoutManager = LinearLayoutManager(requireActivity())
             answersRecycler.adapter = adapter
+        }
+    }
+
+    private fun playAnswerAudio(index: Int, audio: String) {
+        questionPlayer?.pause()
+        pausePlayers(index)
+        var player = answersPlayers.getOrNull(index)
+        when {
+            player == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        player.pause()
+                    }
+                }
+                player.start()
+                answersPlayers.add(index, player)
+            }
+            player.isPlaying -> player.pause()
+            else -> player.start()
         }
     }
 
@@ -142,13 +182,29 @@ class FragmentUnderstandQuestions : Fragment() {
         }
     }
 
-    private fun destroyPlayer() {
-        player?.release()
+    private fun pausePlayers(index: Int? = null) {
+        val players = if (index != null) {
+            answersPlayers.filter {
+                it != answersPlayers[index]
+            }
+        } else {
+            answersPlayers
+        }
+        players.map {
+            it.pause()
+        }
+    }
+
+    private fun destroyPlayers() {
+        questionPlayer?.release()
+        answersPlayers.map {
+            it.release()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayer()
+        destroyPlayers()
     }
 
     companion object {

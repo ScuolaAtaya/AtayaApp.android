@@ -15,10 +15,13 @@ import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.interfaces.ReadActivityInterface
+import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
+import kotlinx.android.synthetic.main.fragment_read.next
+import kotlinx.android.synthetic.main.fragment_read.step
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
@@ -27,7 +30,7 @@ class FragmentRead : Fragment() {
     private var stepIndex: Int = -1
     private var adapter: AnswersAdapter? = null
     private var correctCount = 0
-    private var player: MediaPlayer? = null
+    private var answersPlayers: MutableList<MediaPlayer> = mutableListOf()
     private var communicator: ReadActivityInterface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,8 +70,7 @@ class FragmentRead : Fragment() {
         }
         next.setOnClickListener {
             if (stepIndex + 1 < read.size) {
-                if (player != null)
-                    destroyPlayer()
+                destroyPlayers()
                 communicator?.goToNext(stepIndex + 1)
             } else {
                 communicator?.goToFinish()
@@ -89,7 +91,8 @@ class FragmentRead : Fragment() {
 
     private fun setupAnswers(read: PojoRead) {
         answers.layoutManager = LinearLayoutManager(requireActivity())
-        adapter = AnswersAdapter(read.answersConverted, { answer ->
+        val answersList = read.answersConverted
+        adapter = AnswersAdapter(answersList, { answer ->
             val correctNum = read.answersConverted.map { it.correct }.count { it }
             if (answer.correct) {
                 correctCount += 1
@@ -98,30 +101,53 @@ class FragmentRead : Fragment() {
                 next.isEnabled = true
             }
         }, {
-            playAudio(it.audio.value)
+            playAnswerAudio(answersList.indexOf(it), it.audio.value)
         })
         answers.adapter = adapter
     }
 
-    private fun playAudio(audio: String) {
-        if (player != null) {
-            destroyPlayer()
+    private fun playAnswerAudio(index: Int, audio: String) {
+        pausePlayers(index)
+        var player = answersPlayers.getOrNull(index)
+        when {
+            player == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        player.pause()
+                    }
+                }
+                player.start()
+                answersPlayers.add(index, player)
+            }
+            player.isPlaying -> player.pause()
+            else -> player.start()
         }
-        val audioFile = File(fileFolder.absolutePath, audio)
-        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        player?.setOnCompletionListener {
-            destroyPlayer()
+    }
+
+    private fun pausePlayers(index: Int? = null) {
+        val players = if (index != null) {
+            answersPlayers.filter {
+                it != answersPlayers[index]
+            }
+        } else {
+            answersPlayers
         }
-        player?.start()
+        players.map {
+            it.pause()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayer()
+        destroyPlayers()
     }
 
-    private fun destroyPlayer() {
-        player?.release()
+    private fun destroyPlayers() {
+        answersPlayers.map {
+            it.release()
+        }
     }
 
     companion object {

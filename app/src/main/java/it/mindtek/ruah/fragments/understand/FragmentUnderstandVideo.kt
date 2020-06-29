@@ -48,7 +48,6 @@ class FragmentUnderstandVideo : Fragment() {
             }
         }
         setup()
-
     }
 
     override fun onResume() {
@@ -153,7 +152,6 @@ class FragmentUnderstandVideo : Fragment() {
                 audioPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
                 audioPlayer!!.setOnCompletionListener {
                     if (canAccessActivity) {
-                        next.isEnabled = true
                         audioPlayer!!.pause()
                     }
                 }
