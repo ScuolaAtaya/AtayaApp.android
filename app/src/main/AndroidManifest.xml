@@ -18,6 +18,9 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".activities.ActivityUnderstandQuestion"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.ActivityFinalTest"
             android:screenOrientation="portrait" />
         <activity
@@ -56,10 +59,12 @@
             android:theme="@style/AppThemeNoToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service android:name=".services.DownloadService" />
     </application>
+
 </manifest>
