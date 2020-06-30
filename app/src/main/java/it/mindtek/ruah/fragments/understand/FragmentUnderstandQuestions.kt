@@ -81,7 +81,7 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun setupBack() {
         reset.setOnClickListener {
-            communicator?.goToVideo(understandIndex)
+            communicator?.goToVideo(understandIndex, true)
         }
     }
 
@@ -94,7 +94,7 @@ class FragmentUnderstandQuestions : Fragment() {
                 communicator?.goToNextQuestion(questionIndex + 1)
             } else {
                 if (understandIndex + 1 < understandSize) {
-                    communicator?.goToVideo(understandIndex + 1)
+                    communicator?.goToVideo(understandIndex + 1, false)
                 } else {
                     communicator?.goToFinish()
                 }

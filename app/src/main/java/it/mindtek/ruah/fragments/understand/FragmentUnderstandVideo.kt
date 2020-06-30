@@ -17,7 +17,6 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnderstand
 import it.mindtek.ruah.activities.ActivityUnderstandQuestion
 import it.mindtek.ruah.activities.ActivityUnit
-import it.mindtek.ruah.fragments.write.FragmentWrite
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
@@ -30,6 +29,7 @@ import java.io.File
 class FragmentUnderstandVideo : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
+    private var isVideoWatched: Boolean = false
     private var audioPlayer: MediaPlayer? = null
     private var videoPlayer: YouTubePlayer? = null
     private var understand: MutableList<PojoUnderstand> = mutableListOf()
@@ -44,8 +44,11 @@ class FragmentUnderstandVideo : Fragment() {
             if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
             }
-            if (it.containsKey(FragmentWrite.EXTRA_STEP)) {
-                stepIndex = it.getInt(EXTRA_STEP)
+            if (it.containsKey(ActivityUnderstand.STEP_INDEX)) {
+                stepIndex = it.getInt(ActivityUnderstand.STEP_INDEX)
+            }
+            if (it.containsKey(ActivityUnderstand.VIDEO_WATCHED)) {
+                isVideoWatched = it.getBoolean(ActivityUnderstand.VIDEO_WATCHED)
             }
         }
         setup()
@@ -142,7 +145,7 @@ class FragmentUnderstandVideo : Fragment() {
             intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
             startActivity(intent)
         }
-        next.isEnabled = false
+        next.isEnabled = isVideoWatched
     }
 
     private fun playAudio(audio: String) {
@@ -174,13 +177,13 @@ class FragmentUnderstandVideo : Fragment() {
     }
 
     companion object {
-        const val EXTRA_STEP = "extra step int position"
 
-        fun newInstance(unit_id: Int, stepIndex: Int): FragmentUnderstandVideo {
+        fun newInstance(unit_id: Int, stepIndex: Int, isVideoWatched: Boolean): FragmentUnderstandVideo {
             val fragment = FragmentUnderstandVideo()
             val bundle = Bundle()
             bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unit_id)
-            bundle.putInt(EXTRA_STEP, stepIndex)
+            bundle.putInt(ActivityUnderstand.STEP_INDEX, stepIndex)
+            bundle.putBoolean(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
             fragment.arguments = bundle
             return fragment
         }

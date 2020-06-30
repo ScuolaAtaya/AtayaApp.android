@@ -6,5 +6,5 @@ package it.mindtek.ruah.interfaces
 interface UnderstandActivityInterface {
     fun goToNextQuestion(index: Int)
     fun goToFinish()
-    fun goToVideo(index: Int)
+    fun goToVideo(index: Int, isVideoWatched: Boolean)
 }

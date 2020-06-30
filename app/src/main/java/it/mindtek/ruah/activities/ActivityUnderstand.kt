@@ -19,6 +19,7 @@ import it.mindtek.ruah.kotlin.extensions.replaceFragment
 class ActivityUnderstand : AppCompatActivity() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
+    private var isVideoWatched: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +27,10 @@ class ActivityUnderstand : AppCompatActivity() {
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             stepIndex = it.getIntExtra(STEP_INDEX, -1)
+            isVideoWatched = it.getBooleanExtra(VIDEO_WATCHED, false)
         }
         setup()
-        val fragment = FragmentUnderstandVideo.newInstance(unitId, stepIndex)
+        val fragment = FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched)
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
@@ -79,5 +81,6 @@ class ActivityUnderstand : AppCompatActivity() {
 
     companion object {
         const val STEP_INDEX = "step_index"
+        const val VIDEO_WATCHED = "video_watched"
     }
 }

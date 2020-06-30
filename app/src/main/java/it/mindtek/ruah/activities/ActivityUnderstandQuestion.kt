@@ -69,10 +69,11 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         startActivity(intent)
     }
 
-    override fun goToVideo(index: Int) {
+    override fun goToVideo(index: Int, isVideoWatched: Boolean) {
         val intent = Intent(this, ActivityUnderstand::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
         intent.putExtra(ActivityUnderstand.STEP_INDEX, index)
+        intent.putExtra(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
         startActivity(intent)
         finish()
     }
