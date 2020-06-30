@@ -74,6 +74,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
         intent.putExtra(ActivityUnderstand.STEP_INDEX, index)
         startActivity(intent)
+        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

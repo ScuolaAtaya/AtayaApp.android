@@ -1,6 +1,7 @@
 package it.mindtek.ruah.activities
 
 import android.annotation.TargetApi
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.MenuItem
@@ -60,7 +61,23 @@ class ActivityUnderstand : AppCompatActivity() {
         return false
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent: Intent
+        if (stepIndex == 0) {
+            intent = Intent(this, ActivityIntro::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
+        } else {
+            intent = Intent(this, ActivityUnderstand::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            intent.putExtra(STEP_INDEX, stepIndex - 1)
+        }
+        startActivity(intent)
+        finish()
+    }
+
     companion object {
-        const val STEP_INDEX ="step_index"
+        const val STEP_INDEX = "step_index"
     }
 }

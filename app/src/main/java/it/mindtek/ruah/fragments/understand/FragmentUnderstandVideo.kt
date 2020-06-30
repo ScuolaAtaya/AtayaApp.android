@@ -136,6 +136,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setupNext() {
         next.setOnClickListener {
+            destroyPlayers()
             val intent = Intent(requireActivity(), ActivityUnderstandQuestion::class.java)
             intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
             intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
@@ -162,10 +163,14 @@ class FragmentUnderstandVideo : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun destroyPlayers() {
         audioPlayer?.release()
         videoPlayer?.release()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyPlayers()
     }
 
     companion object {
