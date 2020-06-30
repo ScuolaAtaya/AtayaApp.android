@@ -17,14 +17,12 @@ import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivityFinalTest : AppCompatActivity() {
     var unitId: Int = -1
-    var category: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_final_test)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(it.getIntExtra(ActivityIntro.EXTRA_CATEGORY_ID, -1))
         }
         setup()
         val fragment = FragmentFinalTest.newInstance(unitId,0)
@@ -32,11 +30,13 @@ class ActivityFinalTest : AppCompatActivity() {
     }
 
     private fun setup() {
-        if (unitId == -1 || category == null) {
+        if (unitId == -1) {
             finish()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(category!!.title)
+        // TODO add FINAL_TEST category
+        supportActionBar?.title = "Verifica finale"
+        // supportActionBar?.title = getString(Category.FINAL_TEST.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this, Observer { unit ->
             unit?.let {

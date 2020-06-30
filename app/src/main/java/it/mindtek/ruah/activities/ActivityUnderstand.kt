@@ -74,6 +74,7 @@ class ActivityUnderstand : AppCompatActivity() {
             intent = Intent(this, ActivityUnderstand::class.java)
             intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
             intent.putExtra(STEP_INDEX, stepIndex - 1)
+            intent.putExtra(VIDEO_WATCHED, true)
         }
         startActivity(intent)
         finish()
