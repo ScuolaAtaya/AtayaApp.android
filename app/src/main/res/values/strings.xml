@@ -18,6 +18,10 @@
     <string name="mezzi">I mezzi di\ntrasporto</string>
     <string name="casa">La cura della\ncasa</string>
     <string name="viaggio">Il viaggio</string>
+    <string name="cartellonistica">Lavoro: cartellonistica</string>
+    <string name="rischi_pericoli">Lavoro: rischi e pericoli</string>
+    <string name="benessere">Lavoro: benessere</string>
+    <string name="patente">Patente</string>
 
     <string name="section_understand">Capiamo</string>
     <string name="section_talk">Parliamo</string>

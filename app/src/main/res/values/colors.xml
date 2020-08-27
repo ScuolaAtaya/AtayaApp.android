@@ -26,6 +26,10 @@
     <color name="mezzi">#EAAC12</color>
     <color name="casa">#9ACB2A</color>
     <color name="viaggio">#139B43</color>
+    <color name="cartellonistica">#00796B</color>
+    <color name="rischi_pericoli">#0097A7</color>
+    <color name="benessere">#455965</color>
+    <color name="patente">#6E4C41</color>
 
     <!-- Unit colors dark -->
     <color name="accoglienza_dark">#007cad</color>
@@ -38,4 +42,8 @@
     <color name="mezzi_dark">#b37d00</color>
     <color name="casa_dark">#679a00</color>
     <color name="viaggio_dark">#006b17</color>
+    <color name="cartellonistica_dark">#004c40</color>
+    <color name="rischi_pericoli_dark">#006978</color>
+    <color name="benessere_dark">#1c303b</color>
+    <color name="patente_dark">#41241a</color>
 </resources>
