@@ -48,8 +48,10 @@
             android:layout_below="@id/unitIcon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
+            android:gravity="center"
             android:textAllCaps="true"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <ImageView
