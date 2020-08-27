@@ -13,33 +13,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".5" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontalGuideline"
+        android:id="@+id/horizontalGuidelineTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".5" />
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
 
     <View
         android:layout_width="1dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@color/white"
-        app:layout_constraintStart_toStartOf="@id/verticalGuideline" />
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineBottom"
+        app:layout_constraintStart_toStartOf="@id/verticalGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/white"
-        app:layout_constraintTop_toTopOf="@id/horizontalGuideline" />
+        app:layout_constraintTop_toTopOf="@id/horizontalGuidelineTop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="@id/horizontalGuidelineBottom" />
 
     <RelativeLayout
         android:id="@+id/capire"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineTop"
         app:layout_constraintEnd_toEndOf="@id/verticalGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -47,7 +62,7 @@
         <ImageView
             android:id="@+id/iconCapiamo"
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:src="@drawable/capiamo"
             tools:ignore="ContentDescription" />
@@ -58,11 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iconCapiamo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="26dp"
             android:text="@string/section_understand"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/capiamoDone"
@@ -79,7 +94,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineTop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/verticalGuideline"
         app:layout_constraintTop_toTopOf="parent">
@@ -87,7 +102,7 @@
         <ImageView
             android:id="@+id/iconParliamo"
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:src="@drawable/parliamo"
             tools:ignore="ContentDescription" />
@@ -97,11 +112,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iconParliamo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="26dp"
             android:text="@string/section_talk"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/parliamoDone"
@@ -118,15 +133,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineBottom"
         app:layout_constraintEnd_toEndOf="@id/verticalGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/horizontalGuideline">
+        app:layout_constraintTop_toTopOf="@id/horizontalGuidelineTop">
 
         <ImageView
             android:id="@+id/iconLeggere"
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:src="@drawable/leggiamo"
             tools:ignore="ContentDescription" />
@@ -136,11 +151,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iconLeggere"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:text="@string/section_read"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/leggiamoDone"
@@ -158,15 +173,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/verticalGuideline"
-        app:layout_constraintTop_toTopOf="@id/horizontalGuideline">
+        app:layout_constraintTop_toTopOf="@id/horizontalGuidelineTop">
 
         <ImageView
             android:id="@+id/iconScriviamo"
             android:layout_width="wrap_content"
-            android:layout_height="92dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:src="@drawable/scriviamo"
             tools:ignore="ContentDescription" />
@@ -176,17 +191,56 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iconScriviamo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="26dp"
             android:text="@string/section_write"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/scriviamoDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iconScriviamo"
+            android:src="@drawable/check"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/verificaFinale"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/horizontalGuidelineBottom">
+
+        <ImageView
+            android:id="@+id/iconVerificaFinale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="24dp"
+            android:layout_toEndOf="@+id/iconVerificaFinale"
+            android:text="@string/section_final_test"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/verificaFinaleDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iconVerificaFinale"
+            android:layout_toEndOf="@id/iconVerificaFinale"
             android:src="@drawable/check"
             android:visibility="gone"
             tools:ignore="ContentDescription" />
