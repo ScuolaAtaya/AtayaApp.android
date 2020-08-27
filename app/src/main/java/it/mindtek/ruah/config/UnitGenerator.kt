@@ -16,8 +16,7 @@ class UnitGenerator {
                     R.string.accoglienza,
                     R.color.accoglienza,
                     R.color.accoglienza_dark,
-                    1,
-                    enabled = true
+                    1
             ))
             units.add(ModelUnit(
                     1,
@@ -91,7 +90,37 @@ class UnitGenerator {
                     R.color.viaggio_dark,
                     10
             ))
-            // TODO add the 4 new units
+            units.add(ModelUnit(
+                    10,
+                    R.drawable.cartellonistica,
+                    R.string.cartellonistica,
+                    R.color.cartellonistica,
+                    R.color.cartellonistica_dark,
+                    11
+            ))
+            units.add(ModelUnit(
+                    11,
+                    R.drawable.rischi_pericoli,
+                    R.string.rischi_pericoli,
+                    R.color.rischi_pericoli,
+                    R.color.rischi_pericoli_dark,
+                    12
+            ))
+            units.add(ModelUnit(
+                    12,
+                    R.drawable.benessere,
+                    R.string.benessere,
+                    R.color.benessere,
+                    R.color.benessere_dark,
+                    13
+            ))
+            units.add(ModelUnit(13,
+                    R.drawable.patente,
+                    R.string.patente,
+                    R.color.patente,
+                    R.color.patente_dark,
+                    14
+            ))
             return units
         }
     }
