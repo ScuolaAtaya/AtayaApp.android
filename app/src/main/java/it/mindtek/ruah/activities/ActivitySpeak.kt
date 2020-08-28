@@ -27,8 +27,7 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        val fragment = FragmentSpeak.newInstance(unitId, 0)
-        replaceFragment(fragment, R.id.placeholder, false)
+        replaceFragment(FragmentSpeak.newInstance(unitId, 0), R.id.placeholder, false)
     }
 
     override fun goToNext(index: Int) {

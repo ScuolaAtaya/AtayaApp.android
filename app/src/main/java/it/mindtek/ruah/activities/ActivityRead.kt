@@ -27,8 +27,7 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        val fragment = FragmentRead.newInstance(unitId, 0)
-        replaceFragment(fragment, R.id.placeholder, false)
+        replaceFragment(FragmentRead.newInstance(unitId, 0), R.id.placeholder, false)
     }
 
     override fun goToNext(index: Int) {

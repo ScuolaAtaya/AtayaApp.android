@@ -30,8 +30,7 @@ class ActivityUnderstand : AppCompatActivity() {
             isVideoWatched = it.getBooleanExtra(VIDEO_WATCHED, false)
         }
         setup()
-        val fragment = FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched)
-        replaceFragment(fragment, R.id.placeholder, false)
+        replaceFragment(FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched), R.id.placeholder, false)
     }
 
     private fun setup() {

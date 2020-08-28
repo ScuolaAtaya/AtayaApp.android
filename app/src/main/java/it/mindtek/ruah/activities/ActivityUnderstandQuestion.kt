@@ -30,8 +30,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
             understandIndex = it.getIntExtra(ActivityUnderstand.STEP_INDEX, -1)
         }
         setup()
-        val fragment = FragmentUnderstandQuestions.newInstance(0, unitId, understandIndex)
-        replaceFragment(fragment, R.id.placeholder, false)
+        replaceFragment(FragmentUnderstandQuestions.newInstance(0, unitId, understandIndex), R.id.placeholder, false)
     }
 
     override fun goToNextQuestion(index: Int) {
@@ -77,7 +76,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
             }
         })
     }
-    
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
