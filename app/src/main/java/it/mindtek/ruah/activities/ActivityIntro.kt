@@ -48,20 +48,24 @@ class ActivityIntro : AppCompatActivity() {
             }
         } else {
             done.setGone()
-            fabBack.setOnClickListener { onBackPressed() }
+            fabBack.setOnClickListener {
+                onBackPressed()
+            }
             buttonNext.setVisible()
-            buttonNext.setOnClickListener { dispatch() }
+            buttonNext.setOnClickListener {
+                dispatch()
+            }
             sectionDescription.text = getString(category!!.description)
             playAudio()
         }
         GlideApp.with(this).load(category!!.icon).override(dip(24), dip(24)).into(sectionIcon)
         sectionName.text = getString(category!!.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer { unit ->
-            unit?.let {
-                unitObject = unit
-                val color = ContextCompat.getColor(this, unit.color)
-                val colorDark = ContextCompat.getColor(this, unit.colorDark)
+        unitObservable.observe(this, Observer {
+            it?.let {
+                unitObject = it
+                val color = ContextCompat.getColor(this, it.color)
+                val colorDark = ContextCompat.getColor(this, it.colorDark)
                 compat21(@TargetApi(21) {
                     val window = window
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -70,7 +74,7 @@ class ActivityIntro : AppCompatActivity() {
                 }, {})
                 coordinator.setBackgroundColor(color)
                 fabBack.setTintPreLollipop(color, R.drawable.home)
-                unitIcon.setImageResource(unit.icon)
+                unitIcon.setImageResource(it.icon)
                 val play = ContextCompat.getDrawable(this, R.drawable.play)
                 buttonNext.setCompoundDrawables(null, null, play, null)
                 buttonNext.setColor(color)
@@ -102,6 +106,7 @@ class ActivityIntro : AppCompatActivity() {
             Category.TALK.value -> goToSpeak()
             Category.READ.value -> goToRead()
             Category.WRITE.value -> goToWrite()
+            Category.FINAL_TEST.value -> goToFinalTest()
         }
     }
 
@@ -134,6 +139,12 @@ class ActivityIntro : AppCompatActivity() {
 
     private fun goToWrite() {
         val intent = Intent(this, ActivityWrite::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+        startActivity(intent)
+    }
+
+    private fun goToFinalTest() {
+        val intent = Intent(this, ActivityFinalTest::class.java)
         intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
         startActivity(intent)
     }
