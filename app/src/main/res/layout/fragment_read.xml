@@ -40,7 +40,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView

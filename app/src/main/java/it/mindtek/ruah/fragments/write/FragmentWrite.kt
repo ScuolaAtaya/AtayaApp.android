@@ -85,6 +85,7 @@ class FragmentWrite : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
             editText.supportBackgroundTintList = ColorStateList.valueOf(color)
+            audioButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
     }
 

@@ -9,11 +9,12 @@
     <color name="whiteAlpha50">#80FFFFFF</color>
     <color name="black">#000000</color>
     <color name="blackAlpha54">#8A000000</color>
-    <color name="lightGrey">#BBBBBB</color>
-    <color name="grey">#606060</color>
+    <color name="lightGrey">#D8D8D8</color>
+    <color name="grey">#B2B2B2</color>
     <color name="red">#D0021B</color>
     <color name="green">#4CAF50</color>
     <color name="lightGreen">#9DD263</color>
+    <color name="blue">#3E6DB7</color>
     <color name="lightBlue">#68D2E7</color>
 
     <!-- Unit colors -->
