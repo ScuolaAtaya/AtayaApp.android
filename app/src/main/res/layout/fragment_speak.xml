@@ -28,11 +28,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/volume"
-        android:drawablePadding="-26dp"
+        android:paddingStart="16dp"
         android:text="@string/listen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stepImage" />
+        app:layout_constraintTop_toBottomOf="@id/stepImage"
+        tools:ignore="RtlSymmetry" />
 
     <FrameLayout
         android:id="@+id/stepBackground"
@@ -116,8 +117,10 @@
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:drawableStart="@drawable/play"
+            android:paddingStart="16dp"
             android:text="@string/listen_again"
-            android:theme="@style/ButtonListen" />
+            android:theme="@style/ButtonListen"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next"
@@ -127,7 +130,9 @@
             android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:drawableStart="@drawable/check"
+            android:paddingStart="16dp"
             android:text="@string/next"
-            android:theme="@style/ButtonNext" />
+            android:theme="@style/ButtonNext"
+            tools:ignore="RtlSymmetry" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

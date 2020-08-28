@@ -53,11 +53,13 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/volume"
+            android:paddingStart="16dp"
             android:text="@string/listen"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/picture" />
+            app:layout_constraintTop_toBottomOf="@id/picture"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/compile"
@@ -91,7 +93,9 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/check"
-            android:enabled="true"
+            android:drawablePadding="12dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="24dp"
             android:text="@string/next"
             android:theme="@style/ButtonNext"
             app:layout_constraintBottom_toBottomOf="parent"
