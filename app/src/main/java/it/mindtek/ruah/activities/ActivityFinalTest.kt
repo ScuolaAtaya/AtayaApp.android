@@ -34,14 +34,12 @@ class ActivityFinalTest : AppCompatActivity() {
             finish()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        // TODO add FINAL_TEST category
-        supportActionBar?.title = "Verifica finale"
-        // supportActionBar?.title = getString(Category.FINAL_TEST.title)
+        supportActionBar?.title = getString(Category.FINAL_TEST.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer { unit ->
-            unit?.let {
-                val color = ContextCompat.getColor(this, unit.color)
-                val colorDark = ContextCompat.getColor(this, unit.colorDark)
+        unitObservable.observe(this, Observer {
+            it?.let {
+                val color = ContextCompat.getColor(this, it.color)
+                val colorDark = ContextCompat.getColor(this, it.colorDark)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
                 compat21(@TargetApi(21) {
                     val window = window
