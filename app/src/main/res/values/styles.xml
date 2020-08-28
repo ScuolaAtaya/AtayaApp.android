@@ -15,16 +15,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ButtonCasa" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorAccent">@color/casa</item>
-        <item name="colorControlNormal">@color/casa</item>
+    <style name="ButtonNext" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorAccent">@color/lightGreen</item>
+        <item name="colorControlNormal">@color/lightGreen</item>
         <item name="android:disabledAlpha">0.7</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="ButtonAccoglienza" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorAccent">@color/accoglienza</item>
-        <item name="colorControlNormal">@color/accoglienza</item>
+    <style name="ButtonListen" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorAccent">@color/lightBlue</item>
+        <item name="colorControlNormal">@color/lightBlue</item>
         <item name="android:disabledAlpha">0.7</item>
         <item name="android:textColor">@color/white</item>
     </style>

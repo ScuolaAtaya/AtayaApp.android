@@ -63,7 +63,7 @@
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/check"
             android:text="@string/next"
-            android:theme="@style/ButtonCasa"
+            android:theme="@style/ButtonNext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/answers" />
     </androidx.constraintlayout.widget.ConstraintLayout>

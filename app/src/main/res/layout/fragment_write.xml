@@ -53,7 +53,7 @@
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/volume"
             android:text="@string/listen"
-            android:theme="@style/ButtonAccoglienza"
+            android:theme="@style/ButtonListen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/picture" />
@@ -91,7 +91,7 @@
             android:layout_marginBottom="16dp"
             android:enabled="true"
             android:text="@string/next"
-            android:theme="@style/ButtonCasa"
+            android:theme="@style/ButtonNext"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText"

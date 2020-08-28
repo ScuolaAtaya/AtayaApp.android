@@ -8,10 +8,13 @@
     <color name="white">#FFFFFF</color>
     <color name="whiteAlpha50">#80FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="blackAlpha54">#8A000000</color>
     <color name="lightGrey">#BBBBBB</color>
     <color name="grey">#606060</color>
-    <color name="red">#F44336</color>
+    <color name="red">#D0021B</color>
     <color name="green">#4CAF50</color>
+    <color name="lightGreen">#9DD263</color>
+    <color name="lightBlue">#68D2E7</color>
 
     <!-- Unit colors -->
     <color name="accoglienza">#37ABDF</color>
