@@ -57,6 +57,7 @@ class FragmentUnderstandQuestions : Fragment() {
         setup()
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setup() {
         if (unitId == -1 || understandIndex == -1) {
             requireActivity().finish()

@@ -69,6 +69,13 @@ class FragmentWrite : Fragment() {
         if (write.size == 0 || write.size <= stepIndex) {
             requireActivity().finish()
         }
+        val unit = db.unitDao().getUnitById(unitId)
+        unit?.let {
+            val color = ContextCompat.getColor(requireActivity(), it.color)
+            stepLayout.backgroundColor = color
+            editText.supportBackgroundTintList = ColorStateList.valueOf(color)
+            audioButton.supportBackgroundTintList = ColorStateList.valueOf(color)
+        }
         setupPicture()
         setupButtons()
         setupSteps()
@@ -79,13 +86,6 @@ class FragmentWrite : Fragment() {
         } else {
             setupAdvanced()
             setupAudio()
-        }
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
-            stepLayout.backgroundColor = color
-            editText.supportBackgroundTintList = ColorStateList.valueOf(color)
-            audioButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
     }
 

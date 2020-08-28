@@ -69,15 +69,15 @@ class FragmentSpeak : Fragment() {
         if (speak.size == 0 || speak.size <= stepIndex) {
             requireActivity().finish()
         }
-        setupPicture()
-        setupButtons()
-        setupSteps()
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
             listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
+        setupPicture()
+        setupButtons()
+        setupSteps()
     }
 
     private fun setupPicture() {

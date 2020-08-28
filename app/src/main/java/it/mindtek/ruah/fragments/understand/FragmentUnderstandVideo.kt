@@ -67,14 +67,14 @@ class FragmentUnderstandVideo : Fragment() {
         if (understand.size == 0 || understand.size <= stepIndex) {
             requireActivity().finish()
         }
-        setupNext()
-        setupVideoAndAudio(understand[stepIndex])
-        setupSteps()
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
         }
+        setupNext()
+        setupVideoAndAudio(understand[stepIndex])
+        setupSteps()
     }
 
     private fun setupVideoAndAudio(understand: PojoUnderstand) {

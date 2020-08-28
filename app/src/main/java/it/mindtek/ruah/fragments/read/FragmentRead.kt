@@ -61,13 +61,24 @@ class FragmentRead : Fragment() {
         if (read.size == 0 || read.size <= stepIndex) {
             requireActivity().finish()
         }
-        next.isEnabled = false
-        setupSteps(read)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
         }
+        next.isEnabled = false
+        setupSteps(read)
+        setupNext(read)
+        setupPicture(read[stepIndex])
+        setupAnswers(read[stepIndex])
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSteps(read: MutableList<PojoRead>) {
+        step.text = "${stepIndex + 1}/${read.size}"
+    }
+
+    private fun setupNext(read: MutableList<PojoRead>) {
         next.setOnClickListener {
             if (stepIndex + 1 < read.size) {
                 destroyPlayers()
@@ -76,17 +87,13 @@ class FragmentRead : Fragment() {
                 communicator?.goToFinish()
             }
         }
-        val currentRead = read[stepIndex]
-        currentRead.read?.let {
+    }
+
+    private fun setupPicture(read: PojoRead) {
+        read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
             GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
         }
-        setupAnswers(currentRead)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSteps(read: MutableList<PojoRead>) {
-        step.text = "${stepIndex + 1}/${read.size}"
     }
 
     private fun setupAnswers(read: PojoRead) {
