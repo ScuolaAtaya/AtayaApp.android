@@ -38,7 +38,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topText"
+        app:layout_constraintTop_toTopOf="@id/topText"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topIcon">
+        app:layout_constraintTop_toTopOf="@id/topIcon">
 
         <ImageView
             android:id="@+id/unitIcon"
@@ -83,7 +83,7 @@
             android:id="@+id/done"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_toEndOf="@+id/unitIcon"
+            android:layout_toEndOf="@id/unitIcon"
             android:src="@drawable/check"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
@@ -100,7 +100,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iconSection" />
+        app:layout_constraintTop_toBottomOf="@id/iconSection" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonNext"
@@ -112,7 +112,7 @@
         android:drawableEnd="@drawable/play"
         android:text="@string/start"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/bottomButton"
+        app:layout_constraintBottom_toTopOf="@id/bottomButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -126,7 +126,7 @@
         android:src="@drawable/home"
         app:backgroundTint="@color/white"
         app:fabSize="normal"
-        app:layout_constraintBottom_toTopOf="@+id/backText"
+        app:layout_constraintBottom_toTopOf="@id/backText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

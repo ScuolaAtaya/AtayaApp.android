@@ -32,14 +32,14 @@
         android:text="@string/listen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stepImage" />
+        app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
     <FrameLayout
         android:id="@+id/stepBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/stepImage"
-        app:layout_constraintTop_toTopOf="@+id/stepImage">
+        app:layout_constraintEnd_toEndOf="@id/stepImage"
+        app:layout_constraintTop_toTopOf="@id/stepImage">
 
         <TextView
             android:id="@+id/step"
@@ -59,10 +59,10 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideText"
+        app:layout_constraintBottom_toTopOf="@id/guideText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listenButton"
+        app:layout_constraintTop_toBottomOf="@id/listenButton"
         app:pulse_color="@color/red"
         app:pulse_count="3"
         app:pulse_duration="1000"
@@ -91,7 +91,7 @@
         android:text="@string/hold_to_record"
         android:textColor="@color/blackAlpha54"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
+        app:layout_constraintBottom_toTopOf="@id/buttonsLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

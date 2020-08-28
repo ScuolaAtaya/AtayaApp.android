@@ -55,7 +55,7 @@
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@id/title"
         app:resize_mode="fixed_width"
         tools:ignore="FragmentTagUsage,Instantiatable" />
 
@@ -69,7 +69,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/videoPlayer">
+        app:layout_constraintTop_toBottomOf="@id/videoPlayer">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/listen"

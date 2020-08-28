@@ -57,7 +57,7 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picture" />
+            app:layout_constraintTop_toBottomOf="@id/picture" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/compile"
@@ -69,7 +69,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/audioButton" />
+            app:layout_constraintTop_toBottomOf="@id/audioButton" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/available"
@@ -80,7 +80,7 @@
             app:layout_constraintBottom_toTopOf="@id/next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/compile" />
+            app:layout_constraintTop_toBottomOf="@id/compile" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next"
@@ -96,7 +96,7 @@
             android:theme="@style/ButtonNext"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@id/editText"
             app:layout_constraintVertical_bias="0.99" />
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -113,6 +113,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/audioButton" />
+            app:layout_constraintTop_toBottomOf="@id/audioButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

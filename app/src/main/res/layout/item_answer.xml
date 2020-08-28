@@ -74,8 +74,8 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/answerAudio"
-        app:layout_constraintStart_toEndOf="@+id/completion"
+        app:layout_constraintEnd_toStartOf="@id/answerAudio"
+        app:layout_constraintStart_toEndOf="@id/completion"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

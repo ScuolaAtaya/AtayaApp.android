@@ -53,7 +53,7 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picture" />
+            app:layout_constraintTop_toBottomOf="@id/picture" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next"
@@ -66,6 +66,6 @@
             android:text="@string/next"
             android:theme="@style/ButtonNext"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/answers" />
+            app:layout_constraintTop_toBottomOf="@id/answers" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
