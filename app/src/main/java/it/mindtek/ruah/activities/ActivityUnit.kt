@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
+import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.setVisible
@@ -45,23 +46,41 @@ class ActivityUnit : AppCompatActivity() {
             openIntro(Category.WRITE.value)
         }
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer { unit ->
-            unit?.let { modelUnit ->
-                if (modelUnit.completed.any { it == Category.UNDERSTAND.value }) {
+        unitObservable.observe(this, Observer {
+            it?.let {
+                val isUnderstandCompleted = isCategoryCompleted(it, Category.UNDERSTAND.value)
+                val isSpeakingCompleted = isCategoryCompleted(it, Category.TALK.value)
+                val isReadingCompleted = isCategoryCompleted(it, Category.READ.value)
+                val isWritingCompleted = isCategoryCompleted(it, Category.WRITE.value)
+                val isFinalTestCompleted = isCategoryCompleted(it, Category.FINAL_TEST.value)
+                if (isUnderstandCompleted) {
                     capiamoDone.setVisible()
                 }
-                if (modelUnit.completed.any { it == Category.TALK.value }) {
+                if (isSpeakingCompleted) {
                     parliamoDone.setVisible()
                 }
-                if (modelUnit.completed.any { it == Category.READ.value }) {
+                if (isReadingCompleted) {
                     leggiamoDone.setVisible()
                 }
-                if (modelUnit.completed.any { it == Category.WRITE.value }) {
+                if (isWritingCompleted) {
                     scriviamoDone.setVisible()
                 }
-                supportActionBar?.title = getString(unit.name)
-                val color = ContextCompat.getColor(this, modelUnit.color)
-                val colorDark = ContextCompat.getColor(this, modelUnit.colorDark)
+                if (isFinalTestCompleted) {
+                    verificaFinaleDone.setVisible()
+                }
+                if (isUnderstandCompleted && isSpeakingCompleted && isReadingCompleted && isWritingCompleted) {
+                    iconVerificaFinale.setImageResource(R.drawable.verifica_finale)
+                    verificaFinaleText.setTextColor(ContextCompat.getColor(this, R.color.white))
+                    verificaFinale.setOnClickListener {
+                        openIntro(Category.FINAL_TEST.value)
+                    }
+                } else {
+                    iconVerificaFinale.setImageResource(R.drawable.verifica_finale_disattivato)
+                    verificaFinaleText.setTextColor(ContextCompat.getColor(this, R.color.whiteAlpha50))
+                }
+                supportActionBar?.title = getString(it.name)
+                val color = ContextCompat.getColor(this, it.color)
+                val colorDark = ContextCompat.getColor(this, it.colorDark)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
                 constraint.setBackgroundColor(color)
                 if (Build.VERSION.SDK_INT >= 21) {
@@ -81,11 +100,15 @@ class ActivityUnit : AppCompatActivity() {
         return false
     }
 
-    private fun openIntro(category_id: Int) {
+    private fun openIntro(categoryId: Int) {
         val intent = Intent(this, ActivityIntro::class.java)
         intent.putExtra(EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, category_id)
+        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, categoryId)
         startActivity(intent)
+    }
+
+    private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean {
+        return modelUnit.completed.any { it == categoryId }
     }
 
     companion object {

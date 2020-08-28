@@ -71,7 +71,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iconCapiamo"
+            android:layout_below="@id/iconCapiamo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:text="@string/section_understand"
@@ -111,7 +111,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iconParliamo"
+            android:layout_below="@id/iconParliamo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:text="@string/section_talk"
@@ -151,7 +151,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iconLeggere"
+            android:layout_below="@id/iconLeggere"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="@string/section_read"
@@ -192,7 +192,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iconScriviamo"
+            android:layout_below="@id/iconScriviamo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:text="@string/section_write"
@@ -229,14 +229,14 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/verificaFinaleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="24dp"
-            android:layout_toEndOf="@+id/iconVerificaFinale"
+            android:layout_toEndOf="@id/iconVerificaFinale"
             android:text="@string/section_final_test"
             android:textAllCaps="true"
-            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <ImageView
