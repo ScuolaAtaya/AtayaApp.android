@@ -5,12 +5,13 @@ import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
@@ -21,12 +22,10 @@ import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
-import kotlinx.android.synthetic.main.fragment_understand_questions.next
-import kotlinx.android.synthetic.main.fragment_understand_questions.step
-import kotlinx.android.synthetic.main.fragment_understand_questions.stepLayout
-import kotlinx.android.synthetic.main.fragment_understand_questions.title
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.dip
 import java.io.File
+
 
 class FragmentUnderstandQuestions : Fragment() {
     private var unitId: Int = -1
@@ -187,6 +186,12 @@ class FragmentUnderstandQuestions : Fragment() {
             stepImage.setVisible()
             val pictureFile = File(fileFolder.absolutePath, picture)
             GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+        }
+        if (stepImage.visibility == View.GONE) {
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(root)
+            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
+            constraintSet.applyTo(root)
         }
     }
 
