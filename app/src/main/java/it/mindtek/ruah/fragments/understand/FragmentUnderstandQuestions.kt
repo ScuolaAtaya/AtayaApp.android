@@ -1,6 +1,7 @@
 package it.mindtek.ruah.fragments.understand
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -68,6 +69,7 @@ class FragmentUnderstandQuestions : Fragment() {
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
+            questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
         understandSize = db.understandDao().count()
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
