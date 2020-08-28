@@ -1,6 +1,7 @@
 package it.mindtek.ruah.activities
 
 import android.annotation.TargetApi
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,11 +12,12 @@ import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.final_test.FragmentFinalTest
+import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
-class ActivityFinalTest : AppCompatActivity() {
+class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
     var unitId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +27,19 @@ class ActivityFinalTest : AppCompatActivity() {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        val fragment = FragmentFinalTest.newInstance(unitId,0)
-        replaceFragment(fragment, R.id.placeholder, false)
+        replaceFragment(FragmentFinalTest.newInstance(unitId,0), R.id.placeholder, false)
+    }
+
+    override fun goToNext(index: Int) {
+        replaceFragment(FragmentFinalTest.newInstance(unitId, index), R.id.placeholder, true)
+    }
+
+    override fun goToFinish() {
+        val intent = Intent(this, ActivityIntro::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.FINAL_TEST.value)
+        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
+        startActivity(intent)
     }
 
     private fun setup() {
