@@ -129,7 +129,9 @@ class DownloadService : IntentService("Download service") {
         val inputFile = File(filesDir, "file.zip")
         val outputFolder = File(filesDir, "data")
         ZipArchive.unzip(inputFile.absolutePath, outputFolder.absolutePath, "")
-        outputFolder.list()?.forEach { println(it) }
+        outputFolder.list()?.forEach {
+            println(it)
+        }
     }
 
     private fun parseJSON() {
@@ -221,9 +223,9 @@ class DownloadService : IntentService("Download service") {
             Log.w(tag, "File is empty or huge: $file")
         } else {
             try {
-                FileReader(file).use { `in` ->
+                FileReader(file).use {
                     val content = CharArray(length.toInt())
-                    val numRead = `in`.read(content)
+                    val numRead = it.read(content)
                     if (numRead.toLong() != length) {
                         Log.e(tag, "Incomplete read of $file. Read chars $numRead of $length")
                     }

@@ -19,8 +19,8 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
     init {
         try {
             val data = db.unitDao().getUnitsAsync()
-            data.observe(owner, Observer { unitsAsync ->
-                unitsAsync?.let {
+            data.observe(owner, Observer {
+                it?.let {
                     units = it
                     notifyDataSetChanged()
                 }

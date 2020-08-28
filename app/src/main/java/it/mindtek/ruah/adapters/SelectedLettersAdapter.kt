@@ -19,10 +19,11 @@ class SelectedLettersAdapter(
     private var letters = MutableList(givenLetters.size) { "" }
 
     override fun getItemViewType(position: Int): Int {
-        return if (letters[position].isEmpty())
+        return if (letters[position].isEmpty()) {
             0
-        else
+        } else {
             1
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -39,8 +40,12 @@ class SelectedLettersAdapter(
         if (holder.itemViewType != 0) {
             val cast = holder as LettersHolder
             val item = letters[position]
-            val syllable = givenLetters.first { it.id == item }
-            val right = syllable.occurences.any { it == position }
+            val syllable = givenLetters.first {
+                it.id == item
+            }
+            val right = syllable.occurences.any {
+                it == position
+            }
             if (!right) {
                 cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_red)
             } else {
@@ -58,7 +63,9 @@ class SelectedLettersAdapter(
     override fun getItemCount(): Int = letters.size
 
     fun select(letter: Syllable) {
-        val firstEmpty = letters.indexOfFirst { it.isEmpty() }
+        val firstEmpty = letters.indexOfFirst {
+            it.isEmpty()
+        }
         if (firstEmpty > -1) {
             letters[firstEmpty] = letter.id
             notifyDataSetChanged()
@@ -68,9 +75,14 @@ class SelectedLettersAdapter(
     fun completed(): Boolean {
         var wrong = false
         letters.forEachIndexed { index, i ->
-            val syllable = givenLetters.firstOrNull { it.id == i }
+            val syllable = givenLetters.firstOrNull {
+                it.id == i
+            }
             if (syllable != null) {
-                if (syllable.occurences.none { it == index }) {
+                val noOccurrences = syllable.occurences.none {
+                    it == index
+                }
+                if (noOccurrences) {
                     wrong = true
                 }
             } else {

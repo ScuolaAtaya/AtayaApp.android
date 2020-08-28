@@ -40,7 +40,9 @@ class SelectableLettersAdapter(
     }
 
     fun unlockLetter(letter: Syllable) {
-        syllables.first { it.id == letter.id }.enabled = true
+        syllables.first {
+            it.id == letter.id
+        }.enabled = true
         notifyDataSetChanged()
     }
 }

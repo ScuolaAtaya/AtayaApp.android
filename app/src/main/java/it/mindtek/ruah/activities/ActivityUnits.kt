@@ -19,9 +19,9 @@ class ActivityUnits : AppCompatActivity() {
 
     private fun setupRecycler() {
         unitsRecycler.layoutManager = GridLayoutManager(this, 2)
-        adapter = UnitsAdapter(this, { unit ->
+        adapter = UnitsAdapter(this, {
             val intent = Intent(this@ActivityUnits, ActivityUnit::class.java)
-            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unit.id)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, it.id)
             startActivity(intent)
         })
         unitsRecycler.adapter = adapter
