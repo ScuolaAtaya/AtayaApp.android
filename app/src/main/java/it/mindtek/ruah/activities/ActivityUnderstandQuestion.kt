@@ -34,6 +34,27 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         replaceFragment(fragment, R.id.placeholder, false)
     }
 
+    override fun goToNextQuestion(index: Int) {
+        replaceFragment(FragmentUnderstandQuestions.newInstance(index, unitId, understandIndex), R.id.placeholder, true)
+    }
+
+    override fun goToFinish() {
+        val intent = Intent(this, ActivityIntro::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
+        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
+        startActivity(intent)
+    }
+
+    override fun goToVideo(index: Int, isVideoWatched: Boolean) {
+        val intent = Intent(this, ActivityUnderstand::class.java)
+        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+        intent.putExtra(ActivityUnderstand.STEP_INDEX, index)
+        intent.putExtra(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
+        startActivity(intent)
+        finish()
+    }
+
     private fun setup() {
         if (unitId == -1) {
             finish()
@@ -56,28 +77,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
             }
         })
     }
-
-    override fun goToNextQuestion(index: Int) {
-        replaceFragment(FragmentUnderstandQuestions.newInstance(index, unitId, understandIndex), R.id.placeholder, true)
-    }
-
-    override fun goToFinish() {
-        val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
-        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
-        startActivity(intent)
-    }
-
-    override fun goToVideo(index: Int, isVideoWatched: Boolean) {
-        val intent = Intent(this, ActivityUnderstand::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityUnderstand.STEP_INDEX, index)
-        intent.putExtra(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
-        startActivity(intent)
-        finish()
-    }
-
+    
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
