@@ -25,7 +25,7 @@ class UnitHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(unit: ModelUnit, onClick: ((unit: ModelUnit) -> Unit)?) {
         number.text = unit.position.toString()
         background.setBackgroundColor(ContextCompat.getColor(itemView.context, unit.color))
-        if (unit.completed.size >= 4) {
+        if (unit.completed.size >= 5) {
             check.setVisible()
         } else {
             check.setGone()
