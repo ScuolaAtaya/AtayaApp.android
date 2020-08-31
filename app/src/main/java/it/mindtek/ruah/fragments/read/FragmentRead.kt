@@ -103,7 +103,11 @@ class FragmentRead : Fragment() {
         answers.layoutManager = LinearLayoutManager(requireActivity())
         val answersList = read.answersConverted
         adapter = AnswersAdapter(answersList, { answer ->
-            val correctNum = read.answersConverted.map { it.correct }.count { it }
+            val correctNum = read.answersConverted.map {
+                it.correct
+            }.count {
+                it
+            }
             if (answer.correct) {
                 correctCount += 1
             }
