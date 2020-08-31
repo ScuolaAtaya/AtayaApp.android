@@ -67,7 +67,7 @@
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/volume"
             android:paddingStart="16dp"
-            android:text="@string/listen_again"
+            android:text="@string/listen"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
