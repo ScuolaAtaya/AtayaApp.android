@@ -50,4 +50,7 @@
     <string name="question">Domanda</string>
     <string name="write">Scrivi</string>
     <string name="downloaded_mb">Scaricati %d MB di %d MB</string>
+
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
 </resources>
