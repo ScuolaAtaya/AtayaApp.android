@@ -18,10 +18,9 @@ import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
-import kotlinx.android.synthetic.main.fragment_read.next
-import kotlinx.android.synthetic.main.fragment_read.step
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
@@ -92,7 +91,11 @@ class FragmentRead : Fragment() {
     private fun setupPicture(read: PojoRead) {
         read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
+            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+            if (it.picture.credits.isNotBlank()) {
+                stepImageCredits.setVisible()
+                stepImageCredits.text = it.picture.credits
+            }
         }
     }
 
