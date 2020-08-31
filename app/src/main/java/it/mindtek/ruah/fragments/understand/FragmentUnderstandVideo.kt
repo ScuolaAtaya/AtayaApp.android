@@ -89,10 +89,6 @@ class FragmentUnderstandVideo : Fragment() {
     // CAST_NEVER_SUCCEEDS can be ignored - happens because Youtube SDK's fragment is not androidx.Fragment, but Jetifier will take care of that and cast will succeed
     @Suppress("CAST_NEVER_SUCCEEDS")
     private fun setupVideo(video: ModelMedia) {
-        if (video.credits.isNotBlank()) {
-            videoCredits.setVisible()
-            videoCredits.text = video.credits
-        }
         val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
         playerFragment.initialize(getString(R.string.youtube_api_key), object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
@@ -128,15 +124,19 @@ class FragmentUnderstandVideo : Fragment() {
                 println("YOUTUBE ERROR")
             }
         })
+        if (video.credits.isNotBlank()) {
+            videoCredits.setVisible()
+            videoCredits.text = video.credits
+        }
     }
 
     private fun setupAudio(audio: ModelMedia) {
+        listen.setOnClickListener {
+            playAudio(audio.value)
+        }
         if (audio.credits.isNotBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
-        }
-        listen.setOnClickListener {
-            playAudio(audio.value)
         }
     }
 

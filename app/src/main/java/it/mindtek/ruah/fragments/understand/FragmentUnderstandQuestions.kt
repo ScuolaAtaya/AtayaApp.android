@@ -23,10 +23,6 @@ import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
-import kotlinx.android.synthetic.main.fragment_understand_questions.next
-import kotlinx.android.synthetic.main.fragment_understand_questions.step
-import kotlinx.android.synthetic.main.fragment_understand_questions.stepLayout
-import kotlinx.android.synthetic.main.fragment_understand_questions.title
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -123,12 +119,12 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupAudio(audio: ModelMedia) {
+        questionAudio.setOnClickListener {
+            playQuestionAudio(audio.value)
+        }
         if (audio.credits.isNotBlank()) {
             questionAudioCredits.setVisible()
             questionAudioCredits.text = audio.credits
-        }
-        questionAudio.setOnClickListener {
-            playQuestionAudio(audio.value)
         }
     }
 
