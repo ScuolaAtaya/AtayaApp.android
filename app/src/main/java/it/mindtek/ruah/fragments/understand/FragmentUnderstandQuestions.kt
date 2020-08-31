@@ -75,6 +75,9 @@ class FragmentUnderstandQuestions : Fragment() {
         understandSize = db.understandDao().count()
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
         questions = understand[understandIndex].questions
+        if (questions.size == 0 || questions.size <= questionIndex) {
+            requireActivity().finish()
+        }
         next.isEnabled = false
         setupBack()
         setupSection()
@@ -106,7 +109,6 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupQuestion() {
-        if (questions.size >= questionIndex) {
             val question = questions[questionIndex]
             title.text = getString(R.string.question)
             question.question?.let { q ->
@@ -115,7 +117,6 @@ class FragmentUnderstandQuestions : Fragment() {
                 setupAudio(q.audio)
 
             }
-        }
     }
 
     private fun setupAudio(audio: ModelMedia) {
