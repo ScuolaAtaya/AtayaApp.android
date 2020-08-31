@@ -14,11 +14,12 @@ class AnswerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val wrong = itemView.wrong
     private val right = itemView.correct
     private val select = itemView.radioSelect
-    private val answerText = itemView.answerText
+    private val text = itemView.answerText
     private val audio = itemView.answerAudio
+    private val credits = itemView.answerCredits
 
     fun bind(answer: ModelAnswer, callback: ((answer: ModelAnswer) -> Unit)?, playAnswerCallback: ((answer: ModelAnswer) -> Unit)?) {
-        answerText.text = answer.body
+        text.text = answer.body
         select.setOnClickListener {
             select.setGone()
             if (answer.correct) {
@@ -31,6 +32,10 @@ class AnswerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         audio.setOnClickListener {
             playAnswerCallback?.invoke(answer)
+        }
+        if (answer.audio.credits.isNotBlank()) {
+            credits.setVisible()
+            credits.text = answer.audio.credits
         }
     }
 }
