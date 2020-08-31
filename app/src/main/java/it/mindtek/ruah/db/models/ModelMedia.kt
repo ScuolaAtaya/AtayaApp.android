@@ -1,6 +1,6 @@
 package it.mindtek.ruah.db.models
 
-class ModelMedia (
+class ModelMedia(
         var value: String = "",
         var credits: String = ""
 )

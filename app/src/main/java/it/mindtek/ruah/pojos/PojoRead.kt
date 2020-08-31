@@ -13,7 +13,7 @@ class PojoRead {
     @Embedded
     var read: ModelRead? = null
 
-    @Relation(parentColumn = "id", entityColumn = "read_id", entity = ModelReadAnswer::class)
+    @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelReadAnswer::class)
     var answers: MutableList<ModelReadAnswer> = mutableListOf()
 
     val answersConverted: MutableList<ModelAnswer>
