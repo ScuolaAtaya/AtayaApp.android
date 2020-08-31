@@ -109,14 +109,14 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupQuestion() {
-            val question = questions[questionIndex]
-            title.text = getString(R.string.question)
-            question.question?.let { q ->
-                description.text = q.body
-                setupPicture(q.picture)
-                setupAudio(q.audio)
+        val question = questions[questionIndex]
+        title.text = getString(R.string.question)
+        question.question?.let { q ->
+            description.text = q.body
+            setupPicture(q.picture)
+            setupAudio(q.audio)
 
-            }
+        }
     }
 
     private fun setupAudio(audio: ModelMedia) {
