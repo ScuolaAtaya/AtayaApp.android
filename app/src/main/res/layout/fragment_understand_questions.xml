@@ -25,6 +25,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/stepImageCredits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/blackAlpha54"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/stepImage"
+            app:layout_constraintTop_toBottomOf="@id/stepImage" />
+
         <FrameLayout
             android:id="@+id/stepLayout"
             android:layout_width="wrap_content"
@@ -60,8 +71,19 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/stepImage"
+            app:layout_constraintTop_toBottomOf="@id/stepImageCredits"
             tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/questionAudioCredits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/blackAlpha54"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/questionAudio"
+            app:layout_constraintTop_toBottomOf="@id/questionAudio" />
 
         <TextView
             android:id="@+id/title"
@@ -73,7 +95,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/questionAudio" />
+            app:layout_constraintTop_toBottomOf="@id/questionAudioCredits" />
 
         <TextView
             android:id="@+id/description"

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
@@ -22,6 +23,10 @@ import it.mindtek.ruah.kotlin.extensions.fileFolder
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
+import kotlinx.android.synthetic.main.fragment_understand_questions.next
+import kotlinx.android.synthetic.main.fragment_understand_questions.step
+import kotlinx.android.synthetic.main.fragment_understand_questions.stepLayout
+import kotlinx.android.synthetic.main.fragment_understand_questions.title
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -110,11 +115,20 @@ class FragmentUnderstandQuestions : Fragment() {
             title.text = getString(R.string.question)
             question.question?.let { q ->
                 description.text = q.body
-                setupPicture(q.picture?.value)
-                questionAudio.setOnClickListener {
-                    playQuestionAudio(q.audio.value)
-                }
+                setupPicture(q.picture)
+                setupAudio(q.audio)
+
             }
+        }
+    }
+
+    private fun setupAudio(audio: ModelMedia) {
+        if (audio.credits.isNotBlank()) {
+            questionAudioCredits.setVisible()
+            questionAudioCredits.text = audio.credits
+        }
+        questionAudio.setOnClickListener {
+            playQuestionAudio(audio.value)
         }
     }
 
@@ -182,11 +196,17 @@ class FragmentUnderstandQuestions : Fragment() {
         }
     }
 
-    private fun setupPicture(picture: String?) {
-        if (!picture.isNullOrEmpty()) {
-            stepImage.setVisible()
-            val pictureFile = File(fileFolder.absolutePath, picture)
-            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+    private fun setupPicture(picture: ModelMedia?) {
+        picture?.let {
+            if (picture.value.isNotBlank()) {
+                stepImage.setVisible()
+                val pictureFile = File(fileFolder.absolutePath, picture.value)
+                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+            }
+            if (picture.credits.isNotBlank()) {
+                stepImageCredits.setVisible()
+                stepImageCredits.text = picture.credits
+            }
         }
         if (stepImage.visibility == View.GONE) {
             val constraintSet = ConstraintSet()

@@ -81,14 +81,14 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setupVideoAndAudio(understand: PojoUnderstand) {
         understand.understand?.let {
-            showVideo(it.video_url)
-            setupListen(it.audio)
+            setupVideo(it.video_url)
+            setupAudio(it.audio)
         }
     }
 
     // CAST_NEVER_SUCCEEDS can be ignored - happens because Youtube SDK's fragment is not androidx.Fragment, but Jetifier will take care of that and cast will succeed
     @Suppress("CAST_NEVER_SUCCEEDS")
-    private fun showVideo(video: ModelMedia) {
+    private fun setupVideo(video: ModelMedia) {
         if (video.credits.isNotBlank()) {
             videoCredits.setVisible()
             videoCredits.text = video.credits
@@ -130,7 +130,7 @@ class FragmentUnderstandVideo : Fragment() {
         })
     }
 
-    private fun setupListen(audio: ModelMedia) {
+    private fun setupAudio(audio: ModelMedia) {
         if (audio.credits.isNotBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
