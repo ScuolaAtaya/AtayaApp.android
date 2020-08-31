@@ -146,7 +146,7 @@ class FragmentFinalTest : Fragment() {
         no.text.text = getString(R.string.no)
         yes.radioSelect.setOnClickListener {
             yes.radioSelect.setGone()
-            if (questions[stepIndex].correct) {
+            if (questions[stepIndex].answers) {
                 yes.correct.setVisible()
                 next.isEnabled = true
             } else {
@@ -155,7 +155,7 @@ class FragmentFinalTest : Fragment() {
         }
         no.radioSelect.setOnClickListener {
             no.radioSelect.setGone()
-            if (questions[stepIndex].correct) {
+            if (questions[stepIndex].answers) {
                 no.wrong.setVisible()
             } else {
                 no.correct.setVisible()

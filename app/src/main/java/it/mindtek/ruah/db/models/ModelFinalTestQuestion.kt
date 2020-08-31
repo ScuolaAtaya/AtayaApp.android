@@ -14,5 +14,5 @@ open class ModelFinalTestQuestion (
         var audio: ModelMedia,
         @Embedded(prefix = "picture_")
         var picture: ModelMedia?,
-        var correct: Boolean = false
+        var answers: Boolean = false
 )
