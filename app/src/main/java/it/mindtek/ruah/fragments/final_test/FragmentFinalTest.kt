@@ -94,18 +94,18 @@ class FragmentFinalTest : Fragment() {
     }
 
     private fun setupQuestion() {
-        if (questions.size >= stepIndex) {
-            title.text = getString(R.string.question)
-            description.text = questions[stepIndex].body
-        }
+        title.text = getString(R.string.question)
+        description.text = questions[stepIndex].body
     }
 
     private fun setupAudio() {
+        val audio = questions[stepIndex].audio
         questionAudio.setOnClickListener {
-            if (questions.size >= stepIndex) {
-                val audio = questions[stepIndex].audio
-                playAudio(audio.value)
-            }
+            playAudio(audio.value)
+        }
+        if (audio.credits.isNotBlank()) {
+            questionAudioCredits.setVisible()
+            questionAudioCredits.text = audio.credits
         }
     }
 
@@ -127,12 +127,19 @@ class FragmentFinalTest : Fragment() {
     }
 
     private fun setupPicture() {
-        val picture = questions[stepIndex].picture?.value
-        if (!picture.isNullOrEmpty()) {
-            stepImage.setVisible()
-            val pictureFile = File(fileFolder.absolutePath, picture)
-            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+        val picture = questions[stepIndex].picture
+        picture?.let {
+            if (it.value.isNotBlank()) {
+                stepImage.setVisible()
+                val pictureFile = File(fileFolder.absolutePath, it.value)
+                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+            }
+            if (picture.credits.isNotBlank()) {
+                stepImageCredits.setVisible()
+                stepImageCredits.text = picture.credits
+            }
         }
+
         if (stepImage.visibility == View.GONE) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(root)
