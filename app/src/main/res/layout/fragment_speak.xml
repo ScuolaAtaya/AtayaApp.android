@@ -12,28 +12,22 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:src="@color/black"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/listenButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/stepImageCredits"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:drawableStart="@drawable/volume"
-        android:paddingStart="16dp"
-        android:text="@string/listen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stepImage"
-        tools:ignore="RtlSymmetry" />
+        android:layout_marginTop="4dp"
+        android:textColor="@color/blackAlpha54"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/stepImage"
+        app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
     <FrameLayout
         android:id="@+id/stepBackground"
@@ -54,6 +48,33 @@
             android:textSize="14sp" />
     </FrameLayout>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/listenButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/volume"
+        android:paddingStart="16dp"
+        android:text="@string/listen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stepImageCredits"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/audioCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/blackAlpha54"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/listenButton"
+        app:layout_constraintTop_toBottomOf="@id/listenButton" />
+
     <pl.bclogic.pulsator4droid.library.PulsatorLayout
         android:id="@+id/pulsator"
         android:layout_width="0dp"
@@ -63,7 +84,7 @@
         app:layout_constraintBottom_toTopOf="@id/guideText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listenButton"
+        app:layout_constraintTop_toBottomOf="@id/audioCredits"
         app:pulse_color="@color/red"
         app:pulse_count="3"
         app:pulse_duration="1000"

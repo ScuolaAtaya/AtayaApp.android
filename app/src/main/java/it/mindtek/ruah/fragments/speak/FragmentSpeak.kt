@@ -20,9 +20,6 @@ import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_speak.*
-import kotlinx.android.synthetic.main.fragment_speak.next
-import kotlinx.android.synthetic.main.fragment_speak.step
-import kotlinx.android.synthetic.main.fragment_speak.stepImage
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -76,13 +73,30 @@ class FragmentSpeak : Fragment() {
             listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
         setupPicture()
+        setupAudio()
         setupButtons()
         setupSteps()
     }
 
     private fun setupPicture() {
-        val picture = File(fileFolder.absolutePath, speak[stepIndex].picture.value)
-        GlideApp.with(this).load(picture).placeholder(R.color.grey).into(stepImage)
+        val picture = speak[stepIndex].picture
+        val pictureImage = File(fileFolder.absolutePath, picture.value)
+        GlideApp.with(this).load(pictureImage).placeholder(R.color.grey).into(stepImage)
+        if (picture.credits.isNotBlank()) {
+            stepImageCredits.setVisible()
+            stepImageCredits.text = picture.credits
+        }
+    }
+
+    private fun setupAudio() {
+        val audio = speak[stepIndex].audio
+        listenButton.setOnClickListener {
+            playAudio(audio.value)
+        }
+        if (audio.credits.isNotBlank()) {
+            audioCredits.setVisible()
+            audioCredits.text = audio.credits
+        }
     }
 
     private fun setupButtons() {
@@ -100,9 +114,6 @@ class FragmentSpeak : Fragment() {
             destroyPlayers()
             destroyFile()
             dispatch()
-        }
-        listenButton.setOnClickListener {
-            playAudio(speak[stepIndex].audio.value)
         }
         listenAgain.setOnClickListener {
             playRecordedAudio()
