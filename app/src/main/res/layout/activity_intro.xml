@@ -83,6 +83,7 @@
             android:id="@+id/done"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/unitIcon"
             android:src="@drawable/check"
             tools:ignore="ContentDescription" />
