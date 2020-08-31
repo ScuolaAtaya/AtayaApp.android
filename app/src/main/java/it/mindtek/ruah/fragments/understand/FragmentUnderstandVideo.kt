@@ -17,9 +17,11 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnderstand
 import it.mindtek.ruah.activities.ActivityUnderstandQuestion
 import it.mindtek.ruah.activities.ActivityUnit
+import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoUnderstand
 import kotlinx.android.synthetic.main.fragment_understand_video.*
 import org.jetbrains.anko.backgroundColor
@@ -79,14 +81,18 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setupVideoAndAudio(understand: PojoUnderstand) {
         understand.understand?.let {
-            showVideo(it.video_url.value)
-            setupListen(it.audio.value)
+            showVideo(it.video_url)
+            setupListen(it.audio)
         }
     }
 
     // CAST_NEVER_SUCCEEDS can be ignored - happens because Youtube SDK's fragment is not androidx.Fragment, but Jetifier will take care of that and cast will succeed
     @Suppress("CAST_NEVER_SUCCEEDS")
-    private fun showVideo(videoUrl: String) {
+    private fun showVideo(video: ModelMedia) {
+        if (video.credits.isNotBlank()) {
+            videoCredits.setVisible()
+            videoCredits.text = video.credits
+        }
         val playerFragment = childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
         playerFragment.initialize(getString(R.string.youtube_api_key), object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, p1: YouTubePlayer, p2: Boolean) {
@@ -115,7 +121,7 @@ class FragmentUnderstandVideo : Fragment() {
                     override fun onPaused() {}
                 })
                 p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
-                p1.loadVideo(videoUrl)
+                p1.loadVideo(video.value)
             }
 
             override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
@@ -124,11 +130,13 @@ class FragmentUnderstandVideo : Fragment() {
         })
     }
 
-    private fun setupListen(audio: String?) {
+    private fun setupListen(audio: ModelMedia) {
+        if (audio.credits.isNotBlank()) {
+            audioCredits.setVisible()
+            audioCredits.text = audio.credits
+        }
         listen.setOnClickListener {
-            audio?.let {
-                playAudio(it)
-            }
+            playAudio(audio.value)
         }
     }
 
