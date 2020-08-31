@@ -23,9 +23,6 @@ import it.mindtek.ruah.db.models.ModelWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_write.*
-import kotlinx.android.synthetic.main.fragment_write.next
-import kotlinx.android.synthetic.main.fragment_write.step
-import kotlinx.android.synthetic.main.fragment_write.stepLayout
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -76,26 +73,71 @@ class FragmentWrite : Fragment() {
             editText.supportBackgroundTintList = ColorStateList.valueOf(color)
             audioButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
+        setupAudio()
         setupPicture()
         setupButtons()
         setupSteps()
         if (write[stepIndex].type == BASIC) {
             setupBasic()
             setupRecyclers()
-            setupAudio()
         } else {
             setupAdvanced()
-            setupAudio()
         }
     }
 
     private fun setupAudio() {
+        val audio = write[stepIndex].audio
         audioButton.setOnClickListener {
-            if (write.size >= stepIndex) {
-                val currentWrite = write[stepIndex]
-                playAudio(currentWrite.audio.value)
+                playAudio(audio.value)
+        }
+        if (audio.credits.isNotBlank()) {
+            audioCredits.setVisible()
+            audioCredits.text = audio.credits
+        }
+    }
+
+    private fun playAudio(audio: String) {
+        when {
+            player == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        player!!.pause()
+                    }
+                }
+                player!!.start()
+            }
+            player!!.isPlaying -> player!!.pause()
+            else -> player!!.start()
+        }
+    }
+
+    private fun setupPicture() {
+        val picture = write[stepIndex].picture
+        val pictureFile = File(fileFolder.absolutePath, picture.value)
+        GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+        if (picture.credits.isNotBlank()) {
+            stepImageCredits.setVisible()
+            stepImageCredits.text = picture.credits
+        }
+    }
+
+    private fun setupButtons() {
+        next.setOnClickListener {
+            player?.release()
+            if (stepIndex + 1 < write.size) {
+                communicator?.goToNext(stepIndex + 1)
+            } else {
+                communicator?.goToFinish()
             }
         }
+        next.isEnabled = false
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSteps() {
+        step.text = "${stepIndex + 1}/${write.size}"
     }
 
     private fun setupBasic() {
@@ -176,49 +218,6 @@ class FragmentWrite : Fragment() {
         val columns = ((dpWidth - 32) / 40) - 1
         println(columns)
         return columns.toInt()
-    }
-
-    private fun setupPicture() {
-        val pictureFile = File(fileFolder.absolutePath, write[stepIndex].picture.value)
-        GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(picture)
-    }
-
-    private fun playAudio(audio: String) {
-        when {
-            player == null -> {
-                val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        player!!.pause()
-                    }
-                }
-                player!!.start()
-            }
-            player!!.isPlaying -> player!!.pause()
-            else -> player!!.start()
-        }
-    }
-
-    private fun setupButtons() {
-        next.setOnClickListener {
-            player?.release()
-            dispatch()
-        }
-        next.isEnabled = false
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSteps() {
-        step.text = "${stepIndex + 1}/${write.size}"
-    }
-
-    private fun dispatch() {
-        if (stepIndex + 1 < write.size) {
-            communicator?.goToNext(stepIndex + 1)
-        } else {
-            communicator?.goToFinish()
-        }
     }
 
     override fun onDestroy() {
