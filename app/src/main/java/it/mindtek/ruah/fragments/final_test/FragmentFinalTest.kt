@@ -16,11 +16,9 @@ import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelFinalTestQuestion
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
-import it.mindtek.ruah.kotlin.extensions.canAccessActivity
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.fileFolder
-import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_final_test.*
+import kotlinx.android.synthetic.main.item_final_test.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
 import java.io.File
@@ -54,11 +52,13 @@ class FragmentFinalTest : Fragment() {
         if (unitId == -1 || stepIndex == -1) {
             requireActivity().finish()
         }
+        if (requireActivity() is FinalTestActivityInterface) {
+            communicator = requireActivity() as FinalTestActivityInterface
+        }
         val finalTest = db.finalTestDao().getFinalTestByUnitId(unitId)
         finalTest.forEach {
             questions.addAll(it.questions)
         }
-        //TODO verify if questions is correct
         if (questions.size == 0 || questions.size <= stepIndex) {
             requireActivity().finish()
         }
@@ -74,7 +74,7 @@ class FragmentFinalTest : Fragment() {
         setupQuestion()
         setupAudio()
         setupPicture()
-        // TODO setup yes/no answers
+        setupAnswers()
     }
 
     @SuppressLint("SetTextI18n")
@@ -138,6 +138,29 @@ class FragmentFinalTest : Fragment() {
             constraintSet.clone(root)
             constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
             constraintSet.applyTo(root)
+        }
+    }
+
+    private fun setupAnswers() {
+        yes.text.text = getString(R.string.yes)
+        no.text.text = getString(R.string.no)
+        yes.radioSelect.setOnClickListener {
+            yes.radioSelect.setGone()
+            if (questions[stepIndex].correct) {
+                yes.correct.setVisible()
+                next.isEnabled = true
+            } else {
+                yes.wrong.setVisible()
+            }
+        }
+        no.radioSelect.setOnClickListener {
+            no.radioSelect.setGone()
+            if (questions[stepIndex].correct) {
+                no.wrong.setVisible()
+            } else {
+                no.correct.setVisible()
+                next.isEnabled = true
+            }
         }
     }
 
