@@ -165,7 +165,7 @@ class FragmentWrite : Fragment() {
     private fun calculateColumns(): Int {
         val displayMetrics = requireContext().resources.displayMetrics
         val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-        val columns = ((dpWidth - 32) / 32) - 1
+        val columns = ((dpWidth - 32) / 40) - 1
         println(columns)
         return columns.toInt()
     }
