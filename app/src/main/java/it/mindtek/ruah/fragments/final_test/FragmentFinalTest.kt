@@ -86,6 +86,8 @@ class FragmentFinalTest : Fragment() {
         next.setOnClickListener {
             if (stepIndex + 1 < questions.size) {
                 player?.release()
+                yes.radioSelect.isChecked = false
+                no.radioSelect.isChecked = false
                 communicator?.goToNext(stepIndex + 1)
             } else {
                 communicator?.goToFinish()
