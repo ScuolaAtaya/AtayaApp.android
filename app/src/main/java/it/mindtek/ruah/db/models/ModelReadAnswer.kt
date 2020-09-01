@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 /**
  * Created by alessandrogaboardi on 20/12/2017.
  */
-@Entity(tableName = "read_answer")
+@Entity(tableName = "read_option")
 open class ModelReadAnswer(
         @PrimaryKey
         var id: String = "",
@@ -15,5 +15,5 @@ open class ModelReadAnswer(
         var body: String = "",
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
-        var correct: Boolean = false
+        var markerId: String = ""
 )

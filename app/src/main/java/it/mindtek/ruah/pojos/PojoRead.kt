@@ -2,7 +2,7 @@ package it.mindtek.ruah.pojos
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import it.mindtek.ruah.db.models.ModelAnswer
+import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelRead
 import it.mindtek.ruah.db.models.ModelReadAnswer
 
@@ -14,14 +14,8 @@ class PojoRead {
     var read: ModelRead? = null
 
     @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelReadAnswer::class)
-    var answers: MutableList<ModelReadAnswer> = mutableListOf()
+    var options: MutableList<ModelReadAnswer> = mutableListOf()
 
-    val answersConverted: MutableList<ModelAnswer>
-        get() {
-            val answersList = mutableListOf<ModelAnswer>()
-            answers.forEach {
-                answersList.add(ModelAnswer(it.id, "", it.body, it.audio, it.correct))
-            }
-            return answersList
-        }
+    @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelMarker::class)
+    var markers: MutableList<ModelReadAnswer> = mutableListOf()
 }
