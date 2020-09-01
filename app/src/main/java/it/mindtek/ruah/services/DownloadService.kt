@@ -161,13 +161,17 @@ class DownloadService : IntentService("Download service") {
     private fun saveRead(readJson: JSONArray) {
         val reads = mutableListOf<ModelRead>()
         val options = mutableListOf<ModelReadOption>()
+        val markers = mutableListOf<ModelMarker>()
         for (i in 0 until readJson.length()) {
             val currentReadJson = readJson.getJSONObject(i)
             val currentOptionsJson = currentReadJson.getJSONArray(OPTIONS)
+            val currentMarkersJson = currentReadJson.getJSONArray(MARKERS)
             val read = Gson().fromJson<ModelRead>(currentReadJson)
             val currentOptions = Gson().fromJson<MutableList<ModelReadOption>>(currentOptionsJson)
+            val currentMarkers = Gson().fromJson<MutableList<ModelMarker>>(currentMarkersJson)
             reads.add(read)
             options.addAll(currentOptions)
+            markers.addAll(currentMarkers)
         }
         db.readDao().saveCategories(reads)
         db.readDao().saveAnswers(options)
@@ -254,5 +258,6 @@ class DownloadService : IntentService("Download service") {
         const val WRITE = "write"
         const val FINAL_TEST = "final"
         const val ADVANCED = "advanced"
+        const val MARKERS = "markers"
     }
 }
