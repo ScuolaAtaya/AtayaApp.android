@@ -160,12 +160,12 @@ class DownloadService : IntentService("Download service") {
 
     private fun saveRead(readJson: JSONArray) {
         val reads = mutableListOf<ModelRead>()
-        val options = mutableListOf<ModelReadAnswer>()
+        val options = mutableListOf<ModelReadOption>()
         for (i in 0 until readJson.length()) {
             val currentReadJson = readJson.getJSONObject(i)
             val currentOptionsJson = currentReadJson.getJSONArray(OPTIONS)
             val read = Gson().fromJson<ModelRead>(currentReadJson)
-            val currentOptions = Gson().fromJson<MutableList<ModelReadAnswer>>(currentOptionsJson)
+            val currentOptions = Gson().fromJson<MutableList<ModelReadOption>>(currentOptionsJson)
             reads.add(read)
             options.addAll(currentOptions)
         }

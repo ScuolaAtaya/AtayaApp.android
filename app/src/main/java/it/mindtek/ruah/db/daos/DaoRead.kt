@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import it.mindtek.ruah.db.models.ModelRead
-import it.mindtek.ruah.db.models.ModelReadAnswer
+import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.pojos.PojoRead
 
 /**
@@ -18,7 +18,7 @@ interface DaoRead {
     fun saveCategories(categories: MutableList<ModelRead>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAnswers(answers: MutableList<ModelReadAnswer>)
+    fun saveAnswers(answers: MutableList<ModelReadOption>)
 
     @Query("SELECT * FROM read")
     fun getReadAsync(): LiveData<MutableList<PojoRead>>

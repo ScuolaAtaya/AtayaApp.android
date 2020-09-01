@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
  * Created by alessandrogaboardi on 20/12/2017.
  */
 @Entity(tableName = "read_option")
-open class ModelReadAnswer(
+open class ModelReadOption(
         @PrimaryKey
         var id: String = "",
         var section_id: String = "",
