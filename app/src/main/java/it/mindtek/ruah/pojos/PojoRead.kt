@@ -17,5 +17,5 @@ class PojoRead {
     var options: MutableList<ModelReadOption> = mutableListOf()
 
     @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelMarker::class)
-    var markers: MutableList<ModelReadOption> = mutableListOf()
+    var markers: MutableList<ModelMarker> = mutableListOf()
 }

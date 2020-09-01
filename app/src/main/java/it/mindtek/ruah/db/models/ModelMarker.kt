@@ -1,7 +1,9 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Entity(tableName = "marker")
 class ModelMarker (
         @PrimaryKey
         var id: String = "",

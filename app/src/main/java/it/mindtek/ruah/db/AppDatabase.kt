@@ -21,7 +21,8 @@ import it.mindtek.ruah.db.models.*
     ModelReadOption::class,
     ModelWrite::class,
     ModelFinalTest::class,
-    ModelFinalTestQuestion::class
+    ModelFinalTestQuestion::class,
+    ModelMarker::class
 ], version = 28)
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
