@@ -23,7 +23,7 @@ import it.mindtek.ruah.db.models.*
     ModelFinalTest::class,
     ModelFinalTestQuestion::class,
     ModelMarker::class
-], version = 28)
+], version = 29)
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unitDao(): DaoUnit

@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
 open class ModelReadOption(
         @PrimaryKey
         var id: String = "",
-        var section_id: String = "",
+        var read_id: String = "",
         var body: String = "",
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,

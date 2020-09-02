@@ -13,7 +13,7 @@ class PojoRead {
     @Embedded
     var read: ModelRead? = null
 
-    @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelReadOption::class)
+    @Relation(parentColumn = "id", entityColumn = "read_id", entity = ModelReadOption::class)
     var options: MutableList<ModelReadOption> = mutableListOf()
 
     @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelMarker::class)
