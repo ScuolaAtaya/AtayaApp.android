@@ -1,6 +1,9 @@
 package it.mindtek.ruah.fragments.read
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.AnswersAdapter
-import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
@@ -24,12 +26,12 @@ import kotlinx.android.synthetic.main.fragment_read.*
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
+
 class FragmentRead : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var adapter: AnswersAdapter? = null
-    private var correctCount = 0
-    private var answersPlayers: MutableList<MediaPlayer> = mutableListOf()
+    private var optionsPlayers: MutableList<MediaPlayer> = mutableListOf()
     private var communicator: ReadActivityInterface? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -91,7 +93,15 @@ class FragmentRead : Fragment() {
     private fun setupPicture(read: PojoRead) {
         read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-            GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+            val options = BitmapFactory.Options()
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            options.inMutable = true
+            val bitmap = BitmapFactory.decodeFile(pictureFile.absolutePath, options)
+            val drawable = ContextCompat.getDrawable(context!!, R.drawable.edit)
+            drawable!!.setBounds(100,100, 100 + drawable.intrinsicWidth, 100 + drawable.intrinsicHeight)
+            val canvas = Canvas(bitmap)
+            drawable.draw(canvas)
+            stepImage.setImageBitmap(bitmap)
             if (it.picture.credits.isNotBlank()) {
                 stepImageCredits.setVisible()
                 stepImageCredits.text = it.picture.credits
@@ -100,29 +110,15 @@ class FragmentRead : Fragment() {
     }
 
     private fun setupAnswers(read: PojoRead) {
-        answers.layoutManager = LinearLayoutManager(requireActivity())
-        val answersList = read.answersConverted
-        adapter = AnswersAdapter(answersList, { answer ->
-            val correctNum = read.answersConverted.map {
-                it.correct
-            }.count {
-                it
-            }
-            if (answer.correct) {
-                correctCount += 1
-            }
-            if (correctCount >= correctNum) {
-                next.isEnabled = true
-            }
-        }, {
-            playAnswerAudio(answersList.indexOf(it), it.audio.value)
-        })
-        answers.adapter = adapter
+        options.layoutManager = LinearLayoutManager(requireActivity())
+        val optionsList = read.options
+
+        options.adapter = adapter
     }
 
-    private fun playAnswerAudio(index: Int, audio: String) {
+    private fun playOptionAudio(index: Int, audio: String) {
         pausePlayers(index)
-        var player = answersPlayers.getOrNull(index)
+        var player = optionsPlayers.getOrNull(index)
         when {
             player == null -> {
                 val audioFile = File(fileFolder.absolutePath, audio)
@@ -133,7 +129,7 @@ class FragmentRead : Fragment() {
                     }
                 }
                 player.start()
-                answersPlayers.add(index, player)
+                optionsPlayers.add(index, player)
             }
             player.isPlaying -> player.pause()
             else -> player.start()
@@ -142,11 +138,11 @@ class FragmentRead : Fragment() {
 
     private fun pausePlayers(index: Int? = null) {
         val players = if (index != null) {
-            answersPlayers.filter {
-                it != answersPlayers[index]
+            optionsPlayers.filter {
+                it != optionsPlayers[index]
             }
         } else {
-            answersPlayers
+            optionsPlayers
         }
         players.map {
             it.pause()
@@ -159,7 +155,7 @@ class FragmentRead : Fragment() {
     }
 
     private fun destroyPlayers() {
-        answersPlayers.map {
+        optionsPlayers.map {
             it.release()
         }
     }
