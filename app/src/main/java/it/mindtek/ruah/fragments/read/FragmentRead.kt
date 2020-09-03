@@ -1,12 +1,11 @@
 package it.mindtek.ruah.fragments.read
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
+import android.graphics.*
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextPaint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.AnswersAdapter
+import it.mindtek.ruah.config.ImageWithMarkersGenerator
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
 import it.mindtek.ruah.kotlin.extensions.db
@@ -24,6 +24,7 @@ import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.dip
 import java.io.File
 
 
@@ -93,14 +94,7 @@ class FragmentRead : Fragment() {
     private fun setupPicture(read: PojoRead) {
         read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-            val options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            options.inMutable = true
-            val bitmap = BitmapFactory.decodeFile(pictureFile.absolutePath, options)
-            val drawable = ContextCompat.getDrawable(context!!, R.drawable.edit)
-            drawable!!.setBounds(100,100, 100 + drawable.intrinsicWidth, 100 + drawable.intrinsicHeight)
-            val canvas = Canvas(bitmap)
-            drawable.draw(canvas)
+            val bitmap = ImageWithMarkersGenerator.createImageWithMarkers(read.markers, pictureFile)
             stepImage.setImageBitmap(bitmap)
             if (it.picture.credits.isNotBlank()) {
                 stepImageCredits.setVisible()
