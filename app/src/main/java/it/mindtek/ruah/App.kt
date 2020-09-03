@@ -2,6 +2,7 @@ package it.mindtek.ruah
 
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
+import it.mindtek.ruah.config.ImageWithMarkersGenerator
 import it.mindtek.ruah.config.UnitGenerator
 import it.mindtek.ruah.db.AppDatabase
 import it.mindtek.ruah.kotlin.extensions.db
@@ -15,6 +16,7 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         ApiClient.init(applicationContext.getString(R.string.api_base_url), applicationContext.getString(R.string.api_key))
+        ImageWithMarkersGenerator.init(applicationContext)
         initRoom()
         initUnits()
     }
