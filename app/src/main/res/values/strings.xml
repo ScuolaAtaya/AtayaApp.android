@@ -33,6 +33,7 @@
     <string name="section_talk_description">Ascolta e ripeti la parola\nregistrandola</string>
     <string name="section_read_description">Guarda l\'immagine e seleziona\nle parole corrispondenti</string>
     <string name="section_write_description">Osserva l\'immagine e\nscrivi il suo nome</string>
+    <string name="section_final_test_description">Rispondi alle domande per\nvedere se hai capito tutto</string>
 
     <string name="start">Comincia</string>
     <string name="back">Indietro</string>
