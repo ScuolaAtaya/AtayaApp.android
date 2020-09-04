@@ -7,7 +7,9 @@ import androidx.core.content.ContextCompat
 import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelMarker
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.sp
 import java.io.File
+
 
 object ImageWithMarkersGenerator {
     private lateinit var context: Context
@@ -30,15 +32,27 @@ object ImageWithMarkersGenerator {
 
     private fun createMarker(marker: ModelMarker, canvas: Canvas) {
         val radius = context.dip(12).toFloat()
+        var x = (marker.x * canvas.width).toFloat()
+        var y = (marker.y * canvas.height).toFloat()
+        x = when {
+            x < radius / 2 -> radius / 2
+            x > canvas.width - radius / 2 -> canvas.width - radius / 2
+            else -> x
+        }
+        y = when {
+            y < radius / 2 -> radius / 2
+            y > canvas.height - radius / 2 -> canvas.height - radius / 2
+            else -> y
+        }
         val paint = Paint()
         paint.color = ContextCompat.getColor(context, R.color.blue)
-        canvas.drawCircle(context.dip(10).toFloat(), context.dip(10).toFloat(), radius, paint)
+        paint.isAntiAlias = true
+        canvas.drawCircle(x, y, radius, paint)
         val paintText = TextPaint()
         paintText.color = ContextCompat.getColor(context, R.color.white)
-        paintText.textSize = context.dip(16).toFloat()
+        paintText.textSize = context.sp(16).toFloat()
         paintText.textAlign = Paint.Align.CENTER
-        val textHeight: Float = paintText.descent() - paintText.ascent()
-        val textOffset: Float = textHeight / 2 - paintText.descent()
-        canvas.drawText("1", context.dip(10).toFloat(), context.dip(10).toFloat() + textOffset, paintText)
+        val textOffset: Float = (paintText.descent() - paintText.ascent()) / 2 - paintText.descent()
+        canvas.drawText(marker.id, x, y + textOffset, paintText)
     }
 }
