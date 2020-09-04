@@ -35,13 +35,13 @@ object ImageWithMarkersGenerator {
         var x = (marker.x * canvas.width).toFloat()
         var y = (marker.y * canvas.height).toFloat()
         x = when {
-            x < radius / 2 -> radius / 2
-            x > canvas.width - radius / 2 -> canvas.width - radius / 2
+            x < radius -> radius
+            x > canvas.width - radius -> canvas.width - radius
             else -> x
         }
         y = when {
-            y < radius / 2 -> radius / 2
-            y > canvas.height - radius / 2 -> canvas.height - radius / 2
+            y < radius -> radius
+            y > canvas.height - radius -> canvas.height - radius
             else -> y
         }
         val paint = Paint()
