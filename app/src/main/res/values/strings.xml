@@ -39,6 +39,7 @@
     <string name="back">Indietro</string>
 
     <string name="watch_video">Guarda il video per continuare</string>
+    <string name="read">Inserisci i numeri corrispondenti agli oggetti</string>
     <string name="listen">Ascolta</string>
     <string name="next">Avanti</string>
     <string name="button_video_audio">Video/audio</string>

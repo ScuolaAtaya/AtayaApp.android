@@ -10,36 +10,30 @@
         android:layout_height="match_parent"
         android:paddingBottom="16dp">
 
-        <ImageView
-            android:id="@+id/stepImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintDimensionRatio="16:9"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
         <TextView
-            android:id="@+id/stepImageCredits"
-            android:layout_width="wrap_content"
+            android:id="@+id/title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/read"
             android:textColor="@color/blackAlpha54"
-            android:textSize="12sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/stepImage"
-            app:layout_constraintTop_toBottomOf="@id/stepImage" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/stepBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/stepBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/stepImage"
-            app:layout_constraintTop_toTopOf="@id/stepImage">
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/title"
+            app:layout_constraintTop_toTopOf="@id/title">
 
             <TextView
                 android:id="@+id/step"
@@ -52,6 +46,28 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/stepImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="@id/stepBackground"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/stepImageCredits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/blackAlpha54"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/stepImage"
+            app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/options"
