@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import it.mindtek.ruah.db.converters.StringArrayConverter
-import it.mindtek.ruah.pojos.Syllable
 
 /**
  * Created by alessandrogaboardi on 21/12/2017.
@@ -22,5 +21,5 @@ open class ModelWrite(
         @Embedded(prefix = "picture_")
         var picture: ModelMedia,
         @TypeConverters(StringArrayConverter::class)
-        var letters: MutableList<Syllable> = mutableListOf()
+        var letters: MutableList<ModelSyllable> = mutableListOf()
 )

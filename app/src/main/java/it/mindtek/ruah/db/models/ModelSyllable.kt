@@ -1,4 +1,4 @@
-package it.mindtek.ruah.pojos
+package it.mindtek.ruah.db.models
 
 import androidx.room.TypeConverters
 import it.mindtek.ruah.db.converters.IntArrayConverter
@@ -6,7 +6,7 @@ import it.mindtek.ruah.db.converters.IntArrayConverter
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
-class Syllable(
+class ModelSyllable(
         var id: String = "",
         var text: String = "",
         @TypeConverters(IntArrayConverter::class)

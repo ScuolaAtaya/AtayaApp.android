@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.holders.EmptyLetterHolder
 import it.mindtek.ruah.adapters.holders.LettersHolder
-import it.mindtek.ruah.pojos.Syllable
+import it.mindtek.ruah.db.models.ModelSyllable
 
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
 class SelectedLettersAdapter(
-        private val givenLetters: MutableList<Syllable>,
-        private val onLetterTap: ((syllable: Syllable) -> Unit)?
+        private val givenLetters: MutableList<ModelSyllable>,
+        private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var letters = MutableList(givenLetters.size) { "" }
 
@@ -62,7 +62,7 @@ class SelectedLettersAdapter(
 
     override fun getItemCount(): Int = letters.size
 
-    fun select(letter: Syllable) {
+    fun select(letter: ModelSyllable) {
         val firstEmpty = letters.indexOfFirst {
             it.isEmpty()
         }

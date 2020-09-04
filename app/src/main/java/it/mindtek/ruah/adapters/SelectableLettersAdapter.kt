@@ -6,14 +6,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.holders.SyllablesHolder
-import it.mindtek.ruah.pojos.Syllable
+import it.mindtek.ruah.db.models.ModelSyllable
 
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
 class SelectableLettersAdapter(
-        private val syllables: MutableList<Syllable>,
-        private val onLetterTap: ((syllable: Syllable) -> Unit)?
+        private val syllables: MutableList<ModelSyllable>,
+        private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
 ) : RecyclerView.Adapter<SyllablesHolder>() {
     override fun getItemCount(): Int = syllables.size
 
@@ -39,7 +39,7 @@ class SelectableLettersAdapter(
         }
     }
 
-    fun unlockLetter(letter: Syllable) {
+    fun unlockLetter(letter: ModelSyllable) {
         syllables.first {
             it.id == letter.id
         }.enabled = true
