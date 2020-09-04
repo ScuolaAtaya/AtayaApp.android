@@ -2,23 +2,25 @@ package it.mindtek.ruah.adapters
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
-import it.mindtek.ruah.adapters.holders.OptionHolder
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.kotlin.extensions.setVisible
-import kotlinx.android.synthetic.main.fragment_write.*
+import kotlinx.android.synthetic.main.item_option.view.*
 
 class OptionsAdapter(
         val color: Int,
         val options: MutableList<ModelReadOption>,
-        private val textChangedCallback: ((option: ModelReadOption) -> Unit)?,
+        private val optionCorrectCallback: ((option: ModelReadOption) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
 ) : RecyclerView.Adapter<OptionHolder>() {
 
@@ -39,6 +41,7 @@ class OptionsAdapter(
                 holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 if (s.toString() == option.markerId) {
                     holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
+                    optionCorrectCallback?.invoke(option)
                 } else {
                     if (s.toString().isNotEmpty()) {
                         holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
@@ -58,4 +61,11 @@ class OptionsAdapter(
             holder.credits.text = option.audio.credits
         }
     }
+}
+
+class OptionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val number: AppCompatEditText = itemView.editText
+    val text: TextView = itemView.optionText
+    val audio: ImageView = itemView.optionAudio
+    val credits: TextView = itemView.optionCredits
 }
