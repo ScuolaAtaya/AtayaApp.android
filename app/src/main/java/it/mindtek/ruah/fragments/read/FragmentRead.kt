@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
-import it.mindtek.ruah.adapters.AnswersAdapter
+import it.mindtek.ruah.adapters.OptionsAdapter
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
@@ -28,7 +28,7 @@ import java.io.File
 class FragmentRead : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
-    private var adapter: AnswersAdapter? = null
+    private var color: Int = -1
     private var optionsPlayers: MutableList<MediaPlayer> = mutableListOf()
     private var communicator: ReadActivityInterface? = null
 
@@ -62,14 +62,14 @@ class FragmentRead : Fragment() {
         }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
+            color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
         }
         next.isEnabled = false
         setupSteps(read)
         setupNext(read)
         setupPicture(read[stepIndex])
-        setupAnswers(read[stepIndex])
+        setupOptions(read[stepIndex])
     }
 
     @SuppressLint("SetTextI18n")
@@ -100,10 +100,16 @@ class FragmentRead : Fragment() {
         }
     }
 
-    private fun setupAnswers(read: PojoRead) {
+    private fun setupOptions(read: PojoRead) {
         options.layoutManager = LinearLayoutManager(requireActivity())
         val optionsList = read.options
+        optionsList.shuffle()
+        val adapter = OptionsAdapter(color, optionsList, {
 
+        }, {
+            playOptionAudio(optionsList.indexOf(it), it.audio.value)
+        })
+        options.layoutManager = LinearLayoutManager(requireActivity())
         options.adapter = adapter
     }
 
