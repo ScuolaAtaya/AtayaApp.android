@@ -12,7 +12,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/blue</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 
     <style name="ButtonNext" parent="Widget.AppCompat.Button.Colored">
