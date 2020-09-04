@@ -3,11 +3,14 @@ package it.mindtek.ruah.adapters
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import it.mindtek.ruah.R
-import it.mindtek.ruah.adapters.holders.EmptyLetterHolder
-import it.mindtek.ruah.adapters.holders.LettersHolder
 import it.mindtek.ruah.db.models.ModelSyllable
+import kotlinx.android.synthetic.main.item_letter_selected.view.*
 
 /**
  * Created by alessandrogaboardi on 08/01/2018.
@@ -15,7 +18,7 @@ import it.mindtek.ruah.db.models.ModelSyllable
 class SelectedLettersAdapter(
         private val givenLetters: MutableList<ModelSyllable>,
         private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<ViewHolder>() {
     private var letters = MutableList(givenLetters.size) { "" }
 
     override fun getItemViewType(position: Int): Int {
@@ -26,7 +29,7 @@ class SelectedLettersAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return if (viewType == 0) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false)
             EmptyLetterHolder(view)
@@ -36,9 +39,11 @@ class SelectedLettersAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun getItemCount(): Int = letters.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (holder.itemViewType != 0) {
-            val cast = holder as LettersHolder
+            holder as LettersHolder
             val item = letters[position]
             val syllable = givenLetters.first {
                 it.id == item
@@ -47,20 +52,18 @@ class SelectedLettersAdapter(
                 it == position
             }
             if (!right) {
-                cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_red)
+                holder.card.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_red)
             } else {
-                cast.card.background = ContextCompat.getDrawable(holder.view.context, R.drawable.card_blue)
+                holder.card.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
             }
-            cast.letter.text = syllable.text
-            cast.view.setOnClickListener {
+            holder.letter.text = syllable.text
+            holder.itemView.setOnClickListener {
                 letters[position] = ""
                 onLetterTap?.invoke(syllable)
                 notifyDataSetChanged()
             }
         }
     }
-
-    override fun getItemCount(): Int = letters.size
 
     fun select(letter: ModelSyllable) {
         val firstEmpty = letters.indexOfFirst {
@@ -92,3 +95,10 @@ class SelectedLettersAdapter(
         return !wrong
     }
 }
+
+class LettersHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val letter: TextView = itemView.letter
+    val card: FrameLayout = itemView.card
+}
+
+class EmptyLetterHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
