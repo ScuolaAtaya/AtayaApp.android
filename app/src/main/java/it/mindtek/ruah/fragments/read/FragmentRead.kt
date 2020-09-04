@@ -1,11 +1,9 @@
 package it.mindtek.ruah.fragments.read
 
 import android.annotation.SuppressLint
-import android.graphics.*
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextPaint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +22,6 @@ import it.mindtek.ruah.kotlin.extensions.setVisible
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
 import java.io.File
 
 
@@ -94,7 +91,7 @@ class FragmentRead : Fragment() {
     private fun setupPicture(read: PojoRead) {
         read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-            val bitmap = ImageWithMarkersGenerator.createImageWithMarkers(read.markers, pictureFile)
+            val bitmap = ImageWithMarkersGenerator.createImageWithMarkers(it.markers, pictureFile)
             stepImage.setImageBitmap(bitmap)
             if (it.picture.credits.isNotBlank()) {
                 stepImageCredits.setVisible()
