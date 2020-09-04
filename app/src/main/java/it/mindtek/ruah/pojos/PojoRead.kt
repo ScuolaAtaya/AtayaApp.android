@@ -2,7 +2,6 @@ package it.mindtek.ruah.pojos
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelRead
 import it.mindtek.ruah.db.models.ModelReadOption
 
@@ -15,7 +14,4 @@ class PojoRead {
 
     @Relation(parentColumn = "id", entityColumn = "read_id", entity = ModelReadOption::class)
     var options: MutableList<ModelReadOption> = mutableListOf()
-
-    @Relation(parentColumn = "id", entityColumn = "section_id", entity = ModelMarker::class)
-    var markers: MutableList<ModelMarker> = mutableListOf()
 }

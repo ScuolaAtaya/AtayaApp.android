@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import it.mindtek.ruah.db.converters.IntArrayConverter
+import it.mindtek.ruah.db.converters.MarkerArrayConverter
 import it.mindtek.ruah.db.converters.StringArrayConverter
 import it.mindtek.ruah.db.daos.*
 import it.mindtek.ruah.db.models.*
@@ -21,10 +22,9 @@ import it.mindtek.ruah.db.models.*
     ModelReadOption::class,
     ModelWrite::class,
     ModelFinalTest::class,
-    ModelFinalTestQuestion::class,
-    ModelMarker::class
-], version = 29)
-@TypeConverters(StringArrayConverter::class, IntArrayConverter::class)
+    ModelFinalTestQuestion::class
+], version = 31)
+@TypeConverters(StringArrayConverter::class, IntArrayConverter::class, MarkerArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unitDao(): DaoUnit
     abstract fun understandDao(): DaoUnderstand
