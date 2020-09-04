@@ -1,5 +1,8 @@
 package it.mindtek.ruah.adapters
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -10,8 +13,10 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.holders.OptionHolder
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.kotlin.extensions.setVisible
+import kotlinx.android.synthetic.main.fragment_write.*
 
 class OptionsAdapter(
+        val color: Int,
         val options: MutableList<ModelReadOption>,
         private val textChangedCallback: ((option: ModelReadOption) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
@@ -24,9 +29,11 @@ class OptionsAdapter(
 
     override fun getItemCount(): Int = options.size
 
+    @SuppressLint("RestrictedApi")
     override fun onBindViewHolder(holder: OptionHolder, position: Int) {
         val option = options[position]
         holder.text.text = option.body
+        holder.number.supportBackgroundTintList = ColorStateList.valueOf(color)
         holder.number.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
