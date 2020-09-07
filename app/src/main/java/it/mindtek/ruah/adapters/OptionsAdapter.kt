@@ -13,16 +13,20 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
+import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.item_option.view.*
 
 class OptionsAdapter(
         val color: Int,
-        val options: MutableList<ModelReadOption>,
-        private val optionCorrectCallback: ((option: ModelReadOption) -> Unit)?,
+        val read: PojoRead,
+        private val textChangedCallback: ((option: ModelReadOption, correct: Boolean) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
 ) : RecyclerView.Adapter<OptionHolder>() {
+    private var options: MutableList<ModelReadOption> = read.options
+    private var markers: MutableList<ModelMarker> = read.read!!.markers
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false)
@@ -39,10 +43,14 @@ class OptionsAdapter(
         holder.number.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
-                if (s.toString() == option.markerId) {
+                val index = markers.indexOfFirst {
+                    it.id == s.toString()
+                }
+                if (s.toString() == option.markerId && index > -1) {
                     holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
-                    optionCorrectCallback?.invoke(option)
+                    textChangedCallback?.invoke(option, true)
                 } else {
+                    textChangedCallback?.invoke(option, false)
                     if (s.toString().isNotEmpty()) {
                         holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
                     }
@@ -60,6 +68,10 @@ class OptionsAdapter(
             holder.credits.setVisible()
             holder.credits.text = option.audio.credits
         }
+    }
+
+    fun completed(correctOptions: Int): Boolean {
+        return correctOptions == markers.size
     }
 }
 

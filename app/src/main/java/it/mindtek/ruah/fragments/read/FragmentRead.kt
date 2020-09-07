@@ -14,11 +14,9 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.OptionsAdapter
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
+import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.interfaces.ReadActivityInterface
-import it.mindtek.ruah.kotlin.extensions.canAccessActivity
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.fileFolder
-import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
 import org.jetbrains.anko.backgroundColor
@@ -29,8 +27,10 @@ class FragmentRead : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var color: Int = -1
-    private var optionsPlayers: MutableList<MediaPlayer> = mutableListOf()
-    private var communicator: ReadActivityInterface? = null
+    private var currentAudioIndex: Int = -1
+    private lateinit var adapter: OptionsAdapter
+    private var optionsPlayers: MediaPlayer? = null
+    private lateinit var communicator: ReadActivityInterface
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_read, container, false)
@@ -65,7 +65,7 @@ class FragmentRead : Fragment() {
             color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
         }
-        next.isEnabled = false
+        next.disable()
         setupSteps(read)
         setupNext(read)
         setupPicture(read[stepIndex])
@@ -80,10 +80,10 @@ class FragmentRead : Fragment() {
     private fun setupNext(read: MutableList<PojoRead>) {
         next.setOnClickListener {
             if (stepIndex + 1 < read.size) {
-                destroyPlayers()
-                communicator?.goToNext(stepIndex + 1)
+                optionsPlayers?.release()
+                communicator.goToNext(stepIndex + 1)
             } else {
-                communicator?.goToFinish()
+                communicator.goToFinish()
             }
         }
     }
@@ -101,60 +101,64 @@ class FragmentRead : Fragment() {
     }
 
     private fun setupOptions(read: PojoRead) {
-        options.layoutManager = LinearLayoutManager(requireActivity())
-        val optionsList = read.options
-        optionsList.shuffle()
-        val adapter = OptionsAdapter(color, optionsList, {
-
+        read.options.shuffle()
+        val correctOptions: MutableList<ModelReadOption> = mutableListOf()
+        adapter = OptionsAdapter(color, read, { it: ModelReadOption, correct: Boolean ->
+            if (correct) {
+                correctOptions.add(it)
+            } else {
+                correctOptions.remove(it)
+            }
+            next.isEnabled = adapter.completed(correctOptions.size)
         }, {
-            playOptionAudio(optionsList.indexOf(it), it.audio.value)
+            playOptionAudio(read.options.indexOf(it), it.audio.value)
         })
         options.layoutManager = LinearLayoutManager(requireActivity())
         options.adapter = adapter
     }
 
     private fun playOptionAudio(index: Int, audio: String) {
-        pausePlayers(index)
-        var player = optionsPlayers.getOrNull(index)
         when {
-            player == null -> {
+            optionsPlayers == null -> {
+                currentAudioIndex = index
                 val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
+                optionsPlayers = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                optionsPlayers!!.setOnCompletionListener {
                     if (canAccessActivity) {
-                        player.pause()
+                        optionsPlayers!!.pause()
                     }
                 }
-                player.start()
-                optionsPlayers.add(index, player)
+                optionsPlayers!!.start()
             }
-            player.isPlaying -> player.pause()
-            else -> player.start()
+            optionsPlayers!!.isPlaying -> {
+                if (currentAudioIndex == index) {
+                    optionsPlayers!!.pause()
+                } else {
+                    resetOptionPlayer(index, audio)
+                }
+            }
+            else -> {
+                if (currentAudioIndex == index) {
+                    optionsPlayers!!.start()
+                } else {
+                    resetOptionPlayer(index, audio)
+                }
+            }
         }
     }
 
-    private fun pausePlayers(index: Int? = null) {
-        val players = if (index != null) {
-            optionsPlayers.filter {
-                it != optionsPlayers[index]
-            }
-        } else {
-            optionsPlayers
-        }
-        players.map {
-            it.pause()
-        }
+    private fun resetOptionPlayer(index: Int, audio: String) {
+        optionsPlayers!!.reset()
+        currentAudioIndex = index
+        val audioFile = File(fileFolder.absolutePath, audio)
+        optionsPlayers!!.setDataSource(requireActivity(), Uri.fromFile(audioFile))
+        optionsPlayers!!.prepare()
+        optionsPlayers!!.start()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayers()
-    }
-
-    private fun destroyPlayers() {
-        optionsPlayers.map {
-            it.release()
-        }
+        optionsPlayers?.release()
     }
 
     companion object {
