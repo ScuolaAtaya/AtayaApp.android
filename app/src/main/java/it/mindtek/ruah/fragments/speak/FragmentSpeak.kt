@@ -33,7 +33,7 @@ class FragmentSpeak : Fragment() {
     private var recording = false
     private var speak: MutableList<ModelSpeak> = mutableListOf()
     private var recodedPlayer: MediaPlayer? = null
-    private lateinit var player: MediaPlayer
+    private var player: MediaPlayer? = null
     private lateinit var recorder: MediaRecorder
     private lateinit var communicator: SpeakActivityInterface
 
@@ -90,27 +90,30 @@ class FragmentSpeak : Fragment() {
 
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
-        val audioFile = File(fileFolder.absolutePath, audio.value)
-        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        player.setOnCompletionListener {
-            if (canAccessActivity) {
-                player.pause()
-            }
-        }
         listenButton.setOnClickListener {
-            if (recording) {
-                return@setOnClickListener
-            }
-            recodedPlayer?.pause()
-            if (player.isPlaying) {
-                player.pause()
-            } else {
-                player.start()
-            }
+            playAudio(audio.value)
         }
         if (audio.credits.isNotBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
+        }
+    }
+
+    private fun playAudio(audio: String) {
+        recodedPlayer?.pause()
+        when {
+            player == null -> {
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                player!!.setOnCompletionListener {
+                    if (canAccessActivity) {
+                        player!!.pause()
+                    }
+                }
+                player!!.start()
+            }
+            player!!.isPlaying -> player!!.pause()
+            else -> player!!.start()
         }
     }
 
@@ -143,7 +146,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun startRecording() {
-        player.pause()
+        player?.pause()
         recodedPlayer?.pause()
         listenAgain.disable()
         next.disable()
@@ -210,7 +213,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun playRecordedAudio() {
-        player.pause()
+        player?.pause()
         when {
             recodedPlayer == null -> {
                 val audioFile = File(requireActivity().filesDir, "recording")
@@ -228,7 +231,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun destroyPlayers() {
-        player.release()
+        player?.release()
         recodedPlayer?.release()
     }
 
