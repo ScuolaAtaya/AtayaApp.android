@@ -18,10 +18,7 @@ import it.mindtek.ruah.activities.ActivityUnderstand
 import it.mindtek.ruah.activities.ActivityUnderstandQuestion
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.db.models.ModelMedia
-import it.mindtek.ruah.kotlin.extensions.canAccessActivity
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.fileFolder
-import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoUnderstand
 import kotlinx.android.synthetic.main.fragment_understand_video.*
 import org.jetbrains.anko.backgroundColor
@@ -54,11 +51,6 @@ class FragmentUnderstandVideo : Fragment() {
             }
         }
         setup()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupVideoAndAudio(understand[stepIndex])
     }
 
     private fun setup() {
@@ -100,7 +92,7 @@ class FragmentUnderstandVideo : Fragment() {
                     override fun onLoaded(p0: String?) {}
                     override fun onVideoEnded() {
                         if (canAccessActivity) {
-                            next.isEnabled = true
+                            next.enable()
                         }
                     }
 
