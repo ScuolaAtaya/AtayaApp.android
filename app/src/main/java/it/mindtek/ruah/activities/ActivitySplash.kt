@@ -31,7 +31,6 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
         if (response.isSuccessful) {
             response.body()?.let {
                 val result = String(it.bytes())
-                println(result)
                 if (result == "true") {
                     download()
                 } else {
@@ -45,7 +44,6 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
 
     private fun checkUpdates() {
         val timestamp = defaultSharedPreferences.getLong(ActivityUnits.TIMESTAMP, 0)
-        println(timestamp)
         val request = apiClient.needsUpdate(timestamp)
         request.enqueue(this)
     }

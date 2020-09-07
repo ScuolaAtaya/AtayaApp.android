@@ -112,9 +112,7 @@ class FragmentUnderstandVideo : Fragment() {
                 p1.loadVideo(video.value)
             }
 
-            override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
-                println("YOUTUBE ERROR")
-            }
+            override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {}
         })
         if (video.credits.isNotBlank()) {
             videoCredits.setVisible()

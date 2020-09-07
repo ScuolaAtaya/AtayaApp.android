@@ -212,7 +212,6 @@ class FragmentWrite : Fragment() {
         val displayMetrics = requireContext().resources.displayMetrics
         val dpWidth = displayMetrics.widthPixels / displayMetrics.density
         val columns = ((dpWidth - 32) / 40) - 1
-        println(columns)
         return columns.toInt()
     }
 
@@ -220,7 +219,6 @@ class FragmentWrite : Fragment() {
         val displayMetrics = requireContext().resources.displayMetrics
         val dpWidth = displayMetrics.widthPixels / displayMetrics.density
         val columns = ((dpWidth - 32) / 40) - 1
-        println(columns)
         return columns.toInt()
     }
 

@@ -129,9 +129,6 @@ class DownloadService : IntentService("Download service") {
         val inputFile = File(filesDir, "file.zip")
         val outputFolder = File(filesDir, "data")
         ZipArchive.unzip(inputFile.absolutePath, outputFolder.absolutePath, "")
-        outputFolder.list()?.forEach {
-            println(it)
-        }
     }
 
     private fun parseJSON() {
