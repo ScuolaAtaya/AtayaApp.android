@@ -103,13 +103,7 @@ class FragmentSpeak : Fragment() {
         recodedPlayer?.pause()
         when {
             player == null -> {
-                val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        player!!.pause()
-                    }
-                }
+                player = initPlayer(audio)
                 player!!.start()
             }
             player!!.isPlaying -> player!!.pause()
@@ -216,18 +210,23 @@ class FragmentSpeak : Fragment() {
         player?.pause()
         when {
             recodedPlayer == null -> {
-                val audioFile = File(requireActivity().filesDir, "recording")
-                recodedPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                recodedPlayer!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        recodedPlayer!!.pause()
-                    }
-                }
+                recodedPlayer = initPlayer("recording")
                 recodedPlayer!!.start()
             }
             recodedPlayer!!.isPlaying -> recodedPlayer!!.pause()
             else -> recodedPlayer!!.start()
         }
+    }
+
+    private fun initPlayer(audio: String): MediaPlayer {
+        val audioFile = File(fileFolder.absolutePath, audio)
+        val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        player.setOnCompletionListener {
+            if (canAccessActivity) {
+                player.pause()
+            }
+        }
+        return player
     }
 
     private fun destroyPlayers() {

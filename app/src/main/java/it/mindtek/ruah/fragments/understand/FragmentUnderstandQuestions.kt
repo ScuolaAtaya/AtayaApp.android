@@ -111,12 +111,12 @@ class FragmentUnderstandQuestions : Fragment() {
         questions[questionIndex].question?.let {
             description.text = it.body
             setupPicture(it.picture)
-            setupAudio(it.audio)
+            setupQuestionAudio(it.audio)
 
         }
     }
 
-    private fun setupAudio(audio: ModelMedia) {
+    private fun setupQuestionAudio(audio: ModelMedia) {
         questionAudio.setOnClickListener {
             playQuestionAudio(audio.value)
         }
@@ -130,13 +130,7 @@ class FragmentUnderstandQuestions : Fragment() {
         answersPlayer?.pause()
         when {
             questionPlayer == null -> {
-                val audioFile = File(fileFolder.absolutePath, audio)
-                questionPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                questionPlayer!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        questionPlayer!!.pause()
-                    }
-                }
+                questionPlayer = initPlayer(audio)
                 questionPlayer!!.start()
             }
             questionPlayer!!.isPlaying -> questionPlayer!!.pause()
@@ -169,33 +163,27 @@ class FragmentUnderstandQuestions : Fragment() {
         when {
             answersPlayer == null -> {
                 audioIndex = index
-                val audioFile = File(fileFolder.absolutePath, audio)
-                answersPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                answersPlayer!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        answersPlayer!!.pause()
-                    }
-                }
+                answersPlayer = initPlayer(audio)
                 answersPlayer!!.start()
             }
             answersPlayer!!.isPlaying -> {
                 if (audioIndex == index) {
                     answersPlayer!!.pause()
                 } else {
-                    resetAnswerAudio(index, audio)
+                    resetAnswerPlayer(index, audio)
                 }
             }
             else -> {
                 if (audioIndex == index) {
                     answersPlayer!!.start()
                 } else {
-                    resetAnswerAudio(index, audio)
+                    resetAnswerPlayer(index, audio)
                 }
             }
         }
     }
 
-    private fun resetAnswerAudio(index: Int, audio: String) {
+    private fun resetAnswerPlayer(index: Int, audio: String) {
         answersPlayer!!.reset()
         audioIndex = index
         val audioFile = File(fileFolder.absolutePath, audio)
@@ -222,6 +210,17 @@ class FragmentUnderstandQuestions : Fragment() {
             constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
             constraintSet.applyTo(root)
         }
+    }
+
+    private fun initPlayer(audio: String): MediaPlayer {
+        val audioFile = File(fileFolder.absolutePath, audio)
+        val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        player.setOnCompletionListener {
+            if (canAccessActivity) {
+                player.pause()
+            }
+        }
+        return player
     }
 
     private fun destroyPlayers() {
