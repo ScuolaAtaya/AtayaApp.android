@@ -75,7 +75,7 @@
     <ImageView
         android:id="@+id/answerAudio"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:padding="8dp"
         android:src="@drawable/volume"
         android:tint="@color/blackAlpha54"
