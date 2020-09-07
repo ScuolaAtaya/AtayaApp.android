@@ -77,7 +77,7 @@ class SelectedLettersAdapter(
 
     fun completed(): Boolean {
         var wrong = false
-        letters.forEachIndexed { index, i ->
+        letters.forEachIndexed { index: Int, i: String ->
             val syllable = givenLetters.firstOrNull {
                 it.id == i
             }

@@ -29,7 +29,7 @@ class FragmentUnderstandQuestions : Fragment() {
     private var unitId: Int = -1
     private var questionIndex: Int = -1
     private var understandIndex: Int = -1
-    private var audioIndex: Int = -1
+    private var currentAudioIndex: Int = -1
     private var questions: MutableList<PojoQuestion> = mutableListOf()
     private var understandSize: Int = -1
     private var answersPlayer: MediaPlayer? = null
@@ -162,19 +162,19 @@ class FragmentUnderstandQuestions : Fragment() {
         questionPlayer?.pause()
         when {
             answersPlayer == null -> {
-                audioIndex = index
+                currentAudioIndex = index
                 answersPlayer = initPlayer(audio)
                 answersPlayer!!.start()
             }
             answersPlayer!!.isPlaying -> {
-                if (audioIndex == index) {
+                if (currentAudioIndex == index) {
                     answersPlayer!!.pause()
                 } else {
                     resetAnswerPlayer(index, audio)
                 }
             }
             else -> {
-                if (audioIndex == index) {
+                if (currentAudioIndex == index) {
                     answersPlayer!!.start()
                 } else {
                     resetAnswerPlayer(index, audio)
@@ -185,7 +185,7 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun resetAnswerPlayer(index: Int, audio: String) {
         answersPlayer!!.reset()
-        audioIndex = index
+        currentAudioIndex = index
         val audioFile = File(fileFolder.absolutePath, audio)
         answersPlayer!!.setDataSource(requireActivity(), Uri.fromFile(audioFile))
         answersPlayer!!.prepare()

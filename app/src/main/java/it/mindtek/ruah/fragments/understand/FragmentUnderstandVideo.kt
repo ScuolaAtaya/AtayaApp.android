@@ -175,7 +175,6 @@ class FragmentUnderstandVideo : Fragment() {
     }
 
     companion object {
-
         fun newInstance(unit_id: Int, stepIndex: Int, isVideoWatched: Boolean): FragmentUnderstandVideo {
             val fragment = FragmentUnderstandVideo()
             val bundle = Bundle()

@@ -170,7 +170,7 @@ class FragmentSpeak : Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_AUDIO) {
-            permissions.forEachIndexed { index, s ->
+            permissions.forEachIndexed { index: Int, s: String ->
                 if (s == Manifest.permission.RECORD_AUDIO) {
                     if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
                         setupRecorder()

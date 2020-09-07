@@ -108,7 +108,9 @@ class ActivityUnit : AppCompatActivity() {
     }
 
     private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean {
-        return modelUnit.completed.any { it == categoryId }
+        return modelUnit.completed.any {
+            it == categoryId
+        }
     }
 
     companion object {
