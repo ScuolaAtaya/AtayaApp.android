@@ -91,6 +91,9 @@ class FragmentSpeak : Fragment() {
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
         listenButton.setOnClickListener {
+            if (recording) {
+                return@setOnClickListener
+            }
             playAudio(audio.value)
         }
         if (audio.credits.isNotBlank()) {
@@ -103,7 +106,8 @@ class FragmentSpeak : Fragment() {
         recodedPlayer?.pause()
         when {
             player == null -> {
-                player = initPlayer(audio)
+                val audioFile = File(fileFolder.absolutePath, audio)
+                player = initPlayer(audioFile)
                 player!!.start()
             }
             player!!.isPlaying -> player!!.pause()
@@ -210,7 +214,8 @@ class FragmentSpeak : Fragment() {
         player?.pause()
         when {
             recodedPlayer == null -> {
-                recodedPlayer = initPlayer("recording")
+                val audioFile = File(requireActivity().filesDir, "recording")
+                recodedPlayer = initPlayer(audioFile)
                 recodedPlayer!!.start()
             }
             recodedPlayer!!.isPlaying -> recodedPlayer!!.pause()
@@ -218,8 +223,7 @@ class FragmentSpeak : Fragment() {
         }
     }
 
-    private fun initPlayer(audio: String): MediaPlayer {
-        val audioFile = File(fileFolder.absolutePath, audio)
+    private fun initPlayer(audioFile: File): MediaPlayer {
         val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
             if (canAccessActivity) {
