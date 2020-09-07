@@ -9,7 +9,7 @@ import it.mindtek.ruah.adapters.UnitsAdapter
 import kotlinx.android.synthetic.main.activity_units.*
 
 class ActivityUnits : AppCompatActivity() {
-    private var adapter: UnitsAdapter? = null
+    private lateinit var adapter: UnitsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

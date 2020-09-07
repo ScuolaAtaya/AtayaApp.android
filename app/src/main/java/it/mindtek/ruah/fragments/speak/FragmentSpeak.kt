@@ -30,12 +30,12 @@ import java.io.File
 class FragmentSpeak : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
-    private var player: MediaPlayer? = null
-    private var recodedPlayer: MediaPlayer? = null
-    private var recorder: MediaRecorder? = null
-    private var speak: MutableList<ModelSpeak> = mutableListOf()
-    private var communicator: SpeakActivityInterface? = null
     private var recording = false
+    private var speak: MutableList<ModelSpeak> = mutableListOf()
+    private var recodedPlayer: MediaPlayer? = null
+    private lateinit var player: MediaPlayer
+    private lateinit var recorder: MediaRecorder
+    private lateinit var communicator: SpeakActivityInterface
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_speak, container, false)
@@ -90,8 +90,23 @@ class FragmentSpeak : Fragment() {
 
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
+        val audioFile = File(fileFolder.absolutePath, audio.value)
+        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        player.setOnCompletionListener {
+            if (canAccessActivity) {
+                player.pause()
+            }
+        }
         listenButton.setOnClickListener {
-            playAudio(audio.value)
+            if (recording) {
+                return@setOnClickListener
+            }
+            recodedPlayer?.pause()
+            if (player.isPlaying) {
+                player.pause()
+            } else {
+                player.start()
+            }
         }
         if (audio.credits.isNotBlank()) {
             audioCredits.setVisible()
@@ -128,14 +143,16 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun startRecording() {
-        player?.pause()
+        player.pause()
         recodedPlayer?.pause()
+        listenAgain.disable()
+        next.disable()
         if (initRecorder()) {
             recording = true
             record.setImageResource(R.drawable.stop)
             pulsator.start()
             record.compatElevation = requireActivity().dip(16f).toFloat()
-            recorder?.start()
+            recorder.start()
         }
     }
 
@@ -165,56 +182,35 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun setupRecorder() {
-        if (recorder != null) {
-            recorder?.release()
-        }
         recorder = MediaRecorder()
-        recorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-        recorder!!.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
-        recorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
         val file = File(requireActivity().filesDir, "recording")
-        recorder!!.setOutputFile(file.absolutePath)
-        recorder?.prepare()
+        recorder.setOutputFile(file.absolutePath)
+        recorder.prepare()
     }
 
     private fun endRecording() {
         recording = false
         pulsator.stop()
         record.compatElevation = requireActivity().dip(8f).toFloat()
-        recorder?.stop()
+        recorder.stop()
         listenAgain.enable()
         next.enable()
         record.setImageResource(R.drawable.mic)
     }
 
-    private fun playAudio(audio: String) {
-        recodedPlayer?.pause()
-        when {
-            player == null -> {
-                val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        player!!.pause()
-                    }
-                }
-                player!!.start()
-            }
-            player!!.isPlaying -> player!!.pause()
-            else -> player!!.start()
-        }
-    }
-
     private fun dispatch() {
         if (stepIndex + 1 < speak.size) {
-            communicator?.goToNext(stepIndex + 1)
+            communicator.goToNext(stepIndex + 1)
         } else {
-            communicator?.goToFinish()
+            communicator.goToFinish()
         }
     }
 
     private fun playRecordedAudio() {
-        player?.pause()
+        player.pause()
         when {
             recodedPlayer == null -> {
                 val audioFile = File(requireActivity().filesDir, "recording")
@@ -232,7 +228,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun destroyPlayers() {
-        player?.release()
+        player.release()
         recodedPlayer?.release()
     }
 

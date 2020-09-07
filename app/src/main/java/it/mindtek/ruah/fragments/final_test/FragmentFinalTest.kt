@@ -27,8 +27,8 @@ class FragmentFinalTest : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var questions: MutableList<ModelFinalTestQuestion> = mutableListOf()
-    private var player: MediaPlayer? = null
-    private var communicator: FinalTestActivityInterface? = null
+    private lateinit var player: MediaPlayer
+    private lateinit var communicator: FinalTestActivityInterface
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_final_test, container, false)
@@ -68,7 +68,7 @@ class FragmentFinalTest : Fragment() {
             stepLayout.backgroundColor = color
             questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
-        next.isEnabled = false
+        next.disable()
         setupSteps()
         setupNext()
         setupQuestion()
@@ -85,12 +85,12 @@ class FragmentFinalTest : Fragment() {
     private fun setupNext() {
         next.setOnClickListener {
             if (stepIndex + 1 < questions.size) {
-                player?.release()
+                player.release()
                 yes.radioSelect.isChecked = false
                 no.radioSelect.isChecked = false
-                communicator?.goToNext(stepIndex + 1)
+                communicator.goToNext(stepIndex + 1)
             } else {
-                communicator?.goToFinish()
+                communicator.goToFinish()
             }
         }
     }
@@ -102,8 +102,19 @@ class FragmentFinalTest : Fragment() {
 
     private fun setupAudio() {
         val audio = questions[stepIndex].audio
+        val audioFile = File(fileFolder.absolutePath, audio.value)
+        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        player.setOnCompletionListener {
+            if (canAccessActivity) {
+                player.pause()
+            }
+        }
         questionAudio.setOnClickListener {
-            playAudio(audio.value)
+            if (player.isPlaying) {
+                player.pause()
+            } else {
+                player.start()
+            }
         }
         if (audio.credits.isNotBlank()) {
             questionAudioCredits.setVisible()
@@ -111,22 +122,6 @@ class FragmentFinalTest : Fragment() {
         }
     }
 
-    private fun playAudio(audio: String) {
-        when {
-            player == null -> {
-                val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        player!!.pause()
-                    }
-                }
-                player!!.start()
-            }
-            player!!.isPlaying -> player!!.pause()
-            else -> player!!.start()
-        }
-    }
 
     private fun setupPicture() {
         val picture = questions[stepIndex].picture
@@ -157,7 +152,7 @@ class FragmentFinalTest : Fragment() {
             yes.radioSelect.setGone()
             if (questions[stepIndex].answers) {
                 yes.correct.setVisible()
-                next.isEnabled = true
+                next.enable()
             } else {
                 yes.wrong.setVisible()
             }
@@ -168,14 +163,14 @@ class FragmentFinalTest : Fragment() {
                 no.wrong.setVisible()
             } else {
                 no.correct.setVisible()
-                next.isEnabled = true
+                next.enable()
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        player?.release()
+        player.release()
     }
 
     companion object {

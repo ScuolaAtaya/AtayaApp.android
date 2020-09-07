@@ -31,11 +31,11 @@ import java.util.*
 class FragmentWrite : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
-    private var player: MediaPlayer? = null
     private var write: MutableList<ModelWrite> = mutableListOf()
-    private var communicator: WriteActivityInterface? = null
-    private var selectedAdapter: SelectedLettersAdapter? = null
-    private var selectableAdapter: SelectableLettersAdapter? = null
+    private lateinit var player: MediaPlayer
+    private lateinit var selectedAdapter: SelectedLettersAdapter
+    private lateinit var selectableAdapter: SelectableLettersAdapter
+    private lateinit var communicator: WriteActivityInterface
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_write, container, false)
@@ -87,29 +87,23 @@ class FragmentWrite : Fragment() {
 
     private fun setupAudio() {
         val audio = write[stepIndex].audio
+        val audioFile = File(fileFolder.absolutePath, audio.value)
+        player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        player.setOnCompletionListener {
+            if (canAccessActivity) {
+                player.pause()
+            }
+        }
         audioButton.setOnClickListener {
-                playAudio(audio.value)
+            if (player.isPlaying) {
+                player.pause()
+            } else {
+                player.start()
+            }
         }
         if (audio.credits.isNotBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
-        }
-    }
-
-    private fun playAudio(audio: String) {
-        when {
-            player == null -> {
-                val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        player!!.pause()
-                    }
-                }
-                player!!.start()
-            }
-            player!!.isPlaying -> player!!.pause()
-            else -> player!!.start()
         }
     }
 
@@ -125,14 +119,14 @@ class FragmentWrite : Fragment() {
 
     private fun setupButtons() {
         next.setOnClickListener {
-            player?.release()
+            player.release()
             if (stepIndex + 1 < write.size) {
-                communicator?.goToNext(stepIndex + 1)
+                communicator.goToNext(stepIndex + 1)
             } else {
-                communicator?.goToFinish()
+                communicator.goToFinish()
             }
         }
-        next.isEnabled = false
+        next.disable()
     }
 
     @SuppressLint("SetTextI18n")
@@ -155,12 +149,12 @@ class FragmentWrite : Fragment() {
                 clearDrawable()
                 if (setLowerCase(s.toString()) == setLowerCase(write[stepIndex].word)) {
                     showRight()
-                    next.isEnabled = true
+                    next.enable()
                 } else {
                     if (s.toString().isNotEmpty()) {
                         showError()
                     }
-                    next.isEnabled = false
+                    next.enable()
                 }
 
             }
@@ -187,16 +181,26 @@ class FragmentWrite : Fragment() {
         val stepWrite = write[stepIndex]
         val selectableCol = calculateSelectableColumns()
         val selectedCol = calculateColumns()
-        compile.layoutManager = GridLayoutManager(requireActivity(), if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size)
-        available.layoutManager = GridLayoutManager(requireActivity(), if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size)
+        val selectedSpanCount = if (stepWrite.letters.size >= selectedCol) {
+            selectedCol
+        } else {
+            stepWrite.letters.size
+        }
+        val selectableSpanCount = if (stepWrite.letters.size >= selectableCol) {
+            selectableCol
+        } else {
+            stepWrite.letters.size
+        }
+        compile.layoutManager = GridLayoutManager(requireActivity(), selectedSpanCount)
+        available.layoutManager = GridLayoutManager(requireActivity(), selectableSpanCount)
         selectedAdapter = SelectedLettersAdapter(stepWrite.letters) { letter ->
-            selectableAdapter?.unlockLetter(letter)
-            next.isEnabled = selectedAdapter?.completed() == true
+            selectableAdapter.unlockLetter(letter)
+            next.isEnabled = selectedAdapter.completed()
         }
         stepWrite.letters.shuffle()
         selectableAdapter = SelectableLettersAdapter(stepWrite.letters) { letters ->
-            selectedAdapter?.select(letters)
-            next.isEnabled = selectedAdapter?.completed() == true
+            selectedAdapter.select(letters)
+            next.isEnabled = selectedAdapter.completed()
         }
         compile.adapter = selectedAdapter
         available.adapter = selectableAdapter
@@ -222,7 +226,7 @@ class FragmentWrite : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player?.release()
+        player.release()
     }
 
     private fun setLowerCase(text: String) = text.toLowerCase(Locale.ITALIAN)

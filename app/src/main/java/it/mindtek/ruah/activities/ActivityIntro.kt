@@ -18,10 +18,10 @@ import org.jetbrains.anko.dip
 
 class ActivityIntro : AppCompatActivity() {
     private var unitId: Int = -1
-    private var category: Category? = null
-    private var player: MediaPlayer? = null
     private var finish: Boolean = false
-    private var unitObject: ModelUnit? = null
+    private var category: Category? = null
+    private lateinit var unitObject: ModelUnit
+    private lateinit var player: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +37,10 @@ class ActivityIntro : AppCompatActivity() {
     private fun setup() {
         if (unitId == -1 || category == null) {
             finish()
+        }
+        player = MediaPlayer.create(this, category!!.audio)
+        player.setOnCompletionListener {
+            destroyPlayer()
         }
         if (finish) {
             buttonNext.setGone()
@@ -56,7 +60,7 @@ class ActivityIntro : AppCompatActivity() {
                 dispatch()
             }
             sectionDescription.text = getString(category!!.description)
-            playAudio()
+            player.start()
         }
         GlideApp.with(this).load(category!!.icon).override(dip(24), dip(24)).into(sectionIcon)
         sectionName.text = getString(category!!.title)
@@ -83,24 +87,12 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun completeCategory(category: Category) {
-        unitObject?.let {
-            it.completed.add(category.value)
-            db.unitDao().updateUnit(it)
-        }
-    }
-
-    private fun playAudio() {
-        player = MediaPlayer.create(this, category!!.audio)
-        player?.setOnCompletionListener {
-            destroyPlayer()
-        }
-        player?.start()
+            unitObject.completed.add(category.value)
+            db.unitDao().updateUnit(unitObject)
     }
 
     private fun dispatch() {
-        if (player != null) {
             destroyPlayer()
-        }
         when (category?.value) {
             Category.UNDERSTAND.value -> goToUnderstand()
             Category.TALK.value -> goToSpeak()
@@ -150,7 +142,7 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun destroyPlayer() {
-        player?.release()
+        player.release()
     }
 
     override fun onBackPressed() {
