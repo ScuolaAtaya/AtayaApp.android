@@ -17,10 +17,7 @@ import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
-import it.mindtek.ruah.kotlin.extensions.canAccessActivity
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.fileFolder
-import it.mindtek.ruah.kotlin.extensions.setVisible
+import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
 import org.jetbrains.anko.backgroundColor
@@ -32,11 +29,12 @@ class FragmentUnderstandQuestions : Fragment() {
     private var unitId: Int = -1
     private var questionIndex: Int = -1
     private var understandIndex: Int = -1
+    private var audioIndex: Int = -1
     private var questions: MutableList<PojoQuestion> = mutableListOf()
     private var understandSize: Int = -1
-    private var communicator: UnderstandActivityInterface? = null
+    private var answersPlayer: MediaPlayer? = null
     private var questionPlayer: MediaPlayer? = null
-    private var answersPlayers: MutableList<MediaPlayer> = mutableListOf()
+    private lateinit var communicator: UnderstandActivityInterface
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_understand_questions, container, false)
@@ -78,7 +76,7 @@ class FragmentUnderstandQuestions : Fragment() {
         if (questions.size == 0 || questions.size <= questionIndex) {
             requireActivity().finish()
         }
-        next.isEnabled = false
+        next.disable()
         setupBack()
         setupSection()
         setupQuestion()
@@ -87,7 +85,7 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun setupBack() {
         reset.setOnClickListener {
-            communicator?.goToVideo(understandIndex, true)
+            communicator.goToVideo(understandIndex, true)
         }
     }
 
@@ -97,24 +95,23 @@ class FragmentUnderstandQuestions : Fragment() {
         next.setOnClickListener {
             destroyPlayers()
             if (questionIndex + 1 < questions.size) {
-                communicator?.goToNextQuestion(questionIndex + 1)
+                communicator.goToNextQuestion(questionIndex + 1)
             } else {
                 if (understandIndex + 1 < understandSize) {
-                    communicator?.goToVideo(understandIndex + 1, false)
+                    communicator.goToVideo(understandIndex + 1, false)
                 } else {
-                    communicator?.goToFinish()
+                    communicator.goToFinish()
                 }
             }
         }
     }
 
     private fun setupQuestion() {
-        val question = questions[questionIndex]
         title.text = getString(R.string.question)
-        question.question?.let { q ->
-            description.text = q.body
-            setupPicture(q.picture)
-            setupAudio(q.audio)
+        questions[questionIndex].question?.let {
+            description.text = it.body
+            setupPicture(it.picture)
+            setupAudio(it.audio)
 
         }
     }
@@ -130,7 +127,7 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun playQuestionAudio(audio: String) {
-        pausePlayers()
+        answersPlayer?.pause()
         when {
             questionPlayer == null -> {
                 val audioFile = File(fileFolder.absolutePath, audio)
@@ -148,49 +145,63 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupAnswers() {
-        if (questions.size >= questionIndex) {
-            val answers = questions[questionIndex].answers
-            answers.forEach {
-                val audioFile = File(fileFolder.absolutePath, it.audio.value)
-                val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        player.pause()
-                    }
+        val answers = questions[questionIndex].answers
+        answers.forEach {
+            val audioFile = File(fileFolder.absolutePath, it.audio.value)
+            val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+            player.setOnCompletionListener {
+                if (canAccessActivity) {
+                    player.pause()
                 }
-
             }
-            val adapter = AnswersAdapter(answers, {
-                if (it.correct) {
-                    next.isEnabled = true
-                }
-            }, {
-                playAnswerAudio(answers.indexOf(it), it.audio.value)
-            })
-            answersRecycler.layoutManager = LinearLayoutManager(requireActivity())
-            answersRecycler.adapter = adapter
         }
+        val adapter = AnswersAdapter(answers, {
+            next.isEnabled = it.correct
+        }, {
+            playAnswerAudio(answers.indexOf(it), it.audio.value)
+        })
+        answersRecycler.layoutManager = LinearLayoutManager(requireActivity())
+        answersRecycler.adapter = adapter
     }
 
     private fun playAnswerAudio(index: Int, audio: String) {
         questionPlayer?.pause()
-        pausePlayers(index)
-        var player = answersPlayers.getOrNull(index)
         when {
-            player == null -> {
+            answersPlayer == null -> {
+                audioIndex = index
                 val audioFile = File(fileFolder.absolutePath, audio)
-                player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                player!!.setOnCompletionListener {
+                answersPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+                answersPlayer!!.setOnCompletionListener {
                     if (canAccessActivity) {
-                        player.pause()
+                        answersPlayer!!.pause()
                     }
                 }
-                player.start()
-                answersPlayers.add(index, player)
+                answersPlayer!!.start()
             }
-            player.isPlaying -> player.pause()
-            else -> player.start()
+            answersPlayer!!.isPlaying -> {
+                if (audioIndex == index) {
+                    answersPlayer!!.pause()
+                } else {
+                    resetAnswerAudio(index, audio)
+                }
+            }
+            else -> {
+                if (audioIndex == index) {
+                    answersPlayer!!.start()
+                } else {
+                    resetAnswerAudio(index, audio)
+                }
+            }
         }
+    }
+
+    private fun resetAnswerAudio(index: Int, audio: String) {
+        answersPlayer!!.reset()
+        audioIndex = index
+        val audioFile = File(fileFolder.absolutePath, audio)
+        answersPlayer!!.setDataSource(requireActivity(), Uri.fromFile(audioFile))
+        answersPlayer!!.prepare()
+        answersPlayer!!.start()
     }
 
     private fun setupPicture(picture: ModelMedia?) {
@@ -213,24 +224,9 @@ class FragmentUnderstandQuestions : Fragment() {
         }
     }
 
-    private fun pausePlayers(index: Int? = null) {
-        val players = if (index != null) {
-            answersPlayers.filter {
-                it != answersPlayers[index]
-            }
-        } else {
-            answersPlayers
-        }
-        players.map {
-            it.pause()
-        }
-    }
-
     private fun destroyPlayers() {
         questionPlayer?.release()
-        answersPlayers.map {
-            it.release()
-        }
+        answersPlayer?.release()
     }
 
     override fun onDestroy() {
