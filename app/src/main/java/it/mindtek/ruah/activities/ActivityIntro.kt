@@ -5,9 +5,11 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.db.models.ModelUnit
@@ -19,7 +21,7 @@ import org.jetbrains.anko.dip
 class ActivityIntro : AppCompatActivity() {
     private var unitId: Int = -1
     private var finish: Boolean = false
-    private var category: Category? = null
+    private lateinit var category: Category
     private lateinit var unitObject: ModelUnit
     private lateinit var player: MediaPlayer
 
@@ -28,17 +30,14 @@ class ActivityIntro : AppCompatActivity() {
         setContentView(R.layout.activity_intro)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(it.getIntExtra(EXTRA_CATEGORY_ID, -1))
+            category = Category.from(it.getIntExtra(EXTRA_CATEGORY_ID, -1))!!
             finish = it.getBooleanExtra(EXTRA_IS_FINISH, false)
         }
         setup()
     }
 
     private fun setup() {
-        if (unitId == -1 || category == null) {
-            finish()
-        }
-        player = MediaPlayer.create(this, category!!.audio)
+        player = MediaPlayer.create(this, category.audio)
         player.setOnCompletionListener {
             player.release()
         }
@@ -47,7 +46,7 @@ class ActivityIntro : AppCompatActivity() {
             done.setVisible()
             sectionDescription.text = getString(R.string.congrats)
             fabBack.setOnClickListener {
-                completeCategory(category!!)
+                completeCategory(category)
                 goToCategory()
             }
         } else {
@@ -59,11 +58,11 @@ class ActivityIntro : AppCompatActivity() {
             buttonNext.setOnClickListener {
                 dispatch()
             }
-            sectionDescription.text = getString(category!!.description)
+            sectionDescription.text = getString(category.description)
             player.start()
         }
-        GlideApp.with(this).load(category!!.icon).override(dip(24), dip(24)).into(sectionIcon)
-        sectionName.text = getString(category!!.title)
+        GlideApp.with(this).load(category.icon).override(dip(24), dip(24)).into(sectionIcon)
+        sectionName.text = getString(category.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this, Observer {
             it?.let {
@@ -92,8 +91,7 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun dispatch() {
-        player.release()
-        when (category?.value) {
+        when (category.value) {
             Category.UNDERSTAND.value -> goToUnderstand()
             Category.TALK.value -> goToSpeak()
             Category.READ.value -> goToRead()
@@ -111,34 +109,54 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun goToSpeak() {
-        val intent = Intent(this, ActivitySpeak::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        startActivity(intent)
+        if (check(db.speakDao().countByUnitId(unitId))) {
+            val intent = Intent(this, ActivitySpeak::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            startActivity(intent)
+        }
     }
 
     private fun goToUnderstand() {
-        val intent = Intent(this, ActivityUnderstand::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityUnderstand.STEP_INDEX, 0)
-        startActivity(intent)
+        if (check(db.understandDao().countByUnitId(unitId))) {
+            val intent = Intent(this, ActivityUnderstand::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            intent.putExtra(ActivityUnderstand.STEP_INDEX, 0)
+            startActivity(intent)
+        }
     }
 
     private fun goToRead() {
-        val intent = Intent(this, ActivityRead::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        startActivity(intent)
+        if (check(db.readDao().countByUnitId(unitId))) {
+            val intent = Intent(this, ActivityRead::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            startActivity(intent)
+        }
     }
 
     private fun goToWrite() {
-        val intent = Intent(this, ActivityWrite::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        startActivity(intent)
+        if (check(db.writeDao().countByUnitId(unitId))) {
+            val intent = Intent(this, ActivityWrite::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            startActivity(intent)
+        }
     }
 
     private fun goToFinalTest() {
-        val intent = Intent(this, ActivityFinalTest::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        startActivity(intent)
+        if (check(db.finalTestDao().countByUnitId(unitId))) {
+            val intent = Intent(this, ActivityFinalTest::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            startActivity(intent)
+        }
+    }
+
+    private fun check(count: Int): Boolean {
+        if (count == 0) {
+            Snackbar.make(coordinator, R.string.category_empty_error, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(ContextCompat.getColor(this, R.color.red)).show()
+            return false
+        }
+        player.release()
+        return true
     }
 
     override fun onBackPressed() {

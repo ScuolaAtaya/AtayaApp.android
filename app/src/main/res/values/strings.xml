@@ -44,7 +44,7 @@
     <string name="next">Avanti</string>
     <string name="button_video_audio">Video/audio</string>
     <string name="congrats">Congratulazioni!</string>
-    <string name="hold_to_record">Tieni premuto per registrare</string>
+    <string name="hold_to_record">Premi per registrare</string>
     <string name="listen_again">Riascolta</string>
     <string name="downloading">Stiamo scaricando i file necessari, non chiudere l\'applicazione</string>
     <string name="download_permission_denied">Permesso negato, consenti per procedere</string>
@@ -52,6 +52,8 @@
     <string name="question">Domanda</string>
     <string name="write">Scrivi</string>
     <string name="downloaded_mb">Scaricati %d MB di %d MB</string>
+
+    <string name="category_empty_error">Nessun esercizio presente per questa categoria</string>
 
     <string name="yes">Sì</string>
     <string name="no">No</string>
