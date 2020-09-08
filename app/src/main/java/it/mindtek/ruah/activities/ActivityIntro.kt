@@ -40,7 +40,7 @@ class ActivityIntro : AppCompatActivity() {
         }
         player = MediaPlayer.create(this, category!!.audio)
         player.setOnCompletionListener {
-            destroyPlayer()
+            player.release()
         }
         if (finish) {
             buttonNext.setGone()
@@ -87,12 +87,12 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun completeCategory(category: Category) {
-            unitObject.completed.add(category.value)
-            db.unitDao().updateUnit(unitObject)
+        unitObject.completed.add(category.value)
+        db.unitDao().updateUnit(unitObject)
     }
 
     private fun dispatch() {
-            destroyPlayer()
+        player.release()
         when (category?.value) {
             Category.UNDERSTAND.value -> goToUnderstand()
             Category.TALK.value -> goToSpeak()
@@ -141,10 +141,6 @@ class ActivityIntro : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun destroyPlayer() {
-        player.release()
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         goToCategory()
@@ -152,7 +148,7 @@ class ActivityIntro : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayer()
+        player.release()
     }
 
     companion object {

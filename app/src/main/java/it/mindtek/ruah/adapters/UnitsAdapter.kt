@@ -68,5 +68,4 @@ class UnitHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val icon: ImageView = itemView.unitIcon
     val text: TextView = itemView.unitText
     val check: ImageView = itemView.check
-
 }

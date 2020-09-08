@@ -1,6 +1,5 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -15,12 +14,6 @@ interface DaoSpeak {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveCategories(categories: MutableList<ModelSpeak>)
 
-    @Query("SELECT * FROM speak")
-    fun getSpeakAsync(): LiveData<MutableList<ModelSpeak>>
-
     @Query("SELECT * FROM speak WHERE unit_id = :unitId ")
     fun getSpeakByUnitId(unitId: Int): MutableList<ModelSpeak>
-
-    @Query("SELECT COUNT(*) FROM speak")
-    fun count(): Int
 }

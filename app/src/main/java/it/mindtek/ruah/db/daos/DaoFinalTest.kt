@@ -1,6 +1,5 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -17,12 +16,6 @@ interface DaoFinalTest {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveQuestions(questions: MutableList<ModelFinalTestQuestion>)
 
-    @Query("SELECT * FROM final")
-    fun getFinalTestAsync(): LiveData<MutableList<PojoFinalTest>>
-
     @Query("SELECT * FROM final WHERE unit_id = :unitId")
     fun getFinalTestByUnitId(unitId: Int): MutableList<PojoFinalTest>
-
-    @Query("SELECT COUNT(*) FROM final")
-    fun count(): Int
 }

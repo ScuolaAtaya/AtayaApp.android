@@ -1,11 +1,9 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelRead
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.pojos.PojoRead
@@ -21,12 +19,6 @@ interface DaoRead {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveOptions(options: MutableList<ModelReadOption>)
 
-    @Query("SELECT * FROM read")
-    fun getReadAsync(): LiveData<MutableList<PojoRead>>
-
     @Query("SELECT * FROM read WHERE unit_id = :unitId")
     fun getReadByUnitId(unitId: Int): MutableList<PojoRead>
-
-    @Query("SELECT COUNT(*) FROM read")
-    fun count(): Int
 }

@@ -51,10 +51,10 @@ class SelectedLettersAdapter(
             val right = syllable.occurences.any {
                 it == position
             }
-            if (!right) {
-                holder.card.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_red)
+            holder.card.background = if (right) {
+                ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
             } else {
-                holder.card.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
+                ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_red)
             }
             holder.letter.text = syllable.text
             holder.itemView.setOnClickListener {

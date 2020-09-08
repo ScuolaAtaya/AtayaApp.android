@@ -1,6 +1,5 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -15,12 +14,6 @@ interface DaoWrite {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveCategories(categories: MutableList<ModelWrite>)
 
-    @Query("SELECT * FROM write")
-    fun getWriteAsync(): LiveData<MutableList<ModelWrite>>
-
     @Query("SELECT * FROM write WHERE unit_id = :unitId")
     fun getWriteByUnitId(unitId: Int): MutableList<ModelWrite>
-
-    @Query("SELECT COUNT(*) FROM write")
-    fun count(): Int
 }

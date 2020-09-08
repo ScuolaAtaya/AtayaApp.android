@@ -14,9 +14,9 @@ import androidx.core.content.ContextCompat
  */
 @Suppress("DEPRECATION")
 fun FloatingActionButton.setTintPreLollipop(color: Int, @DrawableRes iconRes: Int) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         setTint(color)
-    }else{
+    } else {
         val icon = ContextCompat.getDrawable(context, iconRes)
         val copy = icon?.constantState?.newDrawable()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

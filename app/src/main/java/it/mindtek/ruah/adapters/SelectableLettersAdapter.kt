@@ -29,10 +29,10 @@ class SelectableLettersAdapter(
     override fun onBindViewHolder(holder: SyllablesHolder, position: Int) {
         val syllable = syllables[position]
         holder.syllables.text = syllable.text
-        if (syllable.enabled) {
-            holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
+        holder.background.background = if (syllable.enabled) {
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
         } else {
-            holder.background.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_disabled)
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_disabled)
         }
         holder.itemView.setOnClickListener {
             if (syllable.enabled) {

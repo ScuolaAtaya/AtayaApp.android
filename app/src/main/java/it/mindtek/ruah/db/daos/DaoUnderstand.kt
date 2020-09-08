@@ -1,6 +1,5 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -23,9 +22,6 @@ interface DaoUnderstand {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAnswers(answers: MutableList<ModelAnswer>)
-
-    @Query("SELECT * FROM understand")
-    fun getUnderstandAsync(): LiveData<MutableList<PojoUnderstand>>
 
     @Query("SELECT * FROM understand WHERE unit_id = :unitId")
     fun getUnderstandByUnitId(unitId: Int): MutableList<PojoUnderstand>

@@ -14,10 +14,6 @@ class ActivityUnits : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_units)
-        setupRecycler()
-    }
-
-    private fun setupRecycler() {
         unitsRecycler.layoutManager = GridLayoutManager(this, 2)
         adapter = UnitsAdapter(this, {
             val intent = Intent(this@ActivityUnits, ActivityUnit::class.java)
