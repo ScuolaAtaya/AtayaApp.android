@@ -54,9 +54,6 @@ class FragmentFinalTest : Fragment() {
         finalTest.forEach {
             questions.addAll(it.questions)
         }
-        if (questions.size == 0) {
-            requireActivity().finish()
-        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)

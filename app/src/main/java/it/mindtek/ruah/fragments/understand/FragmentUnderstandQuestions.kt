@@ -68,9 +68,6 @@ class FragmentUnderstandQuestions : Fragment() {
         understandSize = db.understandDao().count()
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
         questions = understand[understandIndex].questions
-        if (questions.size == 0) {
-            requireActivity().finish()
-        }
         next.disable()
         setupBack()
         setupSection()
