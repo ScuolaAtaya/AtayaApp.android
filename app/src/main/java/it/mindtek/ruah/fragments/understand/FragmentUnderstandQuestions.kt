@@ -142,7 +142,9 @@ class FragmentUnderstandQuestions : Fragment() {
             }
         }
         val adapter = AnswersAdapter(answers, {
-            next.isEnabled = it.correct
+            if (it.correct) {
+                next.enable()
+            }
         }, {
             playAnswerAudio(answers.indexOf(it), it.audio.value)
         })
