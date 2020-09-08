@@ -56,16 +56,8 @@ class FragmentWrite : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
-        if (unitId == -1 || stepIndex == -1) {
-            requireActivity().finish()
-        }
-        if (requireActivity() is WriteActivityInterface) {
-            communicator = requireActivity() as WriteActivityInterface
-        }
+        communicator = requireActivity() as WriteActivityInterface
         write = db.writeDao().getWriteByUnitId(unitId)
-        if (write.size == 0 || write.size <= stepIndex) {
-            requireActivity().finish()
-        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)

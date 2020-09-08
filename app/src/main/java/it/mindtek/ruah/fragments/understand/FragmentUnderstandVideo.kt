@@ -54,13 +54,7 @@ class FragmentUnderstandVideo : Fragment() {
     }
 
     private fun setup() {
-        if (unitId == -1 || stepIndex == -1) {
-            requireActivity().finish()
-        }
         understand = db.understandDao().getUnderstandByUnitId(unitId)
-        if (understand.size == 0 || understand.size <= stepIndex) {
-            requireActivity().finish()
-        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)

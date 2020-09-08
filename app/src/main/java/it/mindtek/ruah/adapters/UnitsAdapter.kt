@@ -28,8 +28,8 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
         try {
             val data = db.unitDao().getUnitsAsync()
             data.observe(owner, Observer {
-                it?.let {
-                    units = it
+                it?.let { unitList: MutableList<ModelUnit> ->
+                    units = unitList
                     notifyDataSetChanged()
                 }
             })

@@ -29,9 +29,6 @@ class ActivityUnit : AppCompatActivity() {
     }
 
     private fun setup() {
-        if (unitId == -1) {
-            finish()
-        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         capire.setOnClickListener {
             openIntro(Category.UNDERSTAND.value)

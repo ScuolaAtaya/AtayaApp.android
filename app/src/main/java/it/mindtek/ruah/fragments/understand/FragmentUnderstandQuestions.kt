@@ -58,12 +58,7 @@ class FragmentUnderstandQuestions : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
-        if (unitId == -1 || understandIndex == -1) {
-            requireActivity().finish()
-        }
-        if (requireActivity() is UnderstandActivityInterface) {
-            communicator = requireActivity() as UnderstandActivityInterface
-        }
+        communicator = requireActivity() as UnderstandActivityInterface
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)
@@ -73,7 +68,7 @@ class FragmentUnderstandQuestions : Fragment() {
         understandSize = db.understandDao().count()
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
         questions = understand[understandIndex].questions
-        if (questions.size == 0 || questions.size <= questionIndex) {
+        if (questions.size == 0) {
             requireActivity().finish()
         }
         next.disable()

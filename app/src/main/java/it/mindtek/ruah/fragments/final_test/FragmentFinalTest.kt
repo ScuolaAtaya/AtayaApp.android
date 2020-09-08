@@ -49,17 +49,12 @@ class FragmentFinalTest : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
-        if (unitId == -1 || stepIndex == -1) {
-            requireActivity().finish()
-        }
-        if (requireActivity() is FinalTestActivityInterface) {
-            communicator = requireActivity() as FinalTestActivityInterface
-        }
+        communicator = requireActivity() as FinalTestActivityInterface
         val finalTest = db.finalTestDao().getFinalTestByUnitId(unitId)
         finalTest.forEach {
             questions.addAll(it.questions)
         }
-        if (questions.size == 0 || questions.size <= stepIndex) {
+        if (questions.size == 0) {
             requireActivity().finish()
         }
         val unit = db.unitDao().getUnitById(unitId)

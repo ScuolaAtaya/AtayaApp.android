@@ -56,16 +56,8 @@ class FragmentSpeak : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun setup() {
-        if (unitId == -1 || stepIndex == -1) {
-            requireActivity().finish()
-        }
-        if (requireActivity() is SpeakActivityInterface) {
-            communicator = requireActivity() as SpeakActivityInterface
-        }
+        communicator = requireActivity() as SpeakActivityInterface
         speak = db.speakDao().getSpeakByUnitId(unitId)
-        if (speak.size == 0 || speak.size <= stepIndex) {
-            requireActivity().finish()
-        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ContextCompat.getColor(requireActivity(), it.color)

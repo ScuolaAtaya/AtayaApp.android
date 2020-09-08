@@ -43,9 +43,6 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
     }
 
     private fun setup() {
-        if (unitId == -1) {
-            finish()
-        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.TALK.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

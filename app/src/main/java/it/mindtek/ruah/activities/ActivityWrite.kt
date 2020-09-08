@@ -43,9 +43,6 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     }
 
     private fun setup() {
-        if (unitId == -1) {
-            finish()
-        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.WRITE.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

@@ -50,16 +50,8 @@ class FragmentRead : Fragment() {
     }
 
     private fun setup() {
-        if (unitId == -1 || stepIndex == -1) {
-            requireActivity().finish()
-        }
-        if (requireActivity() is ReadActivityInterface) {
-            communicator = requireActivity() as ReadActivityInterface
-        }
+        communicator = requireActivity() as ReadActivityInterface
         val read = db.readDao().getReadByUnitId(unitId)
-        if (read.size == 0 || read.size <= stepIndex) {
-            requireActivity().finish()
-        }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             color = ContextCompat.getColor(requireActivity(), it.color)

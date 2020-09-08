@@ -34,9 +34,6 @@ class ActivityUnderstand : AppCompatActivity() {
     }
 
     private fun setup() {
-        if (unitId == -1) {
-            finish()
-        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

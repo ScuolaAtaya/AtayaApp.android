@@ -55,9 +55,6 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
     }
 
     private fun setup() {
-        if (unitId == -1) {
-            finish()
-        }
         understandSize = db.understandDao().count()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)

@@ -43,9 +43,6 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
     }
 
     private fun setup() {
-        if (unitId == -1) {
-            finish()
-        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.FINAL_TEST.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
