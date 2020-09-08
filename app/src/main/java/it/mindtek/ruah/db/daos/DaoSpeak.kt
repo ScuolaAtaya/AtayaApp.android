@@ -16,4 +16,7 @@ interface DaoSpeak {
 
     @Query("SELECT * FROM speak WHERE unit_id = :unitId ")
     fun getSpeakByUnitId(unitId: Int): MutableList<ModelSpeak>
+
+    @Query("SELECT COUNT(*) FROM speak WHERE unit_id = :unitId")
+    fun countByUnitId(unitId: Int): Int
 }

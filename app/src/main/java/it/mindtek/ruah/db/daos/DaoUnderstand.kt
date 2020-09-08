@@ -28,4 +28,7 @@ interface DaoUnderstand {
 
     @Query("SELECT COUNT(*) FROM understand")
     fun count(): Int
+
+    @Query("SELECT COUNT(*) FROM understand WHERE unit_id = :unitId")
+    fun countByUnitId(unitId: Int): Int
 }

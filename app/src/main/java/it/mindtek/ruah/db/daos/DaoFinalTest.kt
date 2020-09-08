@@ -18,4 +18,7 @@ interface DaoFinalTest {
 
     @Query("SELECT * FROM final WHERE unit_id = :unitId")
     fun getFinalTestByUnitId(unitId: Int): MutableList<PojoFinalTest>
+
+    @Query("SELECT COUNT(*) FROM final WHERE unit_id = :unitId")
+    fun countByUnitId(unitId: Int): Int
 }

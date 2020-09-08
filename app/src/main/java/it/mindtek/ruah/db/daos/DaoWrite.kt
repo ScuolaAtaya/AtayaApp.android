@@ -16,4 +16,8 @@ interface DaoWrite {
 
     @Query("SELECT * FROM write WHERE unit_id = :unitId")
     fun getWriteByUnitId(unitId: Int): MutableList<ModelWrite>
+
+
+    @Query("SELECT COUNT(*) FROM write WHERE unit_id = :unitId")
+    fun countByUnitId(unitId: Int): Int
 }
