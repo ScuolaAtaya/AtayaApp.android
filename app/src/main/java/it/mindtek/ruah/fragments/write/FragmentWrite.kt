@@ -154,7 +154,7 @@ class FragmentWrite : Fragment() {
                     if (s.toString().isNotEmpty()) {
                         showError()
                     }
-                    next.enable()
+                    next.disable()
                 }
 
             }
@@ -193,13 +193,13 @@ class FragmentWrite : Fragment() {
         }
         compile.layoutManager = GridLayoutManager(requireActivity(), selectedSpanCount)
         available.layoutManager = GridLayoutManager(requireActivity(), selectableSpanCount)
-        selectedAdapter = SelectedLettersAdapter(stepWrite.letters) { letter ->
-            selectableAdapter.unlockLetter(letter)
+        selectedAdapter = SelectedLettersAdapter(stepWrite.letters) {
+            selectableAdapter.unlockLetter(it)
             next.isEnabled = selectedAdapter.completed()
         }
         stepWrite.letters.shuffle()
-        selectableAdapter = SelectableLettersAdapter(stepWrite.letters) { letters ->
-            selectedAdapter.select(letters)
+        selectableAdapter = SelectableLettersAdapter(stepWrite.letters) {
+            selectedAdapter.select(it)
             next.isEnabled = selectedAdapter.completed()
         }
         compile.adapter = selectedAdapter
