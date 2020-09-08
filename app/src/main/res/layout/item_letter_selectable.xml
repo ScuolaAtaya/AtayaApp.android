@@ -6,8 +6,9 @@
 
     <FrameLayout
         android:id="@+id/card"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:minWidth="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +22,6 @@
             android:layout_gravity="center"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
