@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
+import it.mindtek.ruah.adapters.OptionRenderViewModel
 import it.mindtek.ruah.adapters.OptionsAdapter
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
-import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoRead
@@ -94,14 +94,21 @@ class FragmentRead : Fragment() {
 
     private fun setupOptions(read: PojoRead) {
         read.options.shuffle()
-        val correctOptions: MutableList<ModelReadOption> = mutableListOf()
-        adapter = OptionsAdapter(color, read, { it: ModelReadOption, correct: Boolean ->
-            if (correct) {
-                correctOptions.add(it)
-            } else {
-                correctOptions.remove(it)
+        val currentOptions: MutableList<OptionRenderViewModel> = mutableListOf()
+        adapter = OptionsAdapter(color, read, {
+            val index = currentOptions.indexOfFirst { optionRenderViewModel: OptionRenderViewModel ->
+                it.option == optionRenderViewModel.option
             }
-            next.isEnabled = correctOptions.size >= read.read!!.markers.size
+            if (!it.answer.isNullOrBlank()) {
+                if (index == -1) {
+                    currentOptions.add(it)
+                } else {
+                    currentOptions[index] = it
+                }
+            } else {
+                currentOptions.removeAt(index)
+            }
+            next.isEnabled = currentOptions.size >= read.read!!.markers.size
         }, {
             playOptionAudio(read.options.indexOf(it), it.audio.value)
         })
