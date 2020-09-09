@@ -101,7 +101,7 @@ class FragmentRead : Fragment() {
             } else {
                 correctOptions.remove(it)
             }
-            next.isEnabled = adapter.completed(correctOptions.size)
+            next.isEnabled = correctOptions.size >= read.read!!.markers.size
         }, {
             playOptionAudio(read.options.indexOf(it), it.audio.value)
         })

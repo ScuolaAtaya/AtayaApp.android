@@ -25,8 +25,14 @@ class OptionsAdapter(
         private val textChangedCallback: ((option: ModelReadOption, correct: Boolean) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
 ) : RecyclerView.Adapter<OptionHolder>() {
-    private var options: MutableList<ModelReadOption> = read.options
     private var markers: MutableList<ModelMarker> = read.read!!.markers
+    private lateinit var options: MutableList<OptionRenderViewModel>
+
+    init {
+        read.options.forEach {
+            options.add(OptionRenderViewModel(it, null, null))
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false)
@@ -38,7 +44,7 @@ class OptionsAdapter(
     @SuppressLint("RestrictedApi")
     override fun onBindViewHolder(holder: OptionHolder, position: Int) {
         val option = options[position]
-        holder.text.text = option.body
+        holder.text.text = option.option.body
         holder.number.supportBackgroundTintList = ColorStateList.valueOf(color)
         holder.number.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -46,13 +52,13 @@ class OptionsAdapter(
                 val index = markers.indexOfFirst {
                     it.id == s.toString()
                 }
-                if (s.toString() == option.markerId && index > -1) {
-                    holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
-                    textChangedCallback?.invoke(option, true)
+                if (s.toString() == option.option.markerId && index > -1) {
+                    //holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
+                    textChangedCallback?.invoke(option.option, true)
                 } else {
-                    textChangedCallback?.invoke(option, false)
+                    textChangedCallback?.invoke(option.option, false)
                     if (s.toString().isNotEmpty()) {
-                        holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
+                        //holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
                     }
                 }
             }
@@ -62,11 +68,11 @@ class OptionsAdapter(
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         holder.audio.setOnClickListener {
-            playOptionCallback?.invoke(option)
+            playOptionCallback?.invoke(option.option)
         }
-        if (option.audio.credits.isNotBlank()) {
+        if (option.option.audio.credits.isNotBlank()) {
             holder.credits.setVisible()
-            holder.credits.text = option.audio.credits
+            holder.credits.text = option.option.audio.credits
         }
     }
 
@@ -74,6 +80,12 @@ class OptionsAdapter(
         return correctOptions == markers.size
     }
 }
+
+data class OptionRenderViewModel(
+        var option: ModelReadOption,
+        var answer: String?,
+        var correct: Boolean?
+)
 
 class OptionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val number: AppCompatEditText = itemView.editText
