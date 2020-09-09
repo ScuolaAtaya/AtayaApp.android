@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelMarker
@@ -45,27 +46,23 @@ class OptionsAdapter(
         val option = options[position]
         val readOption = option.option
         holder.text.text = readOption.body
+        holder.number.setText(option.answer)
         holder.number.supportBackgroundTintList = ColorStateList.valueOf(color)
         holder.number.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 textChangedCallback?.invoke(OptionRenderViewModel(readOption, s.toString(), null))
-                /*
-                val index = markers.indexOfFirst {
-                    it.id == s.toString()
-                }
-                if (s.toString() == readOption.markerId && index > -1) {
-                    holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
-                } else {
-                    holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
-                }
-                */
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+        if (option.correct == true) {
+            holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
+        } else if (option.correct == false) {
+            holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
+        }
         holder.audio.setOnClickListener {
             playOptionCallback?.invoke(readOption)
         }

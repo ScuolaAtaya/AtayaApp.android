@@ -59,25 +59,14 @@ class FragmentRead : Fragment() {
         }
         next.disable()
         setupSteps(read)
-        setupNext(read)
         setupPicture(read[stepIndex])
         setupOptions(read[stepIndex])
+        setupNext(read)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupSteps(read: MutableList<PojoRead>) {
         step.text = "${stepIndex + 1}/${read.size}"
-    }
-
-    private fun setupNext(read: MutableList<PojoRead>) {
-        next.setOnClickListener {
-            if (stepIndex + 1 < read.size) {
-                optionsPlayers?.release()
-                communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
-            }
-        }
     }
 
     private fun setupPicture(read: PojoRead) {
@@ -153,6 +142,17 @@ class FragmentRead : Fragment() {
         optionsPlayers!!.setDataSource(requireActivity(), Uri.fromFile(audioFile))
         optionsPlayers!!.prepare()
         optionsPlayers!!.start()
+    }
+
+    private fun setupNext(read: MutableList<PojoRead>) {
+        next.setOnClickListener {
+            if (stepIndex + 1 < read.size) {
+                optionsPlayers?.release()
+                communicator.goToNext(stepIndex + 1)
+            } else {
+                communicator.goToFinish()
+            }
+        }
     }
 
     override fun onDestroy() {
