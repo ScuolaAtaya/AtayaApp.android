@@ -76,12 +76,12 @@
         android:id="@+id/answerAudio"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:padding="8dp"
+        android:padding="12dp"
         android:src="@drawable/volume"
-        android:tint="@color/blackAlpha54"
         app:layout_constraintBottom_toBottomOf="@id/completion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/completion"
+        app:tint="@color/blackAlpha54"
         tools:ignore="ContentDescription" />
 
     <TextView
