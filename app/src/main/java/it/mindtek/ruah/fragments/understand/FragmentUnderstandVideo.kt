@@ -53,6 +53,10 @@ class FragmentUnderstandVideo : Fragment() {
         setup()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupVideoAndAudio(understand[stepIndex])
+    }
     private fun setup() {
         understand = db.understandDao().getUnderstandByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
@@ -60,8 +64,15 @@ class FragmentUnderstandVideo : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
         }
-        setupSection()
         setupVideoAndAudio(understand[stepIndex])
+        setupSection()
+    }
+
+    private fun setupVideoAndAudio(understand: PojoUnderstand) {
+        understand.understand?.let {
+            setupVideo(it.video_url)
+            setupAudio(it.audio)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -74,13 +85,6 @@ class FragmentUnderstandVideo : Fragment() {
             intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
             intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
             startActivity(intent)
-        }
-    }
-
-    private fun setupVideoAndAudio(understand: PojoUnderstand) {
-        understand.understand?.let {
-            setupVideo(it.video_url)
-            setupAudio(it.audio)
         }
     }
 
