@@ -32,8 +32,7 @@
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="false"
-            android:visibility="gone" />
+            android:clickable="false" />
 
         <ImageView
             android:id="@+id/wrong"
@@ -41,7 +40,6 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:src="@drawable/close"
-            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -50,7 +48,6 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:src="@drawable/check"
-            android:visibility="gone"
             app:tint="@color/green"
             tools:ignore="ContentDescription" />
     </RelativeLayout>

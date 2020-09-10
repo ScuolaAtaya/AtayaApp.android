@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelReadOption
+import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.item_option.view.*
 
@@ -47,11 +48,27 @@ class OptionsAdapter(
         val readOption = option.option
         holder.number.text = option.answer
         holder.text.text = readOption.body
+        holder.right.setGone()
+        holder.wrong.setGone()
+        holder.spinner.setGone()
+        when (option.correct) {
+            true -> holder.right.setVisible()
+            false -> holder.wrong.setVisible()
+            else -> holder.spinner.setVisible()
+        }
+        holder.audio.setOnClickListener {
+            playOptionCallback?.invoke(readOption)
+        }
+        if (readOption.audio.credits.isNotBlank()) {
+            holder.credits.setVisible()
+            holder.credits.text = readOption.audio.credits
+        }
         holder.numberView.setOnClickListener {
             val listPopupWindow = ListPopupWindow(context)
             listPopupWindow.setAdapter(ArrayAdapter(context, R.layout.item_number, R.id.numberText, listOption))
             listPopupWindow.anchorView = holder.numberView
             listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+                option.correct = null
                 option.answer = if (listOption[position] == none) {
                     null
                 } else {
@@ -65,13 +82,6 @@ class OptionsAdapter(
                 notifyDataSetChanged()
             }
             listPopupWindow.show()
-        }
-        holder.audio.setOnClickListener {
-            playOptionCallback?.invoke(readOption)
-        }
-        if (readOption.audio.credits.isNotBlank()) {
-            holder.credits.setVisible()
-            holder.credits.text = readOption.audio.credits
         }
     }
 
@@ -87,7 +97,9 @@ class OptionsAdapter(
             }
         }
         notifyDataSetChanged()
-        return false
+        return options.all {
+            it.correct == true
+        }
     }
 }
 
