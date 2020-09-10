@@ -92,9 +92,9 @@
         android:layout_height="0dp"
         android:padding="12dp"
         android:src="@drawable/volume"
-        app:layout_constraintBottom_toBottomOf="@id/completion"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/completion"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blackAlpha54"
         tools:ignore="ContentDescription" />
 
