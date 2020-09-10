@@ -20,7 +20,6 @@ import it.mindtek.ruah.kotlin.extensions.replaceFragment
 class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterface {
     private var unitId: Int = -1
     private var understandIndex: Int = -1
-    private var understandSize: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +54,6 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
     }
 
     private fun setup() {
-        understandSize = db.understandDao().count()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)

@@ -65,7 +65,7 @@ class FragmentUnderstandQuestions : Fragment() {
             stepLayout.backgroundColor = color
             questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
-        understandSize = db.understandDao().count()
+        understandSize = db.understandDao().countByUnitId(unitId)
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
         questions = understand[understandIndex].questions
         next.disable()
