@@ -26,7 +26,6 @@ import java.io.File
 class FragmentRead : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
-    private var color: Int = -1
     private var currentAudioIndex: Int = -1
     private lateinit var adapter: OptionsAdapter
     private var optionsPlayers: MediaPlayer? = null
@@ -54,7 +53,7 @@ class FragmentRead : Fragment() {
         val read = db.readDao().getReadByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            color = ContextCompat.getColor(requireActivity(), it.color)
+            val color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
         }
         next.disable()
@@ -82,22 +81,13 @@ class FragmentRead : Fragment() {
     }
 
     private fun setupOptions(read: PojoRead) {
-        read.options.shuffle()
-        val currentOptions: MutableList<OptionRenderViewModel> = mutableListOf()
-        adapter = OptionsAdapter(color, read, {
-            val index = currentOptions.indexOfFirst { optionRenderViewModel: OptionRenderViewModel ->
-                it.option == optionRenderViewModel.option
-            }
-            if (!it.answer.isNullOrBlank()) {
-                if (index == -1) {
-                    currentOptions.add(it)
-                } else {
-                    currentOptions[index] = it
-                }
-            } else {
-                currentOptions.removeAt(index)
-            }
-            next.isEnabled = currentOptions.size >= read.read!!.markers.size
+        val markerList = read.read!!.markers
+        val optionList = read.options.map {
+            return@map OptionRenderViewModel(it, null, null)
+        }.toMutableList()
+        optionList.shuffle()
+        adapter = OptionsAdapter(requireActivity(), optionList, markerList, {
+            next.isEnabled = it == markerList.size
         }, {
             playOptionAudio(read.options.indexOf(it), it.audio.value)
         })
@@ -146,11 +136,13 @@ class FragmentRead : Fragment() {
 
     private fun setupNext(read: MutableList<PojoRead>) {
         next.setOnClickListener {
-            if (stepIndex + 1 < read.size) {
-                optionsPlayers?.release()
-                communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
+            if (adapter.completed()) {
+                if (stepIndex + 1 < read.size) {
+                    optionsPlayers?.release()
+                    communicator.goToNext(stepIndex + 1)
+                } else {
+                    communicator.goToFinish()
+                }
             }
         }
     }

@@ -1,42 +1,42 @@
 package it.mindtek.ruah.adapters
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.text.Editable
-import android.text.TextWatcher
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AppCompatSpinner
+import androidx.appcompat.widget.ListPopupWindow
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.kotlin.extensions.setVisible
-import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.item_option.view.*
 
+
 class OptionsAdapter(
-        val color: Int,
-        val read: PojoRead,
-        private val textChangedCallback: ((option: OptionRenderViewModel) -> Unit)?,
+        val context: Context,
+        val options: MutableList<OptionRenderViewModel>,
+        private val markers: MutableList<ModelMarker>,
+        private val numberChangedCallback: ((answersNumber: Int) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
 ) : RecyclerView.Adapter<OptionHolder>() {
-    private var markers: MutableList<ModelMarker> = read.read!!.markers
-    private var options: MutableList<OptionRenderViewModel> = mutableListOf()
+    private val none = context.getString(R.string.none)
+    private val listOption = mutableListOf<String>()
 
     init {
-        read.options.forEach {
-            options.add(OptionRenderViewModel(it, null, null))
+        listOption.add(none)
+        markers.forEach {
+            listOption.add(it.id)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false)
-        return OptionHolder(view)
+        return OptionHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false))
     }
 
     override fun getItemCount(): Int = options.size
@@ -45,23 +45,26 @@ class OptionsAdapter(
     override fun onBindViewHolder(holder: OptionHolder, position: Int) {
         val option = options[position]
         val readOption = option.option
+        holder.number.text = option.answer
         holder.text.text = readOption.body
-        holder.number.setText(option.answer)
-        holder.number.supportBackgroundTintList = ColorStateList.valueOf(color)
-        holder.number.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
-                textChangedCallback?.invoke(OptionRenderViewModel(readOption, s.toString(), null))
+        holder.numberView.setOnClickListener {
+            val listPopupWindow = ListPopupWindow(context)
+            listPopupWindow.setAdapter(ArrayAdapter(context, R.layout.item_number, R.id.numberText, listOption))
+            listPopupWindow.anchorView = holder.numberView
+            listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+                option.answer = if (listOption[position] == none) {
+                    null
+                } else {
+                    listOption[position]
+                }
+                val answersNumber = options.count {
+                    !it.answer.isNullOrBlank()
+                }
+                numberChangedCallback?.invoke(answersNumber)
+                listPopupWindow.dismiss()
+                notifyDataSetChanged()
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        if (option.correct == true) {
-            holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.done), null)
-        } else if (option.correct == false) {
-            holder.number.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(holder.itemView.context, R.drawable.close), null)
+            listPopupWindow.show()
         }
         holder.audio.setOnClickListener {
             playOptionCallback?.invoke(readOption)
@@ -72,8 +75,19 @@ class OptionsAdapter(
         }
     }
 
-    fun completed(correctOptions: Int): Boolean {
-        return correctOptions == markers.size
+    fun completed(): Boolean {
+        options.forEach {
+            val index = markers.indexOfFirst { marker: ModelMarker ->
+                marker.id == it.option.markerId
+            }
+            it.correct = if (index == -1) {
+                it.answer.isNullOrBlank()
+            } else {
+                it.answer == it.option.markerId
+            }
+        }
+        notifyDataSetChanged()
+        return false
     }
 }
 
@@ -88,7 +102,7 @@ class OptionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val right: ImageView = itemView.correct
     val spinner: AppCompatSpinner = itemView.spinner
     val number: TextView = itemView.number
-    val numberView: LinearLayout = itemView.completion
+    val numberView: View = itemView.numberClickableView
     val text: TextView = itemView.optionText
     val audio: ImageView = itemView.optionAudio
     val credits: TextView = itemView.optionCredits
