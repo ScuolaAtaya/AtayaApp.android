@@ -84,7 +84,11 @@ data class OptionRenderViewModel(
 )
 
 class OptionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val number: AppCompatEditText = itemView.editText
+    val wrong: ImageView = itemView.wrong
+    val right: ImageView = itemView.correct
+    val spinner: AppCompatSpinner = itemView.spinner
+    val number: TextView = itemView.number
+    val numberView: LinearLayout = itemView.completion
     val text: TextView = itemView.optionText
     val audio: ImageView = itemView.optionAudio
     val credits: TextView = itemView.optionCredits
