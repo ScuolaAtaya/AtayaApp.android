@@ -60,28 +60,10 @@ class FragmentFinalTest : Fragment() {
             stepLayout.backgroundColor = color
             questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
-        setupSection()
         setupAudio()
         setupPicture()
         setupAnswers()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSection() {
-        step.text = "${stepIndex + 1}/${questions.size}"
-        title.text = getString(R.string.question)
-        description.text = questions[stepIndex].body
-        next.disable()
-        next.setOnClickListener {
-            if (stepIndex + 1 < questions.size) {
-                player.release()
-                yes.radioSelect.isChecked = false
-                no.radioSelect.isChecked = false
-                communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
-            }
-        }
+        setupSection()
     }
 
     private fun setupAudio() {
@@ -148,6 +130,24 @@ class FragmentFinalTest : Fragment() {
             } else {
                 no.correct.setVisible()
                 next.enable()
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSection() {
+        step.text = "${stepIndex + 1}/${questions.size}"
+        title.text = getString(R.string.question)
+        description.text = questions[stepIndex].body
+        next.disable()
+        next.setOnClickListener {
+            if (stepIndex + 1 < questions.size) {
+                player.release()
+                yes.radioSelect.isChecked = false
+                no.radioSelect.isChecked = false
+                communicator.goToNext(stepIndex + 1)
+            } else {
+                communicator.goToFinish()
             }
         }
     }

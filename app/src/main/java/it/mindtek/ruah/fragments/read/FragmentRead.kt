@@ -56,25 +56,9 @@ class FragmentRead : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
         }
-        setupSection(read)
         setupPicture(read[stepIndex])
         setupOptions(read[stepIndex])
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSection(read: MutableList<PojoRead>) {
-        step.text = "${stepIndex + 1}/${read.size}"
-        next.disable()
-        next.setOnClickListener {
-            if (adapter.completed()) {
-                if (stepIndex + 1 < read.size) {
-                    optionsPlayers?.release()
-                    communicator.goToNext(stepIndex + 1)
-                } else {
-                    communicator.goToFinish()
-                }
-            }
-        }
+        setupSection(read)
     }
 
     private fun setupPicture(read: PojoRead) {
@@ -102,6 +86,22 @@ class FragmentRead : Fragment() {
         })
         options.layoutManager = LinearLayoutManager(requireActivity())
         options.adapter = adapter
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSection(read: MutableList<PojoRead>) {
+        step.text = "${stepIndex + 1}/${read.size}"
+        next.disable()
+        next.setOnClickListener {
+            if (adapter.completed()) {
+                if (stepIndex + 1 < read.size) {
+                    optionsPlayers?.release()
+                    communicator.goToNext(stepIndex + 1)
+                } else {
+                    communicator.goToFinish()
+                }
+            }
+        }
     }
 
     private fun playOptionAudio(index: Int, audio: String) {

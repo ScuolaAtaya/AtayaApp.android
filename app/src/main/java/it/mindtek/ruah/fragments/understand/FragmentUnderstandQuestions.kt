@@ -68,30 +68,9 @@ class FragmentUnderstandQuestions : Fragment() {
         understandSize = db.understandDao().countByUnitId(unitId)
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
         questions = understand[understandIndex].questions
-        setupSection()
         setupQuestion()
         setupAnswers()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSection() {
-        step.text = "${questionIndex + 1}/${questions.size}"
-        reset.setOnClickListener {
-            communicator.goToVideo(understandIndex, true)
-        }
-        next.disable()
-        next.setOnClickListener {
-            destroyPlayers()
-            if (questionIndex + 1 < questions.size) {
-                communicator.goToNextQuestion(questionIndex + 1)
-            } else {
-                if (understandIndex + 1 < understandSize) {
-                    communicator.goToVideo(understandIndex + 1, false)
-                } else {
-                    communicator.goToFinish()
-                }
-            }
-        }
+        setupSection()
     }
 
     private fun setupQuestion() {
@@ -101,28 +80,6 @@ class FragmentUnderstandQuestions : Fragment() {
             setupPicture(it.picture)
             setupQuestionAudio(it.audio)
 
-        }
-    }
-
-    private fun setupQuestionAudio(audio: ModelMedia) {
-        questionAudio.setOnClickListener {
-            playQuestionAudio(audio.value)
-        }
-        if (audio.credits.isNotBlank()) {
-            questionAudioCredits.setVisible()
-            questionAudioCredits.text = audio.credits
-        }
-    }
-
-    private fun playQuestionAudio(audio: String) {
-        answersPlayer?.pause()
-        when {
-            questionPlayer == null -> {
-                questionPlayer = initPlayer(audio)
-                questionPlayer!!.start()
-            }
-            questionPlayer!!.isPlaying -> questionPlayer!!.pause()
-            else -> questionPlayer!!.start()
         }
     }
 
@@ -146,6 +103,69 @@ class FragmentUnderstandQuestions : Fragment() {
         })
         answersRecycler.layoutManager = LinearLayoutManager(requireActivity())
         answersRecycler.adapter = adapter
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSection() {
+        step.text = "${questionIndex + 1}/${questions.size}"
+        reset.setOnClickListener {
+            communicator.goToVideo(understandIndex, true)
+        }
+        next.disable()
+        next.setOnClickListener {
+            destroyPlayers()
+            if (questionIndex + 1 < questions.size) {
+                communicator.goToNextQuestion(questionIndex + 1)
+            } else {
+                if (understandIndex + 1 < understandSize) {
+                    communicator.goToVideo(understandIndex + 1, false)
+                } else {
+                    communicator.goToFinish()
+                }
+            }
+        }
+    }
+
+    private fun setupPicture(picture: ModelMedia?) {
+        picture?.let {
+            if (picture.value.isNotBlank()) {
+                stepImage.setVisible()
+                val pictureFile = File(fileFolder.absolutePath, picture.value)
+                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+            }
+            if (picture.credits.isNotBlank()) {
+                stepImageCredits.setVisible()
+                stepImageCredits.text = picture.credits
+            }
+        }
+        if (stepImage.visibility == View.GONE) {
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(root)
+            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
+            constraintSet.applyTo(root)
+        }
+    }
+
+    private fun setupQuestionAudio(audio: ModelMedia) {
+        questionAudio.setOnClickListener {
+            playQuestionAudio(audio.value)
+        }
+        if (audio.credits.isNotBlank()) {
+            questionAudioCredits.setVisible()
+            questionAudioCredits.text = audio.credits
+        }
+    }
+
+    private fun playQuestionAudio(audio: String) {
+        answersPlayer?.pause()
+        when {
+            questionPlayer == null -> {
+                questionPlayer = initPlayer(audio)
+                questionPlayer!!.start()
+            }
+            questionPlayer!!.isPlaying -> questionPlayer!!.pause()
+            else -> questionPlayer!!.start()
+        }
     }
 
     private fun playAnswerAudio(index: Int, audio: String) {
@@ -180,26 +200,6 @@ class FragmentUnderstandQuestions : Fragment() {
         answersPlayer!!.setDataSource(requireActivity(), Uri.fromFile(audioFile))
         answersPlayer!!.prepare()
         answersPlayer!!.start()
-    }
-
-    private fun setupPicture(picture: ModelMedia?) {
-        picture?.let {
-            if (picture.value.isNotBlank()) {
-                stepImage.setVisible()
-                val pictureFile = File(fileFolder.absolutePath, picture.value)
-                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
-            }
-            if (picture.credits.isNotBlank()) {
-                stepImageCredits.setVisible()
-                stepImageCredits.text = picture.credits
-            }
-        }
-        if (stepImage.visibility == View.GONE) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(root)
-            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
-            constraintSet.applyTo(root)
-        }
     }
 
     private fun initPlayer(audio: String): MediaPlayer {
