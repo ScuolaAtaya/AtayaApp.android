@@ -9,6 +9,9 @@
         android:id="@+id/completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -16,37 +19,24 @@
         <RadioButton
             android:id="@+id/radioSelect"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/wrong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:paddingStart="2dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:src="@drawable/close"
-            tools:ignore="ContentDescription,RtlSymmetry" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/correct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_centerInParent="true"
             android:src="@drawable/check"
+            android:visibility="gone"
             app:tint="@color/green"
             tools:ignore="ContentDescription" />
     </RelativeLayout>

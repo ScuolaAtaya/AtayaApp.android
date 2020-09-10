@@ -20,43 +20,35 @@
 
     <RelativeLayout
         android:id="@+id/completion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/number"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:clickable="false" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/wrong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:paddingStart="2dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
             android:src="@drawable/close"
             android:visibility="gone"
-            tools:ignore="ContentDescription,RtlSymmetry" />
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/correct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
             android:src="@drawable/check"
             android:visibility="gone"
             app:tint="@color/green"
