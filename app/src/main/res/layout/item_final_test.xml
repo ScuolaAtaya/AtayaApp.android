@@ -18,8 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
@@ -29,8 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:layout_marginStart="14dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -38,7 +34,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:src="@drawable/close"
-            android:visibility="gone"
             tools:ignore="ContentDescription,RtlSymmetry" />
 
         <ImageView
@@ -52,7 +47,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:src="@drawable/check"
-            android:visibility="gone"
             app:tint="@color/green"
             tools:ignore="ContentDescription" />
     </RelativeLayout>

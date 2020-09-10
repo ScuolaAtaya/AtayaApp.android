@@ -9,10 +9,10 @@
         android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/card_border"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/optionText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,21 +21,58 @@
             android:id="@+id/number_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginStart="-8dp"
             android:ems="2"
-            android:gravity="center"
+            android:gravity="center|end"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:layout_width="40dp"
-            android:layout_height="48dp"
-            android:clickable="false" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:clickable="false" />
+
+            <ImageView
+                android:id="@+id/wrong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:paddingStart="2dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:src="@drawable/close"
+                android:visibility="gone"
+                tools:ignore="ContentDescription,RtlSymmetry" />
+
+            <ImageView
+                android:id="@+id/correct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:src="@drawable/check"
+                android:visibility="gone"
+                app:tint="@color/green"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView
         android:id="@+id/optionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -64,6 +101,7 @@
         android:textColor="@color/blackAlpha54"
         android:textSize="12sp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/optionText"
         app:layout_constraintTop_toBottomOf="@id/optionText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
