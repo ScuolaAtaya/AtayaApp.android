@@ -48,6 +48,9 @@ class OptionsAdapter(
         val readOption = option.option
         holder.number.text = option.answer
         holder.text.text = readOption.body
+        if (option.answer.isNullOrBlank()) {
+            option.correct = null
+        }
         holder.right.setGone()
         holder.wrong.setGone()
         holder.spinner.setGone()
