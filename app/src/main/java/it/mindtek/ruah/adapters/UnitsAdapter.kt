@@ -39,8 +39,7 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_unit, parent, false)
-        return UnitHolder(view)
+        return UnitHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_unit, parent, false))
     }
 
     override fun getItemCount(): Int = units.size

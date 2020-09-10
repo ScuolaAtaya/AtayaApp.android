@@ -20,8 +20,7 @@ class SelectableLettersAdapter(
 ) : RecyclerView.Adapter<SyllablesHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllablesHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selectable, parent, false)
-        return SyllablesHolder(view)
+        return SyllablesHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selectable, parent, false))
     }
 
     override fun getItemCount(): Int = syllables.size

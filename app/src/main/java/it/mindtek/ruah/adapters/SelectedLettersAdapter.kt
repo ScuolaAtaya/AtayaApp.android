@@ -31,11 +31,9 @@ class SelectedLettersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return if (viewType == 0) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false)
-            EmptyLetterHolder(view)
+            EmptyLetterHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false))
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false)
-            LettersHolder(view)
+            LettersHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false))
         }
     }
 

@@ -23,8 +23,7 @@ class AnswersAdapter(
 ) : RecyclerView.Adapter<AnswerHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_answer, parent, false)
-        return AnswerHolder(view)
+        return AnswerHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_answer, parent, false))
     }
 
     override fun getItemCount(): Int = answers.size
