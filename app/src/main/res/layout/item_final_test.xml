@@ -26,8 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/close"
+            android:padding="4dp"
             android:visibility="gone"
+            android:src="@drawable/close"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@drawable/check"
+            android:padding="4dp"
             android:visibility="gone"
             app:tint="@color/green"
             tools:ignore="ContentDescription" />

@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:padding="4dp"
             android:src="@drawable/close"
             android:visibility="gone"
             tools:ignore="ContentDescription" />
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:padding="4dp"
             android:src="@drawable/check"
             android:visibility="gone"
             app:tint="@color/green"
