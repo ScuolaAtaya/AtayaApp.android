@@ -5,69 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:gravity="end"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/completion"
+        app:layout_constraintEnd_toStartOf="@id/completion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/completion" />
+
+    <RelativeLayout
         android:id="@+id/completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/card_border"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@id/optionText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/number"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/number"
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:clickable="false" />
+
+        <ImageView
+            android:id="@+id/wrong"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="-8dp"
-            android:ems="2"
-            android:gravity="center|end"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:paddingStart="2dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:src="@drawable/close"
+            android:visibility="gone"
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/correct"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:src="@drawable/check"
+            android:visibility="gone"
+            app:tint="@color/green"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:clickable="false" />
-
-            <ImageView
-                android:id="@+id/wrong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="2dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:src="@drawable/close"
-                android:visibility="gone"
-                tools:ignore="ContentDescription,RtlSymmetry" />
-
-            <ImageView
-                android:id="@+id/correct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="4dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:src="@drawable/check"
-                android:visibility="gone"
-                app:tint="@color/green"
-                tools:ignore="ContentDescription" />
-        </RelativeLayout>
-    </LinearLayout>
+    <View
+        android:id="@+id/numberClickableView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/number_border"
+        app:layout_constraintBottom_toBottomOf="@id/completion"
+        app:layout_constraintEnd_toEndOf="@id/completion"
+        app:layout_constraintStart_toStartOf="@id/number"
+        app:layout_constraintTop_toTopOf="@+id/completion" />
 
     <TextView
         android:id="@+id/optionText"
