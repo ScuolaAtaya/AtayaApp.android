@@ -56,16 +56,25 @@ class FragmentRead : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepBackground.backgroundColor = color
         }
-        next.disable()
-        setupSteps(read)
+        setupSection(read)
         setupPicture(read[stepIndex])
         setupOptions(read[stepIndex])
-        setupNext(read)
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setupSteps(read: MutableList<PojoRead>) {
+    private fun setupSection(read: MutableList<PojoRead>) {
         step.text = "${stepIndex + 1}/${read.size}"
+        next.disable()
+        next.setOnClickListener {
+            if (adapter.completed()) {
+                if (stepIndex + 1 < read.size) {
+                    optionsPlayers?.release()
+                    communicator.goToNext(stepIndex + 1)
+                } else {
+                    communicator.goToFinish()
+                }
+            }
+        }
     }
 
     private fun setupPicture(read: PojoRead) {
@@ -132,19 +141,6 @@ class FragmentRead : Fragment() {
         optionsPlayers!!.setDataSource(requireActivity(), Uri.fromFile(audioFile))
         optionsPlayers!!.prepare()
         optionsPlayers!!.start()
-    }
-
-    private fun setupNext(read: MutableList<PojoRead>) {
-        next.setOnClickListener {
-            if (adapter.completed()) {
-                if (stepIndex + 1 < read.size) {
-                    optionsPlayers?.release()
-                    communicator.goToNext(stepIndex + 1)
-                } else {
-                    communicator.goToFinish()
-                }
-            }
-        }
     }
 
     override fun onDestroy() {

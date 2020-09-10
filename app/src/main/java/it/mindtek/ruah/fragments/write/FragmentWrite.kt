@@ -65,15 +65,28 @@ class FragmentWrite : Fragment() {
             editText.supportBackgroundTintList = ColorStateList.valueOf(color)
             audioButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
+        setupSection()
         setupAudio()
         setupPicture()
-        setupButtons()
-        setupSteps()
         if (write[stepIndex].type == BASIC) {
             setupBasic()
             setupRecyclers()
         } else {
             setupAdvanced()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSection() {
+        step.text = "${stepIndex + 1}/${write.size}"
+        next.disable()
+        next.setOnClickListener {
+            player.release()
+            if (stepIndex + 1 < write.size) {
+                communicator.goToNext(stepIndex + 1)
+            } else {
+                communicator.goToFinish()
+            }
         }
     }
 
@@ -107,23 +120,6 @@ class FragmentWrite : Fragment() {
             stepImageCredits.setVisible()
             stepImageCredits.text = picture.credits
         }
-    }
-
-    private fun setupButtons() {
-        next.setOnClickListener {
-            player.release()
-            if (stepIndex + 1 < write.size) {
-                communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
-            }
-        }
-        next.disable()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSteps() {
-        step.text = "${stepIndex + 1}/${write.size}"
     }
 
     private fun setupBasic() {

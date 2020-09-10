@@ -68,22 +68,18 @@ class FragmentUnderstandQuestions : Fragment() {
         understandSize = db.understandDao().countByUnitId(unitId)
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
         questions = understand[understandIndex].questions
-        next.disable()
-        setupBack()
         setupSection()
         setupQuestion()
         setupAnswers()
     }
 
-    private fun setupBack() {
-        reset.setOnClickListener {
-            communicator.goToVideo(understandIndex, true)
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
         step.text = "${questionIndex + 1}/${questions.size}"
+        reset.setOnClickListener {
+            communicator.goToVideo(understandIndex, true)
+        }
+        next.disable()
         next.setOnClickListener {
             destroyPlayers()
             if (questionIndex + 1 < questions.size) {

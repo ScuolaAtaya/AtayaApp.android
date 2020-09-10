@@ -60,9 +60,21 @@ class FragmentUnderstandVideo : Fragment() {
             val color = ContextCompat.getColor(requireActivity(), it.color)
             stepLayout.backgroundColor = color
         }
-        setupNext()
+        setupSection()
         setupVideoAndAudio(understand[stepIndex])
-        setupSteps()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSection() {
+        step.text = "${stepIndex + 1}/${understand.size}"
+        next.isEnabled = isVideoWatched
+        next.setOnClickListener {
+            destroyPlayers()
+            val intent = Intent(requireActivity(), ActivityUnderstandQuestion::class.java)
+            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
+            startActivity(intent)
+        }
     }
 
     private fun setupVideoAndAudio(understand: PojoUnderstand) {
@@ -122,22 +134,6 @@ class FragmentUnderstandVideo : Fragment() {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSteps() {
-        step.text = "${stepIndex + 1}/${understand.size}"
-    }
-
-    private fun setupNext() {
-        next.setOnClickListener {
-            destroyPlayers()
-            val intent = Intent(requireActivity(), ActivityUnderstandQuestion::class.java)
-            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
-            startActivity(intent)
-        }
-        next.isEnabled = isVideoWatched
     }
 
     private fun playAudio(audio: String) {

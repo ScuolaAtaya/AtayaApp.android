@@ -64,10 +64,34 @@ class FragmentSpeak : Fragment() {
             stepBackground.backgroundColor = color
             listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
+        setupSection()
         setupPicture()
         setupAudio()
-        setupButtons()
-        setupSteps()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupSection() {
+        step.text = "${stepIndex + 1}/${speak.size}"
+        record.setOnClickListener {
+            if (recording) {
+                endRecording()
+            } else {
+                startRecording()
+            }
+        }
+        next.disable()
+        next.setOnClickListener {
+            if (recording) {
+                endRecording()
+            }
+            destroyPlayers()
+            destroyFile()
+            dispatch()
+        }
+        listenAgain.disable()
+        listenAgain.setOnClickListener {
+            playRecordedAudio()
+        }
     }
 
     private fun setupPicture() {
@@ -105,34 +129,6 @@ class FragmentSpeak : Fragment() {
             player!!.isPlaying -> player!!.pause()
             else -> player!!.start()
         }
-    }
-
-    private fun setupButtons() {
-        record.setOnClickListener {
-            if (recording) {
-                endRecording()
-            } else {
-                startRecording()
-            }
-        }
-        next.setOnClickListener {
-            if (recording) {
-                endRecording()
-            }
-            destroyPlayers()
-            destroyFile()
-            dispatch()
-        }
-        listenAgain.setOnClickListener {
-            playRecordedAudio()
-        }
-        listenAgain.disable()
-        next.disable()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupSteps() {
-        step.text = "${stepIndex + 1}/${speak.size}"
     }
 
     private fun startRecording() {

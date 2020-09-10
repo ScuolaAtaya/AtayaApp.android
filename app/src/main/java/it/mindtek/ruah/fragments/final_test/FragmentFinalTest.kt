@@ -60,21 +60,18 @@ class FragmentFinalTest : Fragment() {
             stepLayout.backgroundColor = color
             questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
-        next.disable()
-        setupSteps()
-        setupNext()
-        setupQuestion()
+        setupSection()
         setupAudio()
         setupPicture()
         setupAnswers()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setupSteps() {
+    private fun setupSection() {
         step.text = "${stepIndex + 1}/${questions.size}"
-    }
-
-    private fun setupNext() {
+        title.text = getString(R.string.question)
+        description.text = questions[stepIndex].body
+        next.disable()
         next.setOnClickListener {
             if (stepIndex + 1 < questions.size) {
                 player.release()
@@ -85,11 +82,6 @@ class FragmentFinalTest : Fragment() {
                 communicator.goToFinish()
             }
         }
-    }
-
-    private fun setupQuestion() {
-        title.text = getString(R.string.question)
-        description.text = questions[stepIndex].body
     }
 
     private fun setupAudio() {
