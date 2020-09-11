@@ -20,6 +20,7 @@ import it.mindtek.ruah.kotlin.extensions.replaceFragment
 class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterface {
     private var unitId: Int = -1
     private var understandIndex: Int = -1
+    private var questionIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +30,12 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
             understandIndex = it.getIntExtra(ActivityUnderstand.STEP_INDEX, -1)
         }
         setup()
-        replaceFragment(FragmentUnderstandQuestions.newInstance(0, unitId, understandIndex), R.id.placeholder, false)
+        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex), R.id.placeholder, false)
     }
 
     override fun goToNextQuestion(index: Int) {
-        replaceFragment(FragmentUnderstandQuestions.newInstance(index, unitId, understandIndex), R.id.placeholder, true)
+        questionIndex = index
+        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex), R.id.placeholder, true)
     }
 
     override fun goToFinish() {
@@ -77,5 +79,12 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
             android.R.id.home -> onBackPressed()
         }
         return false
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (questionIndex == 0) {
+            goToVideo(understandIndex, true)
+        }
     }
 }

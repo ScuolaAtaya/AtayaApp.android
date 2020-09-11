@@ -53,10 +53,6 @@ class FragmentUnderstandVideo : Fragment() {
         setup()
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupVideoAndAudio(understand[stepIndex])
-    }
     private fun setup() {
         understand = db.understandDao().getUnderstandByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
