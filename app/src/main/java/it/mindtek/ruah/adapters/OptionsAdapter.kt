@@ -12,30 +12,18 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.item_option.view.*
 
-
 class OptionsAdapter(
         val context: Context,
         val options: MutableList<OptionRenderViewModel>,
-        private val markers: MutableList<ModelMarker>,
+        private val answers: MutableList<String>,
         private val numberChangedCallback: ((answersNumber: Int) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
 ) : RecyclerView.Adapter<OptionHolder>() {
-    private val none = context.getString(R.string.none)
-    private val listOption = mutableListOf<String>()
-
-    init {
-        listOption.add(none)
-        markers.forEach {
-            listOption.add(it.id)
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder {
         return OptionHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false))
     }
@@ -48,9 +36,6 @@ class OptionsAdapter(
         val readOption = option.option
         holder.number.text = option.answer
         holder.text.text = readOption.body
-        if (option.answer.isNullOrBlank()) {
-            option.correct = null
-        }
         holder.right.setGone()
         holder.wrong.setGone()
         holder.spinner.setGone()
@@ -68,15 +53,11 @@ class OptionsAdapter(
         }
         holder.numberView.setOnClickListener {
             val listPopupWindow = ListPopupWindow(context)
-            listPopupWindow.setAdapter(ArrayAdapter(context, R.layout.item_number, R.id.numberText, listOption))
+            listPopupWindow.setAdapter(ArrayAdapter(context, R.layout.item_number, R.id.numberText, answers))
             listPopupWindow.anchorView = holder.numberView
             listPopupWindow.setOnItemClickListener { _, _, position, _ ->
                 option.correct = null
-                option.answer = if (listOption[position] == none) {
-                    null
-                } else {
-                    listOption[position]
-                }
+                option.answer = answers[position]
                 val answersNumber = options.count {
                     !it.answer.isNullOrBlank()
                 }
@@ -90,14 +71,7 @@ class OptionsAdapter(
 
     fun completed(): Boolean {
         options.forEach {
-            val index = markers.indexOfFirst { marker: ModelMarker ->
-                marker.id == it.option.markerId
-            }
-            it.correct = if (index == -1) {
-                it.answer.isNullOrBlank()
-            } else {
-                it.answer == it.option.markerId
-            }
+            it.correct = it.answer == it.option.markerId
         }
         notifyDataSetChanged()
         return options.all {

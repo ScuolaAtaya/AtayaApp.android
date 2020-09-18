@@ -75,11 +75,14 @@ class FragmentRead : Fragment() {
 
     private fun setupOptions(read: PojoRead) {
         val markerList = read.read!!.markers
+        val answerList = markerList.map {
+            it.id
+        }.toMutableList()
         val optionList = read.options.map {
             return@map OptionRenderViewModel(it, null, null)
         }.toMutableList()
         optionList.shuffle()
-        adapter = OptionsAdapter(requireActivity(), optionList, markerList, {
+        adapter = OptionsAdapter(requireActivity(), optionList, answerList, {
             next.isEnabled = it == markerList.size
         }, {
             playOptionAudio(read.options.indexOf(it), it.audio.value)
