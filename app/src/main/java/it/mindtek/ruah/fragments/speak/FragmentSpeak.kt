@@ -82,10 +82,9 @@ class FragmentSpeak : Fragment() {
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
         listenButton.setOnClickListener {
-            if (recording) {
-                return@setOnClickListener
+            if (!recording) {
+                playAudio(audio.value)
             }
-            playAudio(audio.value)
         }
         if (audio.credits.isNotBlank()) {
             audioCredits.setVisible()
