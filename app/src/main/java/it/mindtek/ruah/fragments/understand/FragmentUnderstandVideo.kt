@@ -31,7 +31,7 @@ class FragmentUnderstandVideo : Fragment() {
     private var isVideoWatched: Boolean = false
     private var understand: MutableList<PojoUnderstand> = mutableListOf()
     private var audioPlayer: MediaPlayer? = null
-    private lateinit var videoPlayer: YouTubePlayer
+    private var videoPlayer: YouTubePlayer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_understand_video, container, false)
@@ -137,7 +137,7 @@ class FragmentUnderstandVideo : Fragment() {
     }
 
     private fun playAudio(audio: String) {
-        videoPlayer.pause()
+        videoPlayer?.pause()
         when {
             audioPlayer == null -> {
                 val audioFile = File(fileFolder.absolutePath, audio)
@@ -156,7 +156,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun destroyPlayers() {
         audioPlayer?.release()
-        videoPlayer.release()
+        videoPlayer?.release()
     }
 
     override fun onDestroy() {
