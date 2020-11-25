@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "final")
 open class ModelFinalTest (
         @PrimaryKey
-        var id: String = "",
-        var unit_id: Int = 0
+        var id: String,
+        var unit_id: Int
 )

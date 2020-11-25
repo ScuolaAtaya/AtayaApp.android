@@ -120,7 +120,7 @@ class FragmentUnderstandVideo : Fragment() {
 
             override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {}
         })
-        if (video.credits.isNotBlank()) {
+        if (!video.credits.isNullOrBlank()) {
             videoCredits.setVisible()
             videoCredits.text = video.credits
         }
@@ -130,7 +130,7 @@ class FragmentUnderstandVideo : Fragment() {
         listen.setOnClickListener {
             playAudio(audio.value)
         }
-        if (audio.credits.isNotBlank()) {
+        if (!audio.credits.isNullOrBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
         }

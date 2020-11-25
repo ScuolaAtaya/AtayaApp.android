@@ -66,7 +66,7 @@ class FragmentRead : Fragment() {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
             val bitmap = ImageWithMarkersGenerator.createImageWithMarkers(it.markers, pictureFile)
             stepImage.setImageBitmap(bitmap)
-            if (it.picture.credits.isNotBlank()) {
+            if (!it.picture.credits.isNullOrBlank()) {
                 stepImageCredits.setVisible()
                 stepImageCredits.text = it.picture.credits
             }

@@ -10,9 +10,9 @@ import androidx.room.PrimaryKey
 @Entity
 open class ModelQuestion(
         @PrimaryKey
-        var id: String = "",
-        var section_id: String = "",
-        var body: String = "",
+        var id: String,
+        var section_id: String,
+        var body: String,
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
         @Embedded(prefix = "picture_")

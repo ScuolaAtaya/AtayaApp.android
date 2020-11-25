@@ -13,14 +13,14 @@ import it.mindtek.ruah.db.converters.IntArrayConverter
 @Entity(tableName = "units")
 open class ModelUnit(
         @PrimaryKey
-        var id: Int = 0,
+        var id: Int,
         @DrawableRes
-        var icon: Int = 0,
+        var icon: Int,
         @StringRes
-        var name: Int = 0,
-        var color: Int = 0,
-        var colorDark: Int = 0,
-        var position: Int = 0,
+        var name: Int,
+        var color: Int,
+        var colorDark: Int,
+        var position: Int,
         var advanced: Boolean = false,
         var enabled: Boolean = false,
         @TypeConverters(IntArrayConverter::class)

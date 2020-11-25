@@ -82,7 +82,7 @@ class FragmentFinalTest : Fragment() {
                 player.start()
             }
         }
-        if (audio.credits.isNotBlank()) {
+        if (!audio.credits.isNullOrBlank()) {
             questionAudioCredits.setVisible()
             questionAudioCredits.text = audio.credits
         }
@@ -97,7 +97,7 @@ class FragmentFinalTest : Fragment() {
                 val pictureFile = File(fileFolder.absolutePath, it.value)
                 GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
             }
-            if (picture.credits.isNotBlank()) {
+            if (!picture.credits.isNullOrBlank()) {
                 stepImageCredits.setVisible()
                 stepImageCredits.text = picture.credits
             }

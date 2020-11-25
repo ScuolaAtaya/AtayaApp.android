@@ -10,10 +10,10 @@ import androidx.room.PrimaryKey
 @Entity
 open class ModelAnswer(
         @PrimaryKey
-        var id: String = "",
-        var question_id: String = "",
-        var body: String = "",
+        var id: String,
+        var question_id: String,
+        var body: String,
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
-        var correct: Boolean = false
+        var correct: Boolean
 )

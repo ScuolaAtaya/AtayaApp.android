@@ -13,8 +13,8 @@ import it.mindtek.ruah.db.converters.StringArrayConverter
 @Entity(tableName = "read")
 open class ModelRead(
         @PrimaryKey
-        var id: String = "",
-        var unit_id: Int = 0,
+        var id: String,
+        var unit_id: Int,
         @Embedded(prefix = "picture_")
         var picture: ModelMedia,
         @TypeConverters(MarkerArrayConverter::class)

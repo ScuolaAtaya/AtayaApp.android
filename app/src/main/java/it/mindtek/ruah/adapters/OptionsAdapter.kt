@@ -47,7 +47,7 @@ class OptionsAdapter(
         holder.audio.setOnClickListener {
             playOptionCallback?.invoke(readOption)
         }
-        if (readOption.audio.credits.isNotBlank()) {
+        if (!readOption.audio.credits.isNullOrBlank()) {
             holder.credits.setVisible()
             holder.credits.text = readOption.audio.credits
         }

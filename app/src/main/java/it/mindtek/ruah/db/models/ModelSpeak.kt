@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "speak")
 open class ModelSpeak(
         @PrimaryKey
-        var id: String = "",
-        var unit_id: Int = 0,
+        var id: String,
+        var unit_id: Int,
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
         @Embedded(prefix = "picture_")

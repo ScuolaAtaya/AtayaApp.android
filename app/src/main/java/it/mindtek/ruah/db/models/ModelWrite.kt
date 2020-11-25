@@ -12,10 +12,10 @@ import it.mindtek.ruah.db.converters.StringArrayConverter
 @Entity(tableName = "write")
 open class ModelWrite(
         @PrimaryKey
-        var id: String = "",
-        var unit_id: Int = 0,
-        var word: String = "",
-        var type: String = "",
+        var id: String,
+        var unit_id: Int,
+        var word: String,
+        var type: String,
         @Embedded(prefix = "audio_")
         var audio: ModelMedia,
         @Embedded(prefix = "picture_")

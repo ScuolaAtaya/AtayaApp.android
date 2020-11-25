@@ -44,7 +44,7 @@ class AnswersAdapter(
         holder.audio.setOnClickListener {
             playAnswerCallback?.invoke(answer)
         }
-        if (answer.audio.credits.isNotBlank()) {
+        if (!answer.audio.credits.isNullOrBlank()) {
             holder.credits.setVisible()
             holder.credits.text = answer.audio.credits
         }

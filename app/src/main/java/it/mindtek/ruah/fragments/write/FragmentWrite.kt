@@ -92,7 +92,7 @@ class FragmentWrite : Fragment() {
                 player.start()
             }
         }
-        if (audio.credits.isNotBlank()) {
+        if (!audio.credits.isNullOrBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
         }
@@ -102,7 +102,7 @@ class FragmentWrite : Fragment() {
         val picture = write[stepIndex].picture
         val pictureFile = File(fileFolder.absolutePath, picture.value)
         GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
-        if (picture.credits.isNotBlank()) {
+        if (!picture.credits.isNullOrBlank()) {
             stepImageCredits.setVisible()
             stepImageCredits.text = picture.credits
         }

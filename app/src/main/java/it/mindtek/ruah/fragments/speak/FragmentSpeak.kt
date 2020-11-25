@@ -73,7 +73,7 @@ class FragmentSpeak : Fragment() {
         val picture = speak[stepIndex].picture
         val pictureImage = File(fileFolder.absolutePath, picture.value)
         GlideApp.with(this).load(pictureImage).placeholder(R.color.grey).into(stepImage)
-        if (picture.credits.isNotBlank()) {
+        if (!picture.credits.isNullOrBlank()) {
             stepImageCredits.setVisible()
             stepImageCredits.text = picture.credits
         }
@@ -86,7 +86,7 @@ class FragmentSpeak : Fragment() {
                 playAudio(audio.value)
             }
         }
-        if (audio.credits.isNotBlank()) {
+        if (!audio.credits.isNullOrBlank()) {
             audioCredits.setVisible()
             audioCredits.text = audio.credits
         }
