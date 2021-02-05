@@ -171,8 +171,8 @@ class FragmentSpeak : Fragment() {
     private fun setupRecorder() {
         recorder = MediaRecorder()
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB)
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB)
         val file = File(requireActivity().filesDir, "recording")
         recorder.setOutputFile(file.absolutePath)
         recorder.prepare()
