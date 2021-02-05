@@ -44,12 +44,9 @@ class FragmentSpeak : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            }
-            if (it.containsKey(EXTRA_STEP)) {
-                stepIndex = it.getInt(EXTRA_STEP)
-            }
+            if (it.containsKey(EXTRA_STEP)) stepIndex = it.getInt(EXTRA_STEP)
         }
         setup()
     }
@@ -82,9 +79,7 @@ class FragmentSpeak : Fragment() {
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
         listenButton.setOnClickListener {
-            if (!recording) {
-                playAudio(audio.value)
-            }
+            if (!recording) playAudio(audio.value)
         }
         if (!audio.credits.isNullOrBlank()) {
             audioCredits.setVisible()
@@ -96,24 +91,15 @@ class FragmentSpeak : Fragment() {
     private fun setupSection() {
         step.text = "${stepIndex + 1}/${speak.size}"
         record.setOnClickListener {
-            if (recording) {
-                endRecording()
-            } else {
-                startRecording()
-            }
+            if (recording) endRecording() else startRecording()
         }
         next.disable()
         next.setOnClickListener {
-            if (recording) {
-                endRecording()
-            }
+            if (recording) endRecording()
             destroyPlayers()
             destroyFile()
-            if (stepIndex + 1 < speak.size) {
-                communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
-            }
+            if (stepIndex + 1 < speak.size) communicator.goToNext(stepIndex + 1)
+            else communicator.goToFinish()
         }
         listenAgain.disable()
         listenAgain.setOnClickListener {
@@ -158,15 +144,14 @@ class FragmentSpeak : Fragment() {
         record.setImageResource(R.drawable.mic)
     }
 
-    private fun initRecorder(): Boolean {
-        return if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-            setupRecorder()
-            true
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
-            false
-        }
-    }
+    private fun initRecorder(): Boolean =
+            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                setupRecorder()
+                true
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
+                false
+            }
 
     private fun setupRecorder() {
         recorder = MediaRecorder()
@@ -194,9 +179,7 @@ class FragmentSpeak : Fragment() {
     private fun initPlayer(audioFile: File): MediaPlayer {
         val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
-            if (canAccessActivity) {
-                player.pause()
-            }
+            if (canAccessActivity) player.pause()
         }
         return player
     }
@@ -208,9 +191,7 @@ class FragmentSpeak : Fragment() {
 
     private fun destroyFile() {
         val file = File(requireActivity().filesDir, "recording")
-        if (file.exists()) {
-            file.delete()
-        }
+        if (file.exists()) file.delete()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -218,11 +199,8 @@ class FragmentSpeak : Fragment() {
         if (requestCode == REQUEST_PERMISSION_AUDIO) {
             permissions.forEachIndexed { index: Int, s: String ->
                 if (s == Manifest.permission.RECORD_AUDIO) {
-                    if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
-                        setupRecorder()
-                    } else {
-                        record.isEnabled = false
-                    }
+                    if (grantResults[index] == PackageManager.PERMISSION_GRANTED) setupRecorder()
+                    else record.isEnabled = false
                 }
             }
         }
