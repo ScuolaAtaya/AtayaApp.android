@@ -76,25 +76,27 @@
 
         <TextView
             android:id="@+id/questionAudioCredits"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/answers"
             app:layout_constraintStart_toStartOf="@id/questionAudio"
             app:layout_constraintTop_toBottomOf="@id/questionAudio" />
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/answers"
+            app:layout_constraintStart_toStartOf="@id/questionAudio"
             app:layout_constraintTop_toBottomOf="@id/questionAudioCredits" />
 
         <TextView
