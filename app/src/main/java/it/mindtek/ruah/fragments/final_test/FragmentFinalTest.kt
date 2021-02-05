@@ -37,12 +37,9 @@ class FragmentFinalTest : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            }
-            if (it.containsKey(EXTRA_STEP)) {
-                stepIndex = it.getInt(EXTRA_STEP)
-            }
+            if (it.containsKey(EXTRA_STEP)) stepIndex = it.getInt(EXTRA_STEP)
         }
         setup()
     }
@@ -71,16 +68,10 @@ class FragmentFinalTest : Fragment() {
         val audioFile = File(fileFolder.absolutePath, audio.value)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
-            if (canAccessActivity) {
-                player.pause()
-            }
+            if (canAccessActivity) player.pause()
         }
         questionAudio.setOnClickListener {
-            if (player.isPlaying) {
-                player.pause()
-            } else {
-                player.start()
-            }
+            if (player.isPlaying) player.pause() else player.start()
         }
         if (!audio.credits.isNullOrBlank()) {
             questionAudioCredits.setVisible()
@@ -102,7 +93,6 @@ class FragmentFinalTest : Fragment() {
                 stepImageCredits.text = picture.credits
             }
         }
-
         if (stepImage.visibility == View.GONE) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(root)
@@ -119,15 +109,11 @@ class FragmentFinalTest : Fragment() {
             if (questions[stepIndex].answers) {
                 yes.correct.setVisible()
                 next.enable()
-            } else {
-                yes.wrong.setVisible()
-            }
+            } else yes.wrong.setVisible()
         }
         no.radioSelect.setOnClickListener {
             no.radioSelect.setGone()
-            if (questions[stepIndex].answers) {
-                no.wrong.setVisible()
-            } else {
+            if (questions[stepIndex].answers) no.wrong.setVisible() else {
                 no.correct.setVisible()
                 next.enable()
             }
@@ -145,9 +131,7 @@ class FragmentFinalTest : Fragment() {
                 yes.radioSelect.isChecked = false
                 no.radioSelect.isChecked = false
                 communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
-            }
+            } else communicator.goToFinish()
         }
     }
 

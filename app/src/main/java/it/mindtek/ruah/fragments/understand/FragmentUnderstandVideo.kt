@@ -40,15 +40,12 @@ class FragmentUnderstandVideo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            }
-            if (it.containsKey(ActivityUnderstand.STEP_INDEX)) {
+            if (it.containsKey(ActivityUnderstand.STEP_INDEX))
                 stepIndex = it.getInt(ActivityUnderstand.STEP_INDEX)
-            }
-            if (it.containsKey(ActivityUnderstand.VIDEO_WATCHED)) {
+            if (it.containsKey(ActivityUnderstand.VIDEO_WATCHED))
                 isVideoWatched = it.getBoolean(ActivityUnderstand.VIDEO_WATCHED)
-            }
         }
         setup()
     }
@@ -97,9 +94,7 @@ class FragmentUnderstandVideo : Fragment() {
                     override fun onVideoStarted() {}
                     override fun onLoaded(p0: String?) {}
                     override fun onVideoEnded() {
-                        if (canAccessActivity) {
-                            next.enable()
-                        }
+                        if (canAccessActivity) next.enable()
                     }
 
                     override fun onError(p0: YouTubePlayer.ErrorReason?) {}
@@ -143,9 +138,7 @@ class FragmentUnderstandVideo : Fragment() {
                 val audioFile = File(fileFolder.absolutePath, audio)
                 audioPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
                 audioPlayer!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        audioPlayer!!.pause()
-                    }
+                    if (canAccessActivity) audioPlayer!!.pause()
                 }
                 audioPlayer!!.start()
             }
