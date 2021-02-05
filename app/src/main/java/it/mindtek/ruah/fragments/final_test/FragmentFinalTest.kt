@@ -137,7 +137,6 @@ class FragmentFinalTest : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
         step.text = "${stepIndex + 1}/${questions.size}"
-        title.text = getString(R.string.question)
         description.text = questions[stepIndex].body
         next.disable()
         next.setOnClickListener {
