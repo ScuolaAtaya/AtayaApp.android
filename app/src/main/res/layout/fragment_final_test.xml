@@ -27,12 +27,13 @@
 
         <TextView
             android:id="@+id/stepImageCredits"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/stepImage"
             app:layout_constraintStart_toStartOf="@id/stepImage"
             app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
@@ -82,36 +83,25 @@
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/answers"
+            app:layout_constraintEnd_toEndOf="@id/questionAudio"
             app:layout_constraintStart_toStartOf="@id/questionAudio"
             app:layout_constraintTop_toBottomOf="@id/questionAudio" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/answers"
-            app:layout_constraintStart_toStartOf="@id/questionAudio"
-            app:layout_constraintTop_toBottomOf="@id/questionAudioCredits" />
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:textColor="@color/blackAlpha54"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/answers"
             app:layout_constraintStart_toStartOf="@id/questionAudio"
             app:layout_constraintTop_toBottomOf="@id/questionAudioCredits" />
 
         <LinearLayout
             android:id="@+id/answers"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"

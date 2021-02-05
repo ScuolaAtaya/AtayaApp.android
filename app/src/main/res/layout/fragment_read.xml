@@ -68,12 +68,13 @@
 
         <TextView
             android:id="@+id/stepImageCredits"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/stepImage"
             app:layout_constraintStart_toStartOf="@id/stepImage"
             app:layout_constraintTop_toBottomOf="@id/stepImage" />
 

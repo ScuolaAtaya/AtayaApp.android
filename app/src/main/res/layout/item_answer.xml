@@ -70,13 +70,14 @@
 
     <TextView
         android:id="@+id/answerCredits"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:textColor="@color/blackAlpha54"
         android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/answerAudio"
         app:layout_constraintStart_toStartOf="@id/answerText"
         app:layout_constraintTop_toBottomOf="@id/answerText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

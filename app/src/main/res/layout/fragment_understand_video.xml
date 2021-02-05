@@ -58,12 +58,13 @@
 
     <TextView
         android:id="@+id/videoCredits"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textColor="@color/blackAlpha54"
         android:textSize="12sp"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/videoPlayer"
         app:layout_constraintStart_toStartOf="@id/videoPlayer"
         app:layout_constraintTop_toBottomOf="@id/videoPlayer" />
 
@@ -86,12 +87,13 @@
 
     <TextView
         android:id="@+id/audioCredits"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:textColor="@color/blackAlpha54"
         android:textSize="12sp"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/next"
         app:layout_constraintStart_toStartOf="@id/listen"
         app:layout_constraintTop_toBottomOf="@id/listen" />
 

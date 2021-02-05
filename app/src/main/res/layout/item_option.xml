@@ -89,13 +89,14 @@
 
     <TextView
         android:id="@+id/optionCredits"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:textColor="@color/blackAlpha54"
         android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/optionAudio"
         app:layout_constraintStart_toStartOf="@id/optionText"
         app:layout_constraintTop_toBottomOf="@id/optionText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
