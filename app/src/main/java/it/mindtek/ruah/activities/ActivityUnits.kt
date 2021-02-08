@@ -15,11 +15,11 @@ class ActivityUnits : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_units)
         unitsRecycler.layoutManager = GridLayoutManager(this, 2)
-        adapter = UnitsAdapter(this, {
+        adapter = UnitsAdapter(this) {
             val intent = Intent(this@ActivityUnits, ActivityUnit::class.java)
             intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, it.id)
             startActivity(intent)
-        })
+        }
         unitsRecycler.adapter = adapter
     }
 

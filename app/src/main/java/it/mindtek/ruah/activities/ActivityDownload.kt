@@ -36,9 +36,8 @@ class ActivityDownload : AppCompatActivity() {
                 if (download.progress == 100) {
                     progressText.text = getString(R.string.downloaded)
                     progress.isIndeterminate = true
-                } else {
+                } else
                     progressText.text = String.format(getString(R.string.downloaded_mb), download.currentFileSize, download.totalFileSize)
-                }
             } else if (intent.action == PARSE_COMPLETED) {
                 progress.isIndeterminate = false
                 progress.progress = 100

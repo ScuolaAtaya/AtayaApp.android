@@ -36,22 +36,15 @@ class FragmentUnderstandQuestions : Fragment() {
     private var questionPlayer: MediaPlayer? = null
     private lateinit var communicator: UnderstandActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_understand_questions, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_understand_questions, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(EXTRA_UNIT_ID)) {
-                unitId = it.getInt(EXTRA_UNIT_ID, -1)
-            }
-            if (it.containsKey(EXTRA_QUESTION_NUMBER)) {
-                questionIndex = it.getInt(EXTRA_QUESTION_NUMBER, -1)
-            }
-            if (it.containsKey(EXTRA_STEP)) {
-                understandIndex = it.getInt(EXTRA_STEP, -1)
-            }
+            if (it.containsKey(EXTRA_UNIT_ID)) unitId = it.getInt(EXTRA_UNIT_ID, -1)
+            if (it.containsKey(EXTRA_QUESTION_NUMBER)) questionIndex = it.getInt(EXTRA_QUESTION_NUMBER, -1)
+            if (it.containsKey(EXTRA_STEP)) understandIndex = it.getInt(EXTRA_STEP, -1)
         }
         setup()
     }
@@ -79,7 +72,6 @@ class FragmentUnderstandQuestions : Fragment() {
             description.text = it.body
             setupPicture(it.picture)
             setupQuestionAudio(it.audio)
-
         }
     }
 
@@ -89,15 +81,11 @@ class FragmentUnderstandQuestions : Fragment() {
             val audioFile = File(fileFolder.absolutePath, it.audio.value)
             val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
             player.setOnCompletionListener {
-                if (canAccessActivity) {
-                    player.pause()
-                }
+                if (canAccessActivity) player.pause()
             }
         }
         val adapter = AnswersAdapter(answers, {
-            if (it.correct) {
-                next.enable()
-            }
+            if (it.correct) next.enable()
         }, {
             playAnswerAudio(answers.indexOf(it), it.audio.value)
         })
@@ -114,14 +102,11 @@ class FragmentUnderstandQuestions : Fragment() {
         next.disable()
         next.setOnClickListener {
             destroyPlayers()
-            if (questionIndex + 1 < questions.size) {
-                communicator.goToNextQuestion(questionIndex + 1)
-            } else {
-                if (understandIndex + 1 < understandSize) {
+            if (questionIndex + 1 < questions.size) communicator.goToNextQuestion(questionIndex + 1)
+            else {
+                if (understandIndex + 1 < understandSize)
                     communicator.goToVideo(understandIndex + 1, false)
-                } else {
-                    communicator.goToFinish()
-                }
+                else communicator.goToFinish()
             }
         }
     }
@@ -177,18 +162,12 @@ class FragmentUnderstandQuestions : Fragment() {
                 answersPlayer!!.start()
             }
             answersPlayer!!.isPlaying -> {
-                if (currentAudioIndex == index) {
-                    answersPlayer!!.pause()
-                } else {
-                    resetAnswerPlayer(index, audio)
-                }
+                if (currentAudioIndex == index) answersPlayer!!.pause()
+                else resetAnswerPlayer(index, audio)
             }
             else -> {
-                if (currentAudioIndex == index) {
-                    answersPlayer!!.start()
-                } else {
-                    resetAnswerPlayer(index, audio)
-                }
+                if (currentAudioIndex == index) answersPlayer!!.start()
+                else resetAnswerPlayer(index, audio)
             }
         }
     }
@@ -206,9 +185,7 @@ class FragmentUnderstandQuestions : Fragment() {
         val audioFile = File(fileFolder.absolutePath, audio)
         val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
-            if (canAccessActivity) {
-                player.pause()
-            }
+            if (canAccessActivity) player.pause()
         }
         return player
     }

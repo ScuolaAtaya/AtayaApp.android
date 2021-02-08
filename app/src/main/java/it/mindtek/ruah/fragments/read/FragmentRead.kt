@@ -31,19 +31,15 @@ class FragmentRead : Fragment() {
     private var optionsPlayers: MediaPlayer? = null
     private lateinit var communicator: ReadActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_read, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_read, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            }
-            if (it.containsKey(EXTRA_STEP)) {
-                stepIndex = it.getInt(EXTRA_STEP)
-            }
+            if (it.containsKey(EXTRA_STEP)) stepIndex = it.getInt(EXTRA_STEP)
         }
         setup()
     }
@@ -100,9 +96,7 @@ class FragmentRead : Fragment() {
                 if (stepIndex + 1 < read.size) {
                     optionsPlayers?.release()
                     communicator.goToNext(stepIndex + 1)
-                } else {
-                    communicator.goToFinish()
-                }
+                } else communicator.goToFinish()
             }
         }
     }
@@ -114,25 +108,17 @@ class FragmentRead : Fragment() {
                 val audioFile = File(fileFolder.absolutePath, audio)
                 optionsPlayers = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
                 optionsPlayers!!.setOnCompletionListener {
-                    if (canAccessActivity) {
-                        optionsPlayers!!.pause()
-                    }
+                    if (canAccessActivity) optionsPlayers!!.pause()
                 }
                 optionsPlayers!!.start()
             }
             optionsPlayers!!.isPlaying -> {
-                if (currentAudioIndex == index) {
-                    optionsPlayers!!.pause()
-                } else {
-                    resetOptionPlayer(index, audio)
-                }
+                if (currentAudioIndex == index) optionsPlayers!!.pause()
+                else resetOptionPlayer(index, audio)
             }
             else -> {
-                if (currentAudioIndex == index) {
-                    optionsPlayers!!.start()
-                } else {
-                    resetOptionPlayer(index, audio)
-                }
+                if (currentAudioIndex == index) optionsPlayers!!.start()
+                else resetOptionPlayer(index, audio)
             }
         }
     }

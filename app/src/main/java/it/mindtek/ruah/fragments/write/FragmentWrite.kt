@@ -37,19 +37,15 @@ class FragmentWrite : Fragment() {
     private lateinit var selectableAdapter: SelectableLettersAdapter
     private lateinit var communicator: WriteActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_write, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_write, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID)) {
+            if (it.containsKey(ActivityUnit.EXTRA_UNIT_ID))
                 unitId = it.getInt(ActivityUnit.EXTRA_UNIT_ID)
-            }
-            if (it.containsKey(EXTRA_STEP)) {
-                stepIndex = it.getInt(EXTRA_STEP)
-            }
+            if (it.containsKey(EXTRA_STEP)) stepIndex = it.getInt(EXTRA_STEP)
         }
         setup()
     }
@@ -71,9 +67,7 @@ class FragmentWrite : Fragment() {
         if (write[stepIndex].type == BASIC) {
             setupBasic()
             setupRecyclers()
-        } else {
-            setupAdvanced()
-        }
+        } else setupAdvanced()
     }
 
     private fun setupAudio() {
@@ -81,16 +75,10 @@ class FragmentWrite : Fragment() {
         val audioFile = File(fileFolder.absolutePath, audio.value)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
-            if (canAccessActivity) {
-                player.pause()
-            }
+            if (canAccessActivity) player.pause()
         }
         audioButton.setOnClickListener {
-            if (player.isPlaying) {
-                player.pause()
-            } else {
-                player.start()
-            }
+            if (player.isPlaying) player.pause() else player.start()
         }
         if (!audio.credits.isNullOrBlank()) {
             audioCredits.setVisible()
@@ -114,11 +102,8 @@ class FragmentWrite : Fragment() {
         next.disable()
         next.setOnClickListener {
             player.release()
-            if (stepIndex + 1 < write.size) {
-                communicator.goToNext(stepIndex + 1)
-            } else {
-                communicator.goToFinish()
-            }
+            if (stepIndex + 1 < write.size) communicator.goToNext(stepIndex + 1)
+            else communicator.goToFinish()
         }
     }
 
@@ -139,9 +124,7 @@ class FragmentWrite : Fragment() {
                     showRight()
                     next.enable()
                 } else {
-                    if (s.toString().isNotEmpty()) {
-                        showError()
-                    }
+                    if (s.toString().isNotEmpty()) showError()
                     next.disable()
                 }
 
@@ -169,16 +152,8 @@ class FragmentWrite : Fragment() {
         val stepWrite = write[stepIndex]
         val selectableCol = calculateSelectableColumns()
         val selectedCol = calculateColumns()
-        val selectedSpanCount = if (stepWrite.letters.size >= selectedCol) {
-            selectedCol
-        } else {
-            stepWrite.letters.size
-        }
-        val selectableSpanCount = if (stepWrite.letters.size >= selectableCol) {
-            selectableCol
-        } else {
-            stepWrite.letters.size
-        }
+        val selectedSpanCount = if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size
+        val selectableSpanCount = if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size
         compile.layoutManager = GridLayoutManager(requireActivity(), selectedSpanCount)
         available.layoutManager = GridLayoutManager(requireActivity(), selectableSpanCount)
         selectedAdapter = SelectedLettersAdapter(stepWrite.letters) {

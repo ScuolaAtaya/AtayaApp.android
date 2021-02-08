@@ -50,21 +50,11 @@ class ActivityUnit : AppCompatActivity() {
                 val isReadingCompleted = isCategoryCompleted(it, Category.READ.value)
                 val isWritingCompleted = isCategoryCompleted(it, Category.WRITE.value)
                 val isFinalTestCompleted = isCategoryCompleted(it, Category.FINAL_TEST.value)
-                if (isUnderstandCompleted) {
-                    capiamoDone.setVisible()
-                }
-                if (isSpeakingCompleted) {
-                    parliamoDone.setVisible()
-                }
-                if (isReadingCompleted) {
-                    leggiamoDone.setVisible()
-                }
-                if (isWritingCompleted) {
-                    scriviamoDone.setVisible()
-                }
-                if (isFinalTestCompleted) {
-                    verificaFinaleDone.setVisible()
-                }
+                if (isUnderstandCompleted) capiamoDone.setVisible()
+                if (isSpeakingCompleted) parliamoDone.setVisible()
+                if (isReadingCompleted) leggiamoDone.setVisible()
+                if (isWritingCompleted) scriviamoDone.setVisible()
+                if (isFinalTestCompleted) verificaFinaleDone.setVisible()
                 if (isUnderstandCompleted && isSpeakingCompleted && isReadingCompleted && isWritingCompleted) {
                     iconVerificaFinale.setImageResource(R.drawable.verifica_finale)
                     verificaFinaleText.setTextColor(ContextCompat.getColor(this, R.color.white))
@@ -104,10 +94,8 @@ class ActivityUnit : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean {
-        return modelUnit.completed.any {
-            it == categoryId
-        }
+    private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean = modelUnit.completed.any {
+        it == categoryId
     }
 
     companion object {

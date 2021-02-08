@@ -24,9 +24,9 @@ class OptionsAdapter(
         private val numberChangedCallback: ((answersNumber: Int) -> Unit)?,
         private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
 ) : RecyclerView.Adapter<OptionHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder {
-        return OptionHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder = OptionHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false)
+    )
 
     override fun getItemCount(): Int = options.size
 

@@ -21,21 +21,11 @@ class SelectedLettersAdapter(
 ) : RecyclerView.Adapter<ViewHolder>() {
     private var letters = MutableList(givenLetters.size) { "" }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (letters[position].isEmpty()) {
-            0
-        } else {
-            1
-        }
-    }
+    override fun getItemViewType(position: Int): Int = if (letters[position].isEmpty()) 0 else 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == 0) {
-            EmptyLetterHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false))
-        } else {
-            LettersHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false))
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = if (viewType == 0)
+        EmptyLetterHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false))
+    else LettersHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false))
 
     override fun getItemCount(): Int = letters.size
 
@@ -49,11 +39,9 @@ class SelectedLettersAdapter(
             val right = syllable.occurences.any {
                 it == position
             }
-            holder.card.background = if (right) {
+            holder.card.background = if (right)
                 ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
-            } else {
-                ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_red)
-            }
+            else ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_red)
             holder.letter.text = syllable.text
             holder.itemView.setOnClickListener {
                 letters[position] = ""
@@ -83,12 +71,8 @@ class SelectedLettersAdapter(
                 val noOccurrences = syllable.occurences.none {
                     it == index
                 }
-                if (noOccurrences) {
-                    wrong = true
-                }
-            } else {
-                wrong = true
-            }
+                if (noOccurrences) wrong = true
+            } else wrong = true
         }
         return !wrong
     }

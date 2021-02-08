@@ -28,18 +28,11 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
-        if (response.isSuccessful) {
-            response.body()?.let {
-                val result = String(it.bytes())
-                if (result == "true") {
-                    download()
-                } else {
-                    goToUnits()
-                }
-            } ?: goToUnits()
-        } else {
-            goToUnits()
-        }
+        if (response.isSuccessful) response.body()?.let {
+            val result = String(it.bytes())
+            if (result == "true") download() else goToUnits()
+        } ?: goToUnits()
+        else goToUnits()
     }
 
     private fun checkUpdates() {

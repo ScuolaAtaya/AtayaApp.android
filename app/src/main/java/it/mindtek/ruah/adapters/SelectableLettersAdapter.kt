@@ -19,20 +19,18 @@ class SelectableLettersAdapter(
         private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
 ) : RecyclerView.Adapter<SyllablesHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllablesHolder {
-        return SyllablesHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selectable, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllablesHolder = SyllablesHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selectable, parent, false)
+    )
 
     override fun getItemCount(): Int = syllables.size
 
     override fun onBindViewHolder(holder: SyllablesHolder, position: Int) {
         val syllable = syllables[position]
         holder.syllables.text = syllable.text
-        holder.background.background = if (syllable.enabled) {
+        holder.background.background = if (syllable.enabled)
             ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
-        } else {
-            ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_disabled)
-        }
+        else ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_disabled)
         holder.itemView.setOnClickListener {
             if (syllable.enabled) {
                 syllable.enabled = false

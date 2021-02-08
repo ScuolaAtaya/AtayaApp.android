@@ -38,9 +38,9 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitHolder {
-        return UnitHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_unit, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitHolder = UnitHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_unit, parent, false)
+    )
 
     override fun getItemCount(): Int = units.size
 
@@ -48,11 +48,7 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
         val unit = units[position]
         holder.number.text = unit.position.toString()
         holder.background.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, unit.color))
-        if (unit.completed.size >= 5) {
-            holder.check.setVisible()
-        } else {
-            holder.check.setGone()
-        }
+        if (unit.completed.size >= 5) holder.check.setVisible() else holder.check.setGone()
         GlideApp.with(holder.itemView.context).load(unit.icon).into(holder.icon)
         holder.text.text = holder.itemView.context.getString(unit.name)
         holder.itemView.setOnClickListener {

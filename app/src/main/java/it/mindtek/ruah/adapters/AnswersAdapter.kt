@@ -22,9 +22,9 @@ class AnswersAdapter(
         private val playAnswerCallback: ((answer: ModelAnswer) -> Unit)?
 ) : RecyclerView.Adapter<AnswerHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerHolder {
-        return AnswerHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_answer, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerHolder = AnswerHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_answer, parent, false)
+    )
 
     override fun getItemCount(): Int = answers.size
 

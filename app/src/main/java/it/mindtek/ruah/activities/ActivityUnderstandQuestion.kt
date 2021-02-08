@@ -83,8 +83,6 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (questionIndex == 0) {
-            goToVideo(understandIndex, true)
-        }
+        if (questionIndex == 0) goToVideo(understandIndex, true)
     }
 }
