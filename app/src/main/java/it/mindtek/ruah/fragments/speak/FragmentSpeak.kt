@@ -8,6 +8,8 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +32,8 @@ import java.io.File
 class FragmentSpeak : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
-    private var recording = false
+    private var recording: Boolean = false
+    private var isLocked: Boolean = false
     private var speak: MutableList<ModelSpeak> = mutableListOf()
     private var recodedPlayer: MediaPlayer? = null
     private var player: MediaPlayer? = null
@@ -90,6 +93,7 @@ class FragmentSpeak : Fragment() {
     private fun setupSection() {
         step.text = "${stepIndex + 1}/${speak.size}"
         record.setOnClickListener {
+            if (isLocked) return@setOnClickListener
             if (recording) endRecording() else startRecording()
         }
         next.disable()
@@ -134,13 +138,19 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun endRecording() {
-        recording = false
+        isLocked = true
+        loading.setVisible()
         pulsator.stop()
         record.compatElevation = requireActivity().dip(8f).toFloat()
-        recorder.stop()
-        listenAgain.enable()
-        next.enable()
         record.setImageResource(R.drawable.mic)
+        Handler(Looper.getMainLooper()).postDelayed({
+            recording = false
+            isLocked = false
+            recorder.stop()
+            loading.setGone()
+            listenAgain.enable()
+            next.enable()
+        }, 1000)
     }
 
     private fun initRecorder(): Boolean =
