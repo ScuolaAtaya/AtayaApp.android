@@ -1,9 +1,6 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import it.mindtek.ruah.db.models.ModelWrite
 
 /**
@@ -11,13 +8,21 @@ import it.mindtek.ruah.db.models.ModelWrite
  */
 @Dao
 interface DaoWrite {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveCategories(categories: MutableList<ModelWrite>)
+    @Insert
+    fun insertAll(categories: MutableList<ModelWrite>)
 
     @Query("SELECT * FROM write WHERE unit_id = :unitId")
     fun getWriteByUnitId(unitId: Int): MutableList<ModelWrite>
 
-
     @Query("SELECT COUNT(*) FROM write WHERE unit_id = :unitId")
     fun countByUnitId(unitId: Int): Int
+
+    @Query("DELETE FROM write")
+    fun truncate()
+
+    @Transaction
+    fun saveCategories(categories: MutableList<ModelWrite>) {
+        truncate()
+        insertAll(categories)
+    }
 }

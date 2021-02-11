@@ -1,12 +1,7 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import it.mindtek.ruah.db.models.ModelAnswer
-import it.mindtek.ruah.db.models.ModelQuestion
-import it.mindtek.ruah.db.models.ModelUnderstand
+import androidx.room.*
+import it.mindtek.ruah.db.models.*
 import it.mindtek.ruah.pojos.PojoUnderstand
 
 /**
@@ -14,18 +9,45 @@ import it.mindtek.ruah.pojos.PojoUnderstand
  */
 @Dao
 interface DaoUnderstand {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveCategories(categories: MutableList<ModelUnderstand>)
+    @Insert
+    fun insertCategories(categories: MutableList<ModelUnderstand>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveQuestions(questions: MutableList<ModelQuestion>)
+    @Insert
+    fun insertQuestions(questions: MutableList<ModelQuestion>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAnswers(answers: MutableList<ModelAnswer>)
+    @Insert
+    fun insertAnswers(answers: MutableList<ModelAnswer>)
 
     @Query("SELECT * FROM understand WHERE unit_id = :unitId")
     fun getUnderstandByUnitId(unitId: Int): MutableList<PojoUnderstand>
 
     @Query("SELECT COUNT(*) FROM understand WHERE unit_id = :unitId")
     fun countByUnitId(unitId: Int): Int
+
+    @Query("DELETE FROM understand")
+    fun truncateCategories()
+
+    @Query("DELETE FROM ModelQuestion")
+    fun truncateQuestions()
+
+    @Query("DELETE FROM ModelAnswer")
+    fun truncateAnswers()
+
+    @Transaction
+    fun saveCategories(categories: MutableList<ModelUnderstand>) {
+        truncateCategories()
+        insertCategories(categories)
+    }
+
+    @Transaction
+    fun saveQuestions(questions: MutableList<ModelQuestion>) {
+        truncateQuestions()
+        insertQuestions(questions)
+    }
+
+    @Transaction
+    fun saveAnswers(answers: MutableList<ModelAnswer>) {
+        truncateAnswers()
+        insertAnswers(answers)
+    }
 }

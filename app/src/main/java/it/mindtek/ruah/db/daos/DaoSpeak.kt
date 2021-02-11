@@ -1,9 +1,6 @@
 package it.mindtek.ruah.db.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import it.mindtek.ruah.db.models.ModelSpeak
 
 /**
@@ -11,12 +8,21 @@ import it.mindtek.ruah.db.models.ModelSpeak
  */
 @Dao
 interface DaoSpeak {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveCategories(categories: MutableList<ModelSpeak>)
+    @Insert
+    fun insertAll(categories: MutableList<ModelSpeak>)
 
     @Query("SELECT * FROM speak WHERE unit_id = :unitId ")
     fun getSpeakByUnitId(unitId: Int): MutableList<ModelSpeak>
 
     @Query("SELECT COUNT(*) FROM speak WHERE unit_id = :unitId")
     fun countByUnitId(unitId: Int): Int
+
+    @Query("DELETE FROM speak")
+    fun truncate()
+
+    @Transaction
+    fun saveCategories(categories: MutableList<ModelSpeak>) {
+        truncate()
+        insertAll(categories)
+    }
 }
