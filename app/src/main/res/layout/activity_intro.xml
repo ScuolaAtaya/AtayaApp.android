@@ -121,7 +121,8 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@id/backText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/backText"

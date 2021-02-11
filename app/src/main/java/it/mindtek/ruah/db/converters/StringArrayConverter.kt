@@ -10,9 +10,7 @@ import it.mindtek.ruah.db.models.ModelSyllable
  */
 class StringArrayConverter {
     @TypeConverter
-    fun toArray(string: String): MutableList<ModelSyllable> {
-        return Gson().fromJson(string)
-    }
+    fun toArray(string: String): MutableList<ModelSyllable> = Gson().fromJson(string)
 
     @TypeConverter
     fun toJson(mutableList: MutableList<ModelSyllable>): String = Gson().toJson(mutableList)

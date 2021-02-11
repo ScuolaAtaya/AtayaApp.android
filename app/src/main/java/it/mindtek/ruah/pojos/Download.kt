@@ -24,17 +24,10 @@ class Download(
         parcel.writeInt(totalFileSize)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<Download> {
-        override fun createFromParcel(parcel: Parcel): Download {
-            return Download(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Download?> {
-            return arrayOfNulls(size)
-        }
+        override fun createFromParcel(parcel: Parcel): Download = Download(parcel)
+        override fun newArray(size: Int): Array<Download?> = arrayOfNulls(size)
     }
 }

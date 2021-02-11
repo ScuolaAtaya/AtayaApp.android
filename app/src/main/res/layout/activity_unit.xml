@@ -170,7 +170,6 @@
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/scrivere"
         android:layout_width="0dp"

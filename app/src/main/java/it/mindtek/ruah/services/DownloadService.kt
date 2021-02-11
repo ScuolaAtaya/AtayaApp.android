@@ -148,9 +148,7 @@ class DownloadService : IntentService("Download service") {
     private fun saveWrite(writeJson: JSONArray) {
         val writes = Gson().fromJson<MutableList<ModelWrite>>(writeJson)
         writes.map {
-            if (it.type == ADVANCED) {
-                it.letters = mutableListOf()
-            }
+            if (it.type == ADVANCED) it.letters = mutableListOf()
         }
         db.writeDao().saveCategories(writes)
     }
@@ -223,9 +221,8 @@ class DownloadService : IntentService("Download service") {
                 FileReader(file).use {
                     val content = CharArray(length.toInt())
                     val numRead = it.read(content)
-                    if (numRead.toLong() != length) {
+                    if (numRead.toLong() != length)
                         Log.e(tag, "Incomplete read of $file. Read chars $numRead of $length")
-                    }
                     result = String(content, 0, numRead)
                 }
             } catch (ex: Exception) {

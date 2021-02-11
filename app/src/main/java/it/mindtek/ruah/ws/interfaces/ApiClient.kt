@@ -15,24 +15,20 @@ object ApiClient {
     }
 
     fun downloadFile(): Call<ResponseBody> {
-        val retrofit = getRetrofit(baseURL, apiKey)
-        val request = retrofit.create(FileDownloadInterface::class.java)
+        val request = getRetrofit(baseURL, apiKey).create(FileDownloadInterface::class.java)
         return request.downloadFile()
     }
 
     fun needsUpdate(timestamp: Long): Call<ResponseBody> {
-        val retrofit = getRetrofit(baseURL, apiKey)
-        val request = retrofit.create(NeedsUpdateInterface::class.java)
+        val request = getRetrofit(baseURL, apiKey).create(NeedsUpdateInterface::class.java)
         return request.needsUpdate(timestamp)
     }
 
-    private fun getRetrofit(baseUrl: String, apiKey: String): Retrofit {
-        val okHttp: OkHttpClient = getHttpClient(apiKey)
-        return Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(okHttp)
-                .build()
-    }
+    private fun getRetrofit(baseUrl: String, apiKey: String): Retrofit =
+            Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(getHttpClient(apiKey))
+                    .build()
 
     private fun getHttpClient(apiKey: String): OkHttpClient {
         val okHttpBuilder = OkHttpClient.Builder()

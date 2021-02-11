@@ -15,9 +15,7 @@ import java.util.concurrent.Executors
 private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
 
 val db: AppDatabase
-    get() {
-        return AppDatabase.getInstance()
-    }
+    get() = AppDatabase.getInstance()
 
 /**
  * Utility method to run blocks on a dedicated background thread, used for io/database work.
@@ -31,11 +29,7 @@ fun compat21(compatible: (() -> Unit)?, incompatible: (() -> Unit)?) {
 }
 
 fun compatCheck(version: Int, compatible: (() -> Unit)?, incompatible: (() -> Unit)?) {
-    if (Build.VERSION.SDK_INT >= version) {
-        compatible?.invoke()
-    } else {
-        incompatible?.invoke()
-    }
+    if (Build.VERSION.SDK_INT >= version) compatible?.invoke() else incompatible?.invoke()
 }
 
 inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson(json, object : TypeToken<T>() {}.type)

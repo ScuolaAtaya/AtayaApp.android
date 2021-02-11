@@ -95,7 +95,7 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/blackAlpha54"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@id/answers"
+            app:layout_constraintEnd_toEndOf="@id/questionAudio"
             app:layout_constraintStart_toStartOf="@id/questionAudio"
             app:layout_constraintTop_toBottomOf="@id/questionAudioCredits" />
 
@@ -135,6 +135,5 @@
             android:theme="@style/ButtonNext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/answers" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

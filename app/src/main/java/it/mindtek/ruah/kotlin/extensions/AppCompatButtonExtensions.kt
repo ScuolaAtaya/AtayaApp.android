@@ -37,11 +37,9 @@ fun tint(drawable: Drawable?, color: Int, context: Context): Drawable? {
     drawable?.let {
         val copy = drawable.constantState!!.newDrawable()
         copy.setBounds(0, 0, context.dip(24), context.dip(24))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             copy.mutate().colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
-        } else {
-            copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-        }
+        else copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         return copy
     } ?: return null
 }

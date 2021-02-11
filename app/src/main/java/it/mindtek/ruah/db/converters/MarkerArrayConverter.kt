@@ -7,9 +7,7 @@ import it.mindtek.ruah.kotlin.extensions.fromJson
 
 class MarkerArrayConverter {
     @TypeConverter
-    fun toArray(string: String): MutableList<ModelMarker> {
-        return Gson().fromJson(string)
-    }
+    fun toArray(string: String): MutableList<ModelMarker> = Gson().fromJson(string)
 
     @TypeConverter
     fun toJson(mutableList: MutableList<ModelMarker>): String = Gson().toJson(mutableList)

@@ -14,16 +14,13 @@ import androidx.core.content.ContextCompat
  */
 @Suppress("DEPRECATION")
 fun FloatingActionButton.setTintPreLollipop(color: Int, @DrawableRes iconRes: Int) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        setTint(color)
-    } else {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) setTint(color)
+    else {
         val icon = ContextCompat.getDrawable(context, iconRes)
         val copy = icon?.constantState?.newDrawable()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             copy?.mutate()?.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
-        } else {
-            copy?.mutate()?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-        }
+        else copy?.mutate()?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         setImageDrawable(copy)
     }
 }
