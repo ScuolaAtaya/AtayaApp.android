@@ -1,7 +1,7 @@
-#AtayaApp
+# AtayaApp
 AtayaApp, per studiare l'italiano per migranti analfabeti o poco scolarizzati
 
-#Descrizione
+# Descrizione
 AtayaApp è un'estensione di Ataya: il manuale interculturale e multilivello della Cooperativa Ruah. 
 
 Si rivolge a quei migranti che per motivi psicologici, geografici o organizzativi, non riescono sempre ad essere presente ai corsi di italiano L2 ed è anche materiale didattico aggiuntivo di approfondimento per chi frequenta la scuola.
