@@ -211,7 +211,7 @@ class DownloadService : IntentService("Download service") {
     private fun getJSON(): String {
         val dir = File(filesDir, "data")
         val file = File(dir.absolutePath, "book.json")
-        var result = ""
+        var result: String
         val length = file.length()
         if (length < 1 || length > Integer.MAX_VALUE) {
             result = ""

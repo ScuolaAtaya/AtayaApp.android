@@ -23,11 +23,11 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
         }, 1000)
     }
 
-    override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
         goToUnits()
     }
 
-    override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
+    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
         if (response.isSuccessful) response.body()?.let {
             val result = String(it.bytes())
             if (result == "true") download() else goToUnits()

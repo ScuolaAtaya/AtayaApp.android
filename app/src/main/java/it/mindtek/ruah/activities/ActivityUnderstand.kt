@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo
@@ -37,7 +36,7 @@ class ActivityUnderstand : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer {
+        unitObservable.observe(this) {
             it?.let {
                 val color = ContextCompat.getColor(this, it.color)
                 val colorDark = ContextCompat.getColor(this, it.colorDark)
@@ -49,7 +48,7 @@ class ActivityUnderstand : AppCompatActivity() {
                     window.statusBarColor = colorDark
                 }, {})
             }
-        })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

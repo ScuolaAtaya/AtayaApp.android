@@ -1,7 +1,7 @@
 package it.mindtek.ruah.adapters
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -21,18 +21,19 @@ import kotlinx.android.synthetic.main.recycler_item_unit.view.*
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
+@SuppressLint("NotifyDataSetChanged")
 class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit) -> Unit)?) : RecyclerView.Adapter<UnitHolder>() {
     private var units: MutableList<ModelUnit> = mutableListOf()
 
     init {
         try {
             val data = db.unitDao().getUnitsAsync()
-            data.observe(owner, Observer {
+            data.observe(owner) {
                 it?.let { unitList: MutableList<ModelUnit> ->
                     units = unitList
                     notifyDataSetChanged()
                 }
-            })
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -1,5 +1,6 @@
 package it.mindtek.ruah.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.item_letter_selectable.view.*
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
+@SuppressLint("NotifyDataSetChanged")
 class SelectableLettersAdapter(
         private val syllables: MutableList<ModelSyllable>,
         private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?

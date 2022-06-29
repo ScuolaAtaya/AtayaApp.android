@@ -1,7 +1,6 @@
 package it.mindtek.ruah.activities
 
 import android.annotation.TargetApi
-import androidx.lifecycle.Observer
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -46,7 +45,7 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.TALK.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer {
+        unitObservable.observe(this) {
             it?.let {
                 val color = ContextCompat.getColor(this, it.color)
                 val colorDark = ContextCompat.getColor(this, it.colorDark)
@@ -58,7 +57,7 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
                     window.statusBarColor = colorDark
                 }, {})
             }
-        })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

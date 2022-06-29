@@ -1,5 +1,6 @@
 package it.mindtek.ruah.config
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
@@ -13,6 +14,7 @@ import org.jetbrains.anko.windowManager
 import java.io.File
 
 
+@SuppressLint("StaticFieldLeak")
 object ImageWithMarkersGenerator {
     private lateinit var context: Context
 

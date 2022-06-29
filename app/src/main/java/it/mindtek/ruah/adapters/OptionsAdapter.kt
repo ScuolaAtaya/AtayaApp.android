@@ -17,6 +17,7 @@ import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
 import kotlinx.android.synthetic.main.item_option.view.*
 
+@SuppressLint("NotifyDataSetChanged")
 class OptionsAdapter(
         val context: Context,
         val options: MutableList<OptionRenderViewModel>,

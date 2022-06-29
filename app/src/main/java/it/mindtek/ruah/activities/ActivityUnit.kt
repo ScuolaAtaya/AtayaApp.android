@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
@@ -43,7 +42,7 @@ class ActivityUnit : AppCompatActivity() {
             openIntro(Category.WRITE.value)
         }
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer {
+        unitObservable.observe(this) {
             it?.let {
                 val isUnderstandCompleted = isCategoryCompleted(it, Category.UNDERSTAND.value)
                 val isSpeakingCompleted = isCategoryCompleted(it, Category.TALK.value)
@@ -63,7 +62,12 @@ class ActivityUnit : AppCompatActivity() {
                     }
                 } else {
                     iconVerificaFinale.setImageResource(R.drawable.verifica_finale_disattivato)
-                    verificaFinaleText.setTextColor(ContextCompat.getColor(this, R.color.whiteAlpha50))
+                    verificaFinaleText.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.whiteAlpha50
+                        )
+                    )
                 }
                 supportActionBar?.title = getString(it.name)
                 val color = ContextCompat.getColor(this, it.color)
@@ -77,7 +81,7 @@ class ActivityUnit : AppCompatActivity() {
                     window.statusBarColor = colorDark
                 }
             }
-        })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

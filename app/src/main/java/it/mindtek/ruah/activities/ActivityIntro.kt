@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.GlideApp
@@ -63,7 +62,7 @@ class ActivityIntro : AppCompatActivity() {
         GlideApp.with(this).load(category.icon).override(dip(24), dip(24)).into(sectionIcon)
         sectionName.text = getString(category.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this, Observer {
+        unitObservable.observe(this) {
             it?.let {
                 unitObject = it
                 val color = ContextCompat.getColor(this, it.color)
@@ -81,7 +80,7 @@ class ActivityIntro : AppCompatActivity() {
                 buttonNext.setCompoundDrawables(null, null, play, null)
                 buttonNext.setColor(color)
             }
-        })
+        }
     }
 
     private fun completeCategory(category: Category) {

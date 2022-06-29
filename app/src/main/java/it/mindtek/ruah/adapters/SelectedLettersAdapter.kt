@@ -1,5 +1,6 @@
 package it.mindtek.ruah.adapters
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.item_letter_selected.view.*
 /**
  * Created by alessandrogaboardi on 08/01/2018.
  */
+@SuppressLint("NotifyDataSetChanged")
 class SelectedLettersAdapter(
         private val givenLetters: MutableList<ModelSyllable>,
         private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
@@ -28,7 +30,6 @@ class SelectedLettersAdapter(
     else LettersHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false))
 
     override fun getItemCount(): Int = letters.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (holder.itemViewType != 0) {
             holder as LettersHolder

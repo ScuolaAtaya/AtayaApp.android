@@ -190,7 +190,7 @@ class FragmentWrite : Fragment() {
         player.release()
     }
 
-    private fun setLowerCase(text: String) = text.toLowerCase(Locale.ITALIAN)
+    private fun setLowerCase(text: String) = text.lowercase(Locale.ITALIAN)
 
     companion object {
         const val EXTRA_STEP = "extra step int position"
