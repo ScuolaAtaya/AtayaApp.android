@@ -15,48 +15,59 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="AllowBackup"
-        tools:targetApi="m">
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".activities.ActivityUnderstandQuestion"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityFinalTest"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityUnits"
             android:noHistory="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar" />
+            android:theme="@style/AppThemeNoToolbar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityUnit"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityIntro"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar" />
+            android:theme="@style/AppThemeNoToolbar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityUnderstand"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivitySpeak"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityRead"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityWrite"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityDownload"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar" />
+            android:theme="@style/AppThemeNoToolbar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivitySplash"
+            android:exported="true"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar">
+            android:theme="@style/AppThemeNoToolbar"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

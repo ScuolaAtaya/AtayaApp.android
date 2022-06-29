@@ -2,32 +2,34 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.72'
+        kotlin_version = '1.7.0'
         anko_version = '0.10.5'
-        roomVersion = '1.0.0'
-        supportVersion = '27.1.0'
     }
-    repositories {
-        google()
-        jcenter()
-        maven { url 'https://maven.fabric.io/public' }
-    }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
+        classpath 'com.google.gms:google-services:4.3.12'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 }
 
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://jitpack.io' }
-        maven { url "http://dl.bintray.com/piasy/maven" }
     }
 }
 
