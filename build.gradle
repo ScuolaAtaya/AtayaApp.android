@@ -2,6 +2,7 @@
 
 buildscript {
     ext {
+        keystoreProperties = new Properties()
         kotlin_version = '1.7.0'
         anko_version = '0.10.5'
     }
