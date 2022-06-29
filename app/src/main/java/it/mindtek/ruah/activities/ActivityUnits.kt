@@ -1,6 +1,8 @@
 package it.mindtek.ruah.activities
 
 import android.content.Intent
+import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +23,12 @@ class ActivityUnits : AppCompatActivity() {
             startActivity(intent)
         }
         unitsRecycler.adapter = adapter
+        privacyPolicy.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        privacyPolicy.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(getString(R.string.privacy_policy_url))
+            })
+        }
     }
 
     companion object {
