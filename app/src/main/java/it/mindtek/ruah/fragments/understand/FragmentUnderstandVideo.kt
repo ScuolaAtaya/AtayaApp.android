@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_understand_video.*
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
-
 class FragmentUnderstandVideo : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
@@ -136,13 +135,13 @@ class FragmentUnderstandVideo : Fragment() {
             audioPlayer == null -> {
                 val audioFile = File(fileFolder.absolutePath, audio)
                 audioPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-                audioPlayer!!.setOnCompletionListener {
-                    if (canAccessActivity) audioPlayer!!.pause()
+                audioPlayer?.setOnCompletionListener {
+                    if (canAccessActivity) audioPlayer?.pause()
                 }
-                audioPlayer!!.start()
+                audioPlayer?.start()
             }
-            audioPlayer!!.isPlaying -> audioPlayer!!.pause()
-            else -> audioPlayer!!.start()
+            audioPlayer?.isPlaying == true -> audioPlayer?.pause()
+            else -> audioPlayer?.start()
         }
     }
 

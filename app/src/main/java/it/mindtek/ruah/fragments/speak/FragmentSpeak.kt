@@ -116,10 +116,10 @@ class FragmentSpeak : Fragment() {
             player == null -> {
                 val audioFile = File(fileFolder.absolutePath, audio)
                 player = initPlayer(audioFile)
-                player!!.start()
+                player?.start()
             }
-            player!!.isPlaying -> player!!.pause()
-            else -> player!!.start()
+            player?.isPlaying == true -> player?.pause()
+            else -> player?.start()
         }
     }
 
@@ -178,10 +178,10 @@ class FragmentSpeak : Fragment() {
             recodedPlayer == null -> {
                 val audioFile = File(requireActivity().filesDir, "recording")
                 recodedPlayer = initPlayer(audioFile)
-                recodedPlayer!!.start()
+                recodedPlayer?.start()
             }
-            recodedPlayer!!.isPlaying -> recodedPlayer!!.pause()
-            else -> recodedPlayer!!.start()
+            recodedPlayer?.isPlaying == true -> recodedPlayer?.pause()
+            else -> recodedPlayer?.start()
         }
     }
 

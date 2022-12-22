@@ -79,7 +79,7 @@ class FragmentRead : Fragment() {
         }.toMutableList()
         optionList.shuffle()
         adapter = OptionsAdapter(requireActivity(), optionList, answerList, {
-            next.isEnabled = it == markerList.size
+            next?.isEnabled = it == markerList.size
         }, {
             playOptionAudio(read.options.indexOf(it), it.audio.value)
         })

@@ -32,13 +32,17 @@ class FragmentWrite : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var write: MutableList<ModelWrite> = mutableListOf()
-    private lateinit var player: MediaPlayer
+    private var player: MediaPlayer? = null
     private lateinit var selectedAdapter: SelectedLettersAdapter
     private lateinit var selectableAdapter: SelectableLettersAdapter
     private lateinit var communicator: WriteActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_write, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_write, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,11 +78,11 @@ class FragmentWrite : Fragment() {
         val audio = write[stepIndex].audio
         val audioFile = File(fileFolder.absolutePath, audio.value)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        player.setOnCompletionListener {
-            if (canAccessActivity) player.pause()
+        player?.setOnCompletionListener {
+            if (canAccessActivity) player?.pause()
         }
         audioButton.setOnClickListener {
-            if (player.isPlaying) player.pause() else player.start()
+            if (player?.isPlaying == true) player?.pause() else player?.start()
         }
         if (!audio.credits.isNullOrBlank()) {
             audioCredits.setVisible()
@@ -101,7 +105,7 @@ class FragmentWrite : Fragment() {
         step.text = "${stepIndex + 1}/${write.size}"
         next.disable()
         next.setOnClickListener {
-            player.release()
+            player?.release()
             if (stepIndex + 1 < write.size) communicator.goToNext(stepIndex + 1)
             else communicator.goToFinish()
         }
@@ -141,19 +145,31 @@ class FragmentWrite : Fragment() {
     }
 
     fun showError() {
-        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(), R.drawable.close), null)
+        editText.setCompoundDrawablesWithIntrinsicBounds(
+            null,
+            null,
+            ContextCompat.getDrawable(requireActivity(), R.drawable.close),
+            null
+        )
     }
 
     fun showRight() {
-        editText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(requireActivity(), R.drawable.done), null)
+        editText.setCompoundDrawablesWithIntrinsicBounds(
+            null,
+            null,
+            ContextCompat.getDrawable(requireActivity(), R.drawable.done),
+            null
+        )
     }
 
     private fun setupRecyclers() {
         val stepWrite = write[stepIndex]
         val selectableCol = calculateSelectableColumns()
         val selectedCol = calculateColumns()
-        val selectedSpanCount = if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size
-        val selectableSpanCount = if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size
+        val selectedSpanCount =
+            if (stepWrite.letters.size >= selectedCol) selectedCol else stepWrite.letters.size
+        val selectableSpanCount =
+            if (stepWrite.letters.size >= selectableCol) selectableCol else stepWrite.letters.size
         compile.layoutManager = GridLayoutManager(requireActivity(), selectedSpanCount)
         available.layoutManager = GridLayoutManager(requireActivity(), selectableSpanCount)
         selectedAdapter = SelectedLettersAdapter(stepWrite.letters) {
@@ -167,8 +183,18 @@ class FragmentWrite : Fragment() {
         }
         compile.adapter = selectedAdapter
         available.adapter = selectableAdapter
-        compile.addItemDecoration(GridSpaceItemDecoration(requireActivity().dip(4), requireActivity().dip(4)))
-        available.addItemDecoration(GridSpaceItemDecoration(requireActivity().dip(8), requireActivity().dip(8)))
+        compile.addItemDecoration(
+            GridSpaceItemDecoration(
+                requireActivity().dip(4),
+                requireActivity().dip(4)
+            )
+        )
+        available.addItemDecoration(
+            GridSpaceItemDecoration(
+                requireActivity().dip(8),
+                requireActivity().dip(8)
+            )
+        )
     }
 
     private fun calculateColumns(): Int {
@@ -187,7 +213,7 @@ class FragmentWrite : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        player?.release()
     }
 
     private fun setLowerCase(text: String) = text.lowercase(Locale.ITALIAN)
