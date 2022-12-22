@@ -22,11 +22,11 @@ object ImageWithMarkersGenerator {
         ImageWithMarkersGenerator.context = context.applicationContext
     }
 
-    fun createImageWithMarkers(markerList: MutableList<ModelMarker>, file: File): Bitmap {
+    fun createImageWithMarkers(markerList: MutableList<ModelMarker>, file: File): Bitmap? {
         val options = BitmapFactory.Options()
         options.inPreferredConfig = Bitmap.Config.ARGB_8888
         options.inMutable = true
-        val bitmap = BitmapFactory.decodeFile(file.absolutePath, options)
+        val bitmap: Bitmap = BitmapFactory.decodeFile(file.absolutePath, options) ?: return null
         val canvas = Canvas(bitmap)
         val displayMetrics = DisplayMetrics()
         context.windowManager.defaultDisplay.getMetrics(displayMetrics)

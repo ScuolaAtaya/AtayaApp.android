@@ -1,6 +1,7 @@
 package it.mindtek.ruah.fragments.read
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -60,7 +61,7 @@ class FragmentRead : Fragment() {
     private fun setupPicture(read: PojoRead) {
         read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-            val bitmap = ImageWithMarkersGenerator.createImageWithMarkers(it.markers, pictureFile)
+            val bitmap: Bitmap? = ImageWithMarkersGenerator.createImageWithMarkers(it.markers, pictureFile)
             stepImage.setImageBitmap(bitmap)
             if (!it.picture.credits.isNullOrBlank()) {
                 stepImageCredits.setVisible()
