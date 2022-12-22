@@ -14,12 +14,7 @@ import it.mindtek.ruah.db.converters.IntArrayConverter
 open class ModelUnit(
         @PrimaryKey
         var id: Int,
-        @DrawableRes
-        var icon: Int,
-        @StringRes
-        var name: Int,
-        var color: Int,
-        var colorDark: Int,
+        var name: String,
         var position: Int,
         var advanced: Boolean = false,
         var enabled: Boolean = false,

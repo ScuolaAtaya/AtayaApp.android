@@ -1,6 +1,5 @@
 package it.mindtek.ruah.config
 
-import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelUnit
 
 /**
@@ -10,117 +9,20 @@ class UnitGenerator {
     companion object {
         fun getUnits(): MutableList<ModelUnit> {
             val units: MutableList<ModelUnit> = mutableListOf()
-            units.add(ModelUnit(
-                    0,
-                    R.drawable.accoglienza,
-                    R.string.accoglienza,
-                    R.color.accoglienza,
-                    R.color.accoglienza_dark,
-                    1
-            ))
-            units.add(ModelUnit(
-                    1,
-                    R.drawable.lavoro,
-                    R.string.lavoro,
-                    R.color.lavoro,
-                    R.color.lavoro_dark,
-                    2
-            ))
-            units.add(ModelUnit(
-                    2,
-                    R.drawable.cibo,
-                    R.string.cibo,
-                    R.color.cibo,
-                    R.color.cibo_dark,
-                    3
-            ))
-            units.add(ModelUnit(
-                    3,
-                    R.drawable.telefono,
-                    R.string.telefono,
-                    R.color.telefono,
-                    R.color.telefono_dark,
-                    4
-            ))
-            units.add(ModelUnit(
-                    4,
-                    R.drawable.stato,
-                    R.string.stato,
-                    R.color.stato,
-                    R.color.stato_dark,
-                    5
-            ))
-            units.add(ModelUnit(
-                    5,
-                    R.drawable.salute,
-                    R.string.salute,
-                    R.color.salute,
-                    R.color.salute_dark,
-                    6
-            ))
-            units.add(ModelUnit(
-                    6,
-                    R.drawable.citta,
-                    R.string.citta,
-                    R.color.citta,
-                    R.color.citta_dark,
-                    7
-            ))
-            units.add(ModelUnit(
-                    7,
-                    R.drawable.mezzi,
-                    R.string.mezzi,
-                    R.color.mezzi,
-                    R.color.mezzi_dark,
-                    8
-            ))
-            units.add(ModelUnit(
-                    8,
-                    R.drawable.casa,
-                    R.string.casa,
-                    R.color.casa,
-                    R.color.casa_dark,
-                    9
-            ))
-            units.add(ModelUnit(
-                    9,
-                    R.drawable.viaggio,
-                    R.string.viaggio,
-                    R.color.viaggio,
-                    R.color.viaggio_dark,
-                    10
-            ))
-            units.add(ModelUnit(
-                    10,
-                    R.drawable.cartellonistica,
-                    R.string.cartellonistica,
-                    R.color.cartellonistica,
-                    R.color.cartellonistica_dark,
-                    11
-            ))
-            units.add(ModelUnit(
-                    11,
-                    R.drawable.rischi_pericoli,
-                    R.string.rischi_pericoli,
-                    R.color.rischi_pericoli,
-                    R.color.rischi_pericoli_dark,
-                    12
-            ))
-            units.add(ModelUnit(
-                    12,
-                    R.drawable.benessere,
-                    R.string.benessere,
-                    R.color.benessere,
-                    R.color.benessere_dark,
-                    13
-            ))
-            units.add(ModelUnit(13,
-                    R.drawable.patente,
-                    R.string.patente,
-                    R.color.patente,
-                    R.color.patente_dark,
-                    14
-            ))
+            units.add(ModelUnit(0, "accoglienza", 1))
+            units.add(ModelUnit(1, "lavoro", 2))
+            units.add(ModelUnit(2, "cibo", 3))
+            units.add(ModelUnit(3, "telefono", 4))
+            units.add(ModelUnit(4, "stato", 5))
+            units.add(ModelUnit(5, "salute", 6))
+            units.add(ModelUnit(6, "citta", 7))
+            units.add(ModelUnit(7, "mezzi", 8))
+            units.add(ModelUnit(8, "casa", 9))
+            units.add(ModelUnit(9, "viaggio", 10))
+            units.add(ModelUnit(10, "cartellonistica", 11))
+            units.add(ModelUnit(11, "rischi_pericoli", 12))
+            units.add(ModelUnit(12, "benessere", 13))
+            units.add(ModelUnit(13, "patente", 14))
             return units
         }
     }
