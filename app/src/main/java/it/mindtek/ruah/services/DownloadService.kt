@@ -1,9 +1,11 @@
 package it.mindtek.ruah.services
 
 import android.app.IntentService
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -37,6 +39,7 @@ class DownloadService : IntentService("Download service") {
     private val tag = javaClass.simpleName
 
     override fun onHandleIntent(intent: Intent?) {
+        createNotificationChannel()
         notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationBuilder = NotificationCompat.Builder(this, getString(R.string.notification_channel))
                 .setSmallIcon(R.drawable.download)
@@ -231,6 +234,19 @@ class DownloadService : IntentService("Download service") {
             }
         }
         return result
+    }
+
+    private fun createNotificationChannel() {
+        // Create NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                getString(R.string.notification_channel),
+                getString(R.string.notification_channel),
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            // Register the channel with the system; you can't change the importance or other notification behaviors after this
+            getSystemService(NotificationManager::class.java)?.createNotificationChannel(channel)
+        }
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {
