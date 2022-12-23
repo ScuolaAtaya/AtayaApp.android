@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
@@ -28,13 +29,30 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             understandIndex = it.getIntExtra(ActivityUnderstand.STEP_INDEX, -1)
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (questionIndex == 0) goToVideo(understandIndex, true)
+            }
+        })
         setup()
-        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex), R.id.placeholder, false)
+        replaceFragment(
+            FragmentUnderstandQuestions.newInstance(
+                questionIndex,
+                unitId,
+                understandIndex
+            ), R.id.placeholder, false
+        )
     }
 
     override fun goToNextQuestion(index: Int) {
         questionIndex = index
-        replaceFragment(FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex), R.id.placeholder, true)
+        replaceFragment(
+            FragmentUnderstandQuestions.newInstance(
+                questionIndex,
+                unitId,
+                understandIndex
+            ), R.id.placeholder, true
+        )
     }
 
     override fun goToFinish() {
@@ -75,13 +93,8 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> onBackPressed()
+            android.R.id.home -> onBackPressedDispatcher.onBackPressed()
         }
         return false
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (questionIndex == 0) goToVideo(understandIndex, true)
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -33,6 +34,11 @@ class ActivityIntro : AppCompatActivity() {
             category = Category.from(it.getIntExtra(EXTRA_CATEGORY_ID, -1))!!
             finish = it.getBooleanExtra(EXTRA_IS_FINISH, false)
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                goToCategory()
+            }
+        })
         setup()
     }
 
@@ -52,7 +58,7 @@ class ActivityIntro : AppCompatActivity() {
         } else {
             done.setGone()
             fabBack.setOnClickListener {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
             }
             buttonNext.setVisible()
             buttonNext.setOnClickListener {
@@ -156,11 +162,6 @@ class ActivityIntro : AppCompatActivity() {
         }
         player.release()
         return true
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        goToCategory()
     }
 
     override fun onDestroy() {

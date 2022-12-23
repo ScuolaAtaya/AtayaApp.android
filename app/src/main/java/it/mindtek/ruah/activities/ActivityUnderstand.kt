@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
@@ -28,6 +29,23 @@ class ActivityUnderstand : AppCompatActivity() {
             stepIndex = it.getIntExtra(STEP_INDEX, -1)
             isVideoWatched = it.getBooleanExtra(VIDEO_WATCHED, false)
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent: Intent
+                if (stepIndex == 0) {
+                    intent = Intent(this@ActivityUnderstand, ActivityIntro::class.java)
+                    intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+                    intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
+                } else {
+                    intent = Intent(this@ActivityUnderstand, ActivityUnderstand::class.java)
+                    intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+                    intent.putExtra(STEP_INDEX, stepIndex - 1)
+                    intent.putExtra(VIDEO_WATCHED, true)
+                }
+                startActivity(intent)
+                finish()
+            }
+        })
         setup()
         replaceFragment(
             FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched),
@@ -57,26 +75,9 @@ class ActivityUnderstand : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> onBackPressed()
+            android.R.id.home -> onBackPressedDispatcher.onBackPressed()
         }
         return false
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent: Intent
-        if (stepIndex == 0) {
-            intent = Intent(this, ActivityIntro::class.java)
-            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
-        } else {
-            intent = Intent(this, ActivityUnderstand::class.java)
-            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            intent.putExtra(STEP_INDEX, stepIndex - 1)
-            intent.putExtra(VIDEO_WATCHED, true)
-        }
-        startActivity(intent)
-        finish()
     }
 
     companion object {
