@@ -28,7 +28,7 @@ class FragmentFinalTest : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var questions: MutableList<ModelFinalTestQuestion> = mutableListOf()
-    private lateinit var player: MediaPlayer
+    private var player: MediaPlayer? = null
     private lateinit var communicator: FinalTestActivityInterface
 
     override fun onCreateView(
@@ -71,11 +71,11 @@ class FragmentFinalTest : Fragment() {
         val audio = questions[stepIndex].audio
         val audioFile = File(fileFolder.absolutePath, audio.value)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
-        player.setOnCompletionListener {
-            if (canAccessActivity) player.pause()
+        player?.setOnCompletionListener {
+            if (canAccessActivity) player?.pause()
         }
         questionAudio.setOnClickListener {
-            if (player.isPlaying) player.pause() else player.start()
+            if (player?.isPlaying == true) player?.pause() else player?.start()
         }
         if (!audio.credits.isNullOrBlank()) {
             questionAudioCredits.setVisible()
@@ -137,7 +137,7 @@ class FragmentFinalTest : Fragment() {
         next.disable()
         next.setOnClickListener {
             if (stepIndex + 1 < questions.size) {
-                player.release()
+                player?.release()
                 yes.radioSelect.isChecked = false
                 no.radioSelect.isChecked = false
                 communicator.goToNext(stepIndex + 1)
@@ -147,7 +147,7 @@ class FragmentFinalTest : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        player?.release()
     }
 
     companion object {
