@@ -1,12 +1,13 @@
 package it.mindtek.ruah.config
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 
+@SuppressLint("DiscouragedApi")
 object ResourceProvider {
     @StringRes
     fun getString(context: Context, name: String): Int =
