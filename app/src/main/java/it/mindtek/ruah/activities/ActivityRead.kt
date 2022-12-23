@@ -62,7 +62,7 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> onBackPressed()
+            android.R.id.home -> onBackPressedDispatcher.onBackPressed()
         }
         return false
     }

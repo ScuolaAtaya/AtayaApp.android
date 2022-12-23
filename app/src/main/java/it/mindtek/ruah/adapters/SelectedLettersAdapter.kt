@@ -79,9 +79,9 @@ class SelectedLettersAdapter(
     }
 }
 
-class LettersHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class LettersHolder(itemView: View) : ViewHolder(itemView) {
     val letter: TextView = itemView.letter
     val card: FrameLayout = itemView.card
 }
 
-class EmptyLetterHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class EmptyLetterHolder(itemView: View) : ViewHolder(itemView)
