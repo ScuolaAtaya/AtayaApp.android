@@ -58,3 +58,5 @@
 # CUSTOM CLASSES
 -keep class it.mindtek.ruah.ws.interfaces.** { *;}
 -keepclassmembers class it.mindtek.ruah.ws.interfaces.** { *; }
+-keep class it.mindtek.ruah.services.** { *;}
+-keepclassmembers class it.mindtek.ruah.services.** { *; }
