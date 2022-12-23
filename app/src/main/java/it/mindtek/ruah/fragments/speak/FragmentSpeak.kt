@@ -13,11 +13,13 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
@@ -40,8 +42,12 @@ class FragmentSpeak : Fragment() {
     private lateinit var recorder: MediaRecorder
     private lateinit var communicator: SpeakActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_speak, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_speak, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,7 +65,7 @@ class FragmentSpeak : Fragment() {
         speak = db.speakDao().getSpeakByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
+            @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             stepBackground.backgroundColor = color
             listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
@@ -154,13 +160,17 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun initRecorder(): Boolean =
-            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                setupRecorder()
-                true
-            } else {
-                requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
-                false
-            }
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            setupRecorder()
+            true
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
+            false
+        }
 
     private fun setupRecorder() {
         recorder = MediaRecorder()
@@ -203,7 +213,11 @@ class FragmentSpeak : Fragment() {
         if (file.exists()) file.delete()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_AUDIO) {
             permissions.forEachIndexed { index: Int, s: String ->

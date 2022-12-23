@@ -6,9 +6,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import it.mindtek.ruah.R
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.db
@@ -69,16 +71,15 @@ class ActivityUnit : AppCompatActivity() {
                         )
                     )
                 }
-                supportActionBar?.title = getString(it.name)
-                val color = ContextCompat.getColor(this, it.color)
-                val colorDark = ContextCompat.getColor(this, it.colorDark)
+                supportActionBar?.title = getString(ResourceProvider.getString(this, it.name))
+                @ColorInt val color: Int = ResourceProvider.getColor(this, it.name)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
                 constraint.setBackgroundColor(color)
                 if (Build.VERSION.SDK_INT >= 21) {
                     val window = window
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    window.statusBarColor = colorDark
+                    window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
                 }
             }
         }
@@ -98,9 +99,10 @@ class ActivityUnit : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean = modelUnit.completed.any {
-        it == categoryId
-    }
+    private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean =
+        modelUnit.completed.any {
+            it == categoryId
+        }
 
     companion object {
         const val EXTRA_UNIT_ID = "unit_id_extra"

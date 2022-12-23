@@ -8,12 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelFinalTestQuestion
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
@@ -30,8 +31,12 @@ class FragmentFinalTest : Fragment() {
     private lateinit var player: MediaPlayer
     private lateinit var communicator: FinalTestActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_final_test, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_final_test, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,7 +57,7 @@ class FragmentFinalTest : Fragment() {
         }
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
+            @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             stepLayout.backgroundColor = color
             questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }
@@ -95,7 +100,13 @@ class FragmentFinalTest : Fragment() {
         if (stepImage.visibility == View.GONE) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(root)
-            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
+            constraintSet.connect(
+                R.id.questionAudio,
+                ConstraintSet.END,
+                R.id.stepLayout,
+                ConstraintSet.START,
+                requireActivity().dip(16)
+            )
             constraintSet.applyTo(root)
         }
     }

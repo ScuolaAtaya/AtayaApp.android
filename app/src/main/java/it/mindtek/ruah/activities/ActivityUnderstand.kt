@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import it.mindtek.ruah.R
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo
 import it.mindtek.ruah.kotlin.extensions.compat21
@@ -29,7 +29,11 @@ class ActivityUnderstand : AppCompatActivity() {
             isVideoWatched = it.getBooleanExtra(VIDEO_WATCHED, false)
         }
         setup()
-        replaceFragment(FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched), R.id.placeholder, false)
+        replaceFragment(
+            FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched),
+            R.id.placeholder,
+            false
+        )
     }
 
     private fun setup() {
@@ -38,14 +42,14 @@ class ActivityUnderstand : AppCompatActivity() {
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this) {
             it?.let {
-                val color = ContextCompat.getColor(this, it.color)
-                val colorDark = ContextCompat.getColor(this, it.colorDark)
-                supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
+                supportActionBar?.setBackgroundDrawable(
+                    ColorDrawable(ResourceProvider.getColor(this, it.name))
+                )
                 compat21(@TargetApi(21) {
                     val window = window
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    window.statusBarColor = colorDark
+                    window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
                 }, {})
             }
         }

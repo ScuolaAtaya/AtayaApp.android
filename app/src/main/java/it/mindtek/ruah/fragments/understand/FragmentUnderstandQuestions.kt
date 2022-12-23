@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
@@ -54,7 +54,7 @@ class FragmentUnderstandQuestions : Fragment() {
         communicator = requireActivity() as UnderstandActivityInterface
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
+            val color = ResourceProvider.getColor(requireActivity(), it.name)
             stepLayout.backgroundColor = color
             questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
         }

@@ -1,17 +1,19 @@
 package it.mindtek.ruah.adapters
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.setGone
@@ -22,7 +24,8 @@ import kotlinx.android.synthetic.main.recycler_item_unit.view.*
  * Created by alessandrogaboardi on 29/11/2017.
  */
 @SuppressLint("NotifyDataSetChanged")
-class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit) -> Unit)?) : RecyclerView.Adapter<UnitHolder>() {
+class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit) -> Unit)?) :
+    RecyclerView.Adapter<UnitHolder>() {
     private var units: MutableList<ModelUnit> = mutableListOf()
 
     init {
@@ -40,7 +43,7 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitHolder = UnitHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_unit, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_unit, parent, false)
     )
 
     override fun getItemCount(): Int = units.size
@@ -48,10 +51,14 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
     override fun onBindViewHolder(holder: UnitHolder, position: Int) {
         val unit = units[position]
         holder.number.text = unit.position.toString()
-        holder.background.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, unit.color))
+        holder.background.setBackgroundColor(
+            ResourceProvider.getColor(holder.itemView.context, unit.name)
+        )
         if (unit.completed.size >= 5) holder.check.setVisible() else holder.check.setGone()
-        GlideApp.with(holder.itemView.context).load(unit.icon).into(holder.icon)
-        holder.text.text = holder.itemView.context.getString(unit.name)
+        @DrawableRes val icon: Int = ResourceProvider.getIcon(holder.itemView.context, unit.name)
+        GlideApp.with(holder.itemView.context).load(icon).into(holder.icon)
+        @StringRes val name: Int = ResourceProvider.getString(holder.itemView.context, unit.name)
+        holder.text.text = holder.itemView.context.getString(name)
         holder.itemView.setOnClickListener {
             onClick?.invoke(unit)
         }

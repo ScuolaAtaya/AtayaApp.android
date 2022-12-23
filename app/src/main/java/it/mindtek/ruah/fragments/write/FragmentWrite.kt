@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +20,7 @@ import it.mindtek.ruah.adapters.SelectableLettersAdapter
 import it.mindtek.ruah.adapters.SelectedLettersAdapter
 import it.mindtek.ruah.adapters.dividers.GridSpaceItemDecoration
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
@@ -60,7 +62,7 @@ class FragmentWrite : Fragment() {
         write = db.writeDao().getWriteByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
+            @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             stepLayout.backgroundColor = color
             editText.supportBackgroundTintList = ColorStateList.valueOf(color)
             audioButton.supportBackgroundTintList = ColorStateList.valueOf(color)

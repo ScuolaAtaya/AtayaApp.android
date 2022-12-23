@@ -5,11 +5,13 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.*
@@ -65,17 +67,16 @@ class ActivityIntro : AppCompatActivity() {
         unitObservable.observe(this) {
             it?.let {
                 unitObject = it
-                val color = ContextCompat.getColor(this, it.color)
-                val colorDark = ContextCompat.getColor(this, it.colorDark)
+                @ColorInt val color: Int = ResourceProvider.getColor(this, it.name)
                 compat21(@TargetApi(21) {
                     val window = window
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    window.statusBarColor = colorDark
+                    window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
                 }, {})
                 coordinator.setBackgroundColor(color)
                 fabBack.setTintPreLollipop(color, R.drawable.home)
-                unitIcon.setImageResource(it.icon)
+                unitIcon.setImageResource(ResourceProvider.getIcon(this, it.name))
                 val play = ContextCompat.getDrawable(this, R.drawable.play)
                 buttonNext.setCompoundDrawables(null, null, play, null)
                 buttonNext.setColor(color)
@@ -150,7 +151,7 @@ class ActivityIntro : AppCompatActivity() {
     private fun check(count: Int): Boolean {
         if (count == 0) {
             Snackbar.make(coordinator, R.string.category_empty_error, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(ContextCompat.getColor(this, R.color.red)).show()
+                .setBackgroundTint(ContextCompat.getColor(this, R.color.red)).show()
             return false
         }
         player.release()

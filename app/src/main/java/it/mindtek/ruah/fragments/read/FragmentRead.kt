@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.OptionRenderViewModel
 import it.mindtek.ruah.adapters.OptionsAdapter
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoRead
@@ -32,8 +34,12 @@ class FragmentRead : Fragment() {
     private var optionsPlayers: MediaPlayer? = null
     private lateinit var communicator: ReadActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_read, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_read, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,8 +56,7 @@ class FragmentRead : Fragment() {
         val read = db.readDao().getReadByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            val color = ContextCompat.getColor(requireActivity(), it.color)
-            stepBackground.backgroundColor = color
+            stepBackground.backgroundColor = ResourceProvider.getColor(requireActivity(), it.name)
         }
         setupPicture(read[stepIndex])
         setupOptions(read[stepIndex])
@@ -61,7 +66,8 @@ class FragmentRead : Fragment() {
     private fun setupPicture(read: PojoRead) {
         read.read?.let {
             val pictureFile = File(fileFolder.absolutePath, it.picture.value)
-            val bitmap: Bitmap? = ImageWithMarkersGenerator.createImageWithMarkers(it.markers, pictureFile)
+            val bitmap: Bitmap? =
+                ImageWithMarkersGenerator.createImageWithMarkers(it.markers, pictureFile)
             stepImage.setImageBitmap(bitmap)
             if (!it.picture.credits.isNullOrBlank()) {
                 stepImageCredits.setVisible()

@@ -3,12 +3,12 @@ package it.mindtek.ruah.activities
 import android.annotation.TargetApi
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import it.mindtek.ruah.R
+import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.final_test.FragmentFinalTest
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
@@ -26,7 +26,7 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        replaceFragment(FragmentFinalTest.newInstance(unitId,0), R.id.placeholder, false)
+        replaceFragment(FragmentFinalTest.newInstance(unitId, 0), R.id.placeholder, false)
     }
 
     override fun goToNext(index: Int) {
@@ -47,14 +47,14 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this) {
             it?.let {
-                val color = ContextCompat.getColor(this, it.color)
-                val colorDark = ContextCompat.getColor(this, it.colorDark)
-                supportActionBar?.setBackgroundDrawable(ColorDrawable(color))
+                supportActionBar?.setBackgroundDrawable(
+                    ColorDrawable(ResourceProvider.getColor(this, it.name))
+                )
                 compat21(@TargetApi(21) {
                     val window = window
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    window.statusBarColor = colorDark
+                    window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
                 }, {})
             }
         }
