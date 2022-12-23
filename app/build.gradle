@@ -14,7 +14,7 @@ android {
         applicationId "it.mindtek.ruah"
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 17
+        versionCode 18
         versionName "1.3.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
