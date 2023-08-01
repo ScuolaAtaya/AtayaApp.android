@@ -82,7 +82,7 @@ class FragmentUnderstandVideo : Fragment() {
         step.text = "${stepIndex + 1}/${understand.size}"
         next.isEnabled = isVideoWatched
         next.setOnClickListener {
-            destroyPlayers()
+            audioPlayer?.release()
             val intent = Intent(requireActivity(), ActivityUnderstandQuestion::class.java)
             intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
             intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
@@ -95,6 +95,23 @@ class FragmentUnderstandVideo : Fragment() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 videoPlayer = youTubePlayer
                 videoPlayer!!.loadVideo(video.value, 0f)
+            }
+
+            override fun onStateChange(
+                youTubePlayer: YouTubePlayer,
+                state: PlayerConstants.PlayerState
+            ) {
+                when (state) {
+                    PlayerConstants.PlayerState.PLAYING -> audioPlayer?.pause()
+                    PlayerConstants.PlayerState.ENDED -> {
+                        if (canAccessActivity) {
+                            isVideoWatched = true
+                            next.enable()
+                        }
+                    }
+
+                    else -> {}
+                }
             }
 
             override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
@@ -134,13 +151,9 @@ class FragmentUnderstandVideo : Fragment() {
         }
     }
 
-    private fun destroyPlayers() {
-        audioPlayer?.release()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        destroyPlayers()
+        audioPlayer?.release()
     }
 
     companion object {
