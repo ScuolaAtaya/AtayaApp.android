@@ -5,13 +5,15 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnderstand
 import it.mindtek.ruah.activities.ActivityUnderstandQuestion
@@ -24,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_understand_video.*
 import org.jetbrains.anko.backgroundColor
 import java.io.File
 
+
 class FragmentUnderstandVideo : Fragment() {
     private var unitId: Int = -1
     private var stepIndex: Int = -1
@@ -31,6 +34,7 @@ class FragmentUnderstandVideo : Fragment() {
     private var understand: MutableList<PojoUnderstand> = mutableListOf()
     private var audioPlayer: MediaPlayer? = null
     private var videoPlayer: YouTubePlayer? = null
+    private var videoPlayerView: YouTubePlayerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +52,10 @@ class FragmentUnderstandVideo : Fragment() {
                 stepIndex = it.getInt(ActivityUnderstand.STEP_INDEX)
             if (it.containsKey(ActivityUnderstand.VIDEO_WATCHED))
                 isVideoWatched = it.getBoolean(ActivityUnderstand.VIDEO_WATCHED)
+        }
+        videoPlayerView = view.findViewById(R.id.videoPlayerView)
+        videoPlayerView?.let {
+            lifecycle.addObserver(it)
         }
         setup()
     }
@@ -82,52 +90,17 @@ class FragmentUnderstandVideo : Fragment() {
         }
     }
 
-    // CAST_NEVER_SUCCEEDS can be ignored - happens because Youtube SDK's fragment is not androidx.Fragment, but Jetifier will take care of that and cast will succeed
-    @Suppress("CAST_NEVER_SUCCEEDS")
     private fun setupVideo(video: ModelMedia) {
-        val playerFragment =
-            childFragmentManager.findFragmentById(R.id.videoPlayer) as YouTubePlayerSupportFragment
-        playerFragment.initialize(
-            getString(R.string.youtube_api_key),
-            object : YouTubePlayer.OnInitializedListener {
-                override fun onInitializationSuccess(
-                    p0: YouTubePlayer.Provider?,
-                    p1: YouTubePlayer,
-                    p2: Boolean
-                ) {
-                    videoPlayer = p1
-                    p1.setPlayerStateChangeListener(object :
-                        YouTubePlayer.PlayerStateChangeListener {
-                        override fun onAdStarted() {}
-                        override fun onLoading() {}
-                        override fun onVideoStarted() {}
-                        override fun onLoaded(p0: String?) {}
-                        override fun onVideoEnded() {
-                            if (canAccessActivity) next.enable()
-                        }
+        videoPlayerView?.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                videoPlayer = youTubePlayer
+                videoPlayer!!.loadVideo(video.value, 0f)
+            }
 
-                        override fun onError(p0: YouTubePlayer.ErrorReason?) {}
-                    })
-                    p1.setPlaybackEventListener(object : YouTubePlayer.PlaybackEventListener {
-                        override fun onSeekTo(p0: Int) {}
-                        override fun onBuffering(p0: Boolean) {}
-                        override fun onPlaying() {
-                            audioPlayer?.pause()
-                        }
-
-                        override fun onStopped() {}
-                        override fun onPaused() {}
-                    })
-                    p1.fullscreenControlFlags = YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI
-                    p1.loadVideo(video.value)
-                }
-
-                override fun onInitializationFailure(
-                    p0: YouTubePlayer.Provider?,
-                    p1: YouTubeInitializationResult?
-                ) {
-                }
-            })
+            override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
+                Log.e("YouTubePlayerView", "Error: $error")
+            }
+        })
         if (!video.credits.isNullOrBlank()) {
             videoCredits.setVisible()
             videoCredits.text = video.credits
@@ -155,6 +128,7 @@ class FragmentUnderstandVideo : Fragment() {
                 }
                 audioPlayer?.start()
             }
+
             audioPlayer?.isPlaying == true -> audioPlayer?.pause()
             else -> audioPlayer?.start()
         }
@@ -162,7 +136,6 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun destroyPlayers() {
         audioPlayer?.release()
-        videoPlayer?.release()
     }
 
     override fun onDestroy() {
@@ -172,13 +145,13 @@ class FragmentUnderstandVideo : Fragment() {
 
     companion object {
         fun newInstance(
-            unit_id: Int,
+            unitId: Int,
             stepIndex: Int,
             isVideoWatched: Boolean
         ): FragmentUnderstandVideo {
             val fragment = FragmentUnderstandVideo()
             val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unit_id)
+            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
             bundle.putInt(ActivityUnderstand.STEP_INDEX, stepIndex)
             bundle.putBoolean(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
             fragment.arguments = bundle
