@@ -15,6 +15,12 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/app_logo</item>
+        <item name="postSplashScreenTheme">@style/AppThemeNoToolbar</item>
+    </style>
+
     <style name="ButtonNext" parent="Widget.AppCompat.Button.Colored">
         <item name="colorAccent">@color/lightGreen</item>
         <item name="colorControlNormal">@color/lightGreen</item>

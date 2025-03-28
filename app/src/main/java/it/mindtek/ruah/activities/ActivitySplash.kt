@@ -4,8 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import it.mindtek.ruah.App.Companion.APP_SP
-import it.mindtek.ruah.R
 import it.mindtek.ruah.ws.interfaces.ApiClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -17,8 +18,10 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-        Handler().postDelayed({
+        installSplashScreen().apply {
+            setKeepOnScreenCondition { true }
+        }
+        Handler(Looper.getMainLooper()).postDelayed({
             checkUpdates()
         }, 1000)
     }
