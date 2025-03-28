@@ -20,7 +20,6 @@ import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoRead
 import kotlinx.android.synthetic.main.fragment_read.*
-import org.jetbrains.anko.backgroundColor
 import java.io.File
 
 

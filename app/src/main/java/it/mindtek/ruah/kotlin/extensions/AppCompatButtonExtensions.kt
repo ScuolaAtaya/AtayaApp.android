@@ -7,7 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.appcompat.widget.AppCompatButton
-import org.jetbrains.anko.dip
+import it.mindtek.ruah.config.LayoutUtils
 
 
 /**
@@ -36,7 +36,7 @@ fun AppCompatButton.setDrawableColor(color: Int) {
 fun tint(drawable: Drawable?, color: Int, context: Context): Drawable? {
     drawable?.let {
         val copy = drawable.constantState!!.newDrawable()
-        copy.setBounds(0, 0, context.dip(24), context.dip(24))
+        copy.setBounds(0, 0, LayoutUtils.dpToPx(context, 24), LayoutUtils.dpToPx(context, 24))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             copy.mutate().colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
         else copy.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP)

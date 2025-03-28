@@ -16,16 +16,15 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_speak.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
 import java.io.File
 
 /**
@@ -77,7 +76,7 @@ class FragmentSpeak : Fragment() {
     private fun setupPicture() {
         val picture = speak[stepIndex].picture
         val pictureImage = File(fileFolder.absolutePath, picture.value)
-        GlideApp.with(this).load(pictureImage).placeholder(R.color.grey).into(stepImage)
+        Glide.with(this).load(pictureImage).placeholder(R.color.grey).into(stepImage)
         if (!picture.credits.isNullOrBlank()) {
             stepImageCredits.setVisible()
             stepImageCredits.text = picture.credits
@@ -138,7 +137,7 @@ class FragmentSpeak : Fragment() {
             recording = true
             record.setImageResource(R.drawable.stop)
             pulsator.start()
-            record.compatElevation = requireActivity().dip(16f).toFloat()
+            record.compatElevation =  LayoutUtils.dpToPx(requireActivity(), 16).toFloat()
             recorder.start()
         }
     }
@@ -147,7 +146,7 @@ class FragmentSpeak : Fragment() {
         isLocked = true
         loading.setVisible()
         pulsator.stop()
-        record.compatElevation = requireActivity().dip(8f).toFloat()
+        record.compatElevation =  LayoutUtils.dpToPx(requireActivity(), 8).toFloat()
         record.setImageResource(R.drawable.mic)
         Handler(Looper.getMainLooper()).postDelayed({
             recording = false

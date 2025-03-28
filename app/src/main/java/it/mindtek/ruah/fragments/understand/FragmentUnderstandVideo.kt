@@ -23,7 +23,6 @@ import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoUnderstand
 import kotlinx.android.synthetic.main.fragment_understand_video.*
-import org.jetbrains.anko.backgroundColor
 import java.io.File
 
 

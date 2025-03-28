@@ -21,12 +21,13 @@ import it.mindtek.ruah.kotlin.extensions.fromJson
 import it.mindtek.ruah.pojos.Download
 import it.mindtek.ruah.ws.interfaces.ApiClient
 import okhttp3.ResponseBody
-import org.jetbrains.anko.defaultSharedPreferences
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
 import kotlin.math.pow
 import kotlin.math.roundToInt
+import androidx.core.content.edit
+import it.mindtek.ruah.App.Companion.APP_SP
 
 /**
  * Created by alessandro on 09/01/2018.
@@ -40,8 +41,10 @@ class DownloadService : IntentService("Download service") {
 
     override fun onHandleIntent(intent: Intent?) {
         createNotificationChannel()
-        notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationBuilder = NotificationCompat.Builder(this, getString(R.string.notification_channel))
+        notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationBuilder =
+            NotificationCompat.Builder(this, getString(R.string.notification_channel))
                 .setSmallIcon(R.drawable.download)
                 .setContentTitle("Download")
                 .setContentText("Downloading File")
@@ -90,7 +93,6 @@ class DownloadService : IntentService("Download service") {
             output.write(data, 0, count)
         })
         onDownloadComplete()
-        getSharedPreferences("Application", Context.MODE_PRIVATE).edit().putBoolean("Updated", true).apply()
         output.flush()
         output.close()
         bis.close()
@@ -145,7 +147,9 @@ class DownloadService : IntentService("Download service") {
     }
 
     private fun saveTimestamp(timestamp: Long) {
-        defaultSharedPreferences.edit().putLong(TIMESTAMP, timestamp).apply()
+        getSharedPreferences(APP_SP, Context.MODE_PRIVATE).edit {
+            putLong(TIMESTAMP, timestamp)
+        }
     }
 
     private fun saveWrite(writeJson: JSONArray) {
@@ -203,7 +207,8 @@ class DownloadService : IntentService("Download service") {
             val currentFinalTestJson = finalTestJson.getJSONObject(i)
             val currentQuestionsJson = currentFinalTestJson.getJSONArray(QUESTIONS)
             val finalTest = Gson().fromJson<ModelFinalTest>(currentFinalTestJson)
-            val currentQuestions = Gson().fromJson<MutableList<ModelFinalTestQuestion>>(currentQuestionsJson)
+            val currentQuestions =
+                Gson().fromJson<MutableList<ModelFinalTestQuestion>>(currentQuestionsJson)
             finalTests.add(finalTest)
             questions.addAll(currentQuestions)
         }

@@ -14,19 +14,18 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.adapters.SelectableLettersAdapter
 import it.mindtek.ruah.adapters.SelectedLettersAdapter
 import it.mindtek.ruah.adapters.dividers.GridSpaceItemDecoration
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_write.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
 import java.io.File
 import java.util.*
 
@@ -95,7 +94,7 @@ class FragmentWrite : Fragment() {
     private fun setupPicture() {
         val picture = write[stepIndex].picture
         val pictureFile = File(fileFolder.absolutePath, picture.value)
-        GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+        Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
         if (!picture.credits.isNullOrBlank()) {
             stepImageCredits.setVisible()
             stepImageCredits.text = picture.credits
@@ -187,14 +186,14 @@ class FragmentWrite : Fragment() {
         available.adapter = selectableAdapter
         compile.addItemDecoration(
             GridSpaceItemDecoration(
-                requireActivity().dip(4),
-                requireActivity().dip(4)
+                LayoutUtils.dpToPx(requireActivity(), 4),
+                LayoutUtils.dpToPx(requireActivity(), 4)
             )
         )
         available.addItemDecoration(
             GridSpaceItemDecoration(
-                requireActivity().dip(8),
-                requireActivity().dip(8)
+                LayoutUtils.dpToPx(requireActivity(), 8),
+                LayoutUtils.dpToPx(requireActivity(), 8)
             )
         )
     }

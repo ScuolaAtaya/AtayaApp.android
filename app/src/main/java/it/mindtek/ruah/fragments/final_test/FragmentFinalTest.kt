@@ -11,17 +11,16 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelFinalTestQuestion
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.fragment_final_test.*
 import kotlinx.android.synthetic.main.item_final_test.view.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
 import java.io.File
 
 class FragmentFinalTest : Fragment() {
@@ -90,7 +89,7 @@ class FragmentFinalTest : Fragment() {
             if (it.value.isNotBlank()) {
                 stepImage.setVisible()
                 val pictureFile = File(fileFolder.absolutePath, it.value)
-                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+                Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
             }
             if (!picture.credits.isNullOrBlank()) {
                 stepImageCredits.setVisible()
@@ -105,7 +104,7 @@ class FragmentFinalTest : Fragment() {
                 ConstraintSet.END,
                 R.id.stepLayout,
                 ConstraintSet.START,
-                requireActivity().dip(16)
+                LayoutUtils.dpToPx(requireActivity(), 16)
             )
             constraintSet.applyTo(root)
         }

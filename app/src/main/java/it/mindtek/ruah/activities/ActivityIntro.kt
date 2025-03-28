@@ -9,15 +9,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import it.mindtek.ruah.R
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.*
 import kotlinx.android.synthetic.main.activity_intro.*
-import org.jetbrains.anko.dip
 
 class ActivityIntro : AppCompatActivity() {
     private var unitId: Int = -1
@@ -67,7 +67,8 @@ class ActivityIntro : AppCompatActivity() {
             sectionDescription.text = getString(category.description)
             player.start()
         }
-        GlideApp.with(this).load(category.icon).override(dip(24), dip(24)).into(sectionIcon)
+        Glide.with(this).load(category.icon)
+            .override(LayoutUtils.dpToPx(this, 24), LayoutUtils.dpToPx(this, 24)).into(sectionIcon)
         sectionName.text = getString(category.title)
         val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
         unitObservable.observe(this) {

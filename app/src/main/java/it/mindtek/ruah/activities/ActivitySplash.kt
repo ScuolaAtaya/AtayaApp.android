@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import it.mindtek.ruah.App.Companion.APP_SP
 import it.mindtek.ruah.R
 import it.mindtek.ruah.ws.interfaces.ApiClient
 import okhttp3.ResponseBody
-import org.jetbrains.anko.defaultSharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,15 +36,16 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     private fun checkUpdates() {
-        val timestamp = defaultSharedPreferences.getLong(ActivityUnits.TIMESTAMP, 0)
-        val request = apiClient.needsUpdate(timestamp)
+        val timestamp: Long =
+            getSharedPreferences(APP_SP, MODE_PRIVATE).getLong(ActivityUnits.TIMESTAMP, 0)
+        val request: Call<ResponseBody> = apiClient.needsUpdate(timestamp)
         request.enqueue(this)
     }
 
     private fun download() {
-        val intent = Intent(this, ActivityDownload::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        startActivity(intent)
+        startActivity(
+            Intent(this, ActivityDownload::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        )
     }
 
     private fun goToUnits() {

@@ -11,8 +11,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import it.mindtek.ruah.R
-import it.mindtek.ruah.config.GlideApp
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.kotlin.extensions.db
@@ -56,7 +56,7 @@ class UnitsAdapter(owner: LifecycleOwner, private val onClick: ((unit: ModelUnit
         )
         if (unit.completed.size >= 5) holder.check.setVisible() else holder.check.setGone()
         @DrawableRes val icon: Int = ResourceProvider.getIcon(holder.itemView.context, unit.name)
-        GlideApp.with(holder.itemView.context).load(icon).into(holder.icon)
+        Glide.with(holder.itemView.context).load(icon).into(holder.icon)
         @StringRes val name: Int = ResourceProvider.getString(holder.itemView.context, unit.name)
         holder.text.text = holder.itemView.context.getString(name)
         holder.itemView.setOnClickListener {

@@ -10,7 +10,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import it.mindtek.ruah.R
 import it.mindtek.ruah.pojos.Download
 import it.mindtek.ruah.services.DownloadService
-import kotlinx.android.synthetic.main.activity_download.*
 
 class ActivityDownload : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

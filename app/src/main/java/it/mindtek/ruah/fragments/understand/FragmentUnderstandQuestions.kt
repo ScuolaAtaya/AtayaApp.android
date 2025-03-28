@@ -11,17 +11,16 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoQuestion
 import kotlinx.android.synthetic.main.fragment_understand_questions.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
 import java.io.File
 
 
@@ -116,7 +115,7 @@ class FragmentUnderstandQuestions : Fragment() {
             if (picture.value.isNotBlank()) {
                 stepImage.setVisible()
                 val pictureFile = File(fileFolder.absolutePath, picture.value)
-                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+                Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
             }
             if (!picture.credits.isNullOrBlank()) {
                 stepImageCredits.setVisible()
@@ -126,7 +125,7 @@ class FragmentUnderstandQuestions : Fragment() {
         if (stepImage.visibility == View.GONE) {
             val constraintSet = ConstraintSet()
             constraintSet.clone(root)
-            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
+            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START,  LayoutUtils.dpToPx(requireActivity(), 16))
             constraintSet.applyTo(root)
         }
     }
