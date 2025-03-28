@@ -59,7 +59,7 @@
 -dontwarn javax.annotation.**
 
 # CUSTOM CLASSES
--keep class it.mindtek.ruah.services.DownloadService { *;}
--keepclassmembers class it.mindtek.ruah.services.DownloadService { *; }
+-keep class it.mindtek.ruah.services.** { *;}
+-keepclassmembers class it.mindtek.ruah.services.** { *; }
 -keep class it.mindtek.ruah.ws.interfaces.** { *;}
 -keepclassmembers class it.mindtek.ruah.ws.interfaces.** { *;}

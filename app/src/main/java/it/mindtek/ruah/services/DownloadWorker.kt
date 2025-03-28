@@ -1,77 +1,77 @@
 package it.mindtek.ruah.services
 
-import android.app.IntentService
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.core.app.NotificationCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.core.content.edit
+import androidx.work.ForegroundInfo
+import androidx.work.ListenableWorker
+import androidx.work.WorkerParameters
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.Gson
 import ir.mahdi.mzip.zip.ZipArchive
+import it.mindtek.ruah.App.Companion.APP_SP
 import it.mindtek.ruah.R
-import it.mindtek.ruah.activities.ActivityDownload
 import it.mindtek.ruah.db.models.*
-import it.mindtek.ruah.kotlin.extensions.`while`
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fromJson
+import it.mindtek.ruah.kotlin.extensions.`while`
 import it.mindtek.ruah.pojos.Download
 import it.mindtek.ruah.ws.interfaces.ApiClient
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
+import java.util.concurrent.Executors
 import kotlin.math.pow
 import kotlin.math.roundToInt
-import androidx.core.content.edit
-import it.mindtek.ruah.App.Companion.APP_SP
 
-/**
- * Created by alessandro on 09/01/2018.
- */
-class DownloadService : IntentService("Download service") {
-    private var notificationBuilder: NotificationCompat.Builder? = null
-    private var notificationManager: NotificationManager? = null
+class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
+    ListenableWorker(context, workerParameters) {
     private var totalFileSize: Int = 0
-    private val apiClient: ApiClient = ApiClient
-    private val tag = javaClass.simpleName
 
-    override fun onHandleIntent(intent: Intent?) {
-        createNotificationChannel()
-        notificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationBuilder =
-            NotificationCompat.Builder(this, getString(R.string.notification_channel))
-                .setSmallIcon(R.drawable.download)
-                .setContentTitle("Download")
-                .setContentText("Downloading File")
-                .setAutoCancel(true)
-        notificationManager?.notify(0, notificationBuilder?.build())
-        initDownload()
-    }
-
-    private fun initDownload() {
-        val request = apiClient.downloadFile()
-        try {
-            val body = request.execute().body()
-            body?.let {
-                downloadFile(it)
+    override fun startWork(): ListenableFuture<Result> = CallbackToFutureAdapter.getFuture {
+        Executors.newSingleThreadExecutor().apply {
+            execute {
+                try {
+                    ApiClient.downloadFile().execute().body()?.let {
+                        downloadFile(it)
+                    }
+                } catch (e: IOException) {
+                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
+                }
+                it.set(Result.success())
+                shutdown()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun getForegroundInfoAsync(): ListenableFuture<ForegroundInfo> =
+        CallbackToFutureAdapter.getFuture {
+            it.set(
+                ForegroundInfo(
+                    101,
+                    NotificationCompat.Builder(
+                        applicationContext,
+                        applicationContext.getString(R.string.notification_channel)
+                    ).run {
+                        setSmallIcon(R.drawable.download)
+                        setContentText("Downloading File")
+                        setOngoing(true)
+                        build()
+                    }
+                )
+            )
+        }
 
     @Throws(IOException::class)
     private fun downloadFile(body: ResponseBody) {
         val data = ByteArray(1024 * 4)
         val fileSize = body.contentLength()
         val bis = BufferedInputStream(body.byteStream(), 1024 * 8)
-        val outputFile = File(filesDir, "file.zip")
+        val outputFile = File(applicationContext.filesDir, FILE_ZIP)
         val output = FileOutputStream(outputFile)
         var total: Long = 0
         val startTime = System.currentTimeMillis()
@@ -87,7 +87,7 @@ class DownloadService : IntentService("Download service") {
             if (currentTime > 1000 * timeCount) {
                 download.currentFileSize = current.toInt()
                 download.progress = progress
-                sendNotification(download)
+                updateNotification(download)
                 timeCount++
             }
             output.write(data, 0, count)
@@ -99,40 +99,45 @@ class DownloadService : IntentService("Download service") {
 
     }
 
-    private fun sendNotification(download: Download) {
-        sendIntent(download)
-        notificationBuilder?.setProgress(100, download.progress, false)
-        notificationBuilder?.setContentText("Downloading file " + download.currentFileSize + "/" + totalFileSize + " MB")
-        notificationManager?.notify(0, notificationBuilder?.build())
-    }
-
-    private fun sendIntent(download: Download) {
-        val intent = Intent(ActivityDownload.MESSAGE_PROGRESS)
-        intent.putExtra("download", download)
-        LocalBroadcastManager.getInstance(this@DownloadService).sendBroadcast(intent)
-    }
-
-    private fun sendParseCompletionIntent() {
-        val intent = Intent(ActivityDownload.PARSE_COMPLETED)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    private fun updateNotification(download: Download) {
+        setForegroundAsync(
+            ForegroundInfo(
+                101,
+                NotificationCompat.Builder(
+                    applicationContext,
+                    applicationContext.getString(R.string.notification_channel)
+                ).run {
+                    setSmallIcon(R.drawable.download)
+                    setContentText("Downloading file " + download.currentFileSize + "/" + totalFileSize + " MB")
+                    setProgress(100, download.progress, false)
+                    setOngoing(true)
+                    build()
+                }
+            ))
     }
 
     private fun onDownloadComplete() {
-        val download = Download()
-        download.progress = 100
-        sendIntent(download)
-        notificationManager?.cancel(0)
-        notificationBuilder?.setProgress(0, 0, false)
-        notificationBuilder?.setContentText("File Downloaded")
-        notificationManager?.notify(0, notificationBuilder?.build())
+        setForegroundAsync(
+            ForegroundInfo(
+                101,
+                NotificationCompat.Builder(
+                    applicationContext,
+                    applicationContext.getString(R.string.notification_channel)
+                ).run {
+                    setSmallIcon(R.drawable.download)
+                    setContentText("File Downloaded")
+                    setProgress(100, 100, false)
+                    setAutoCancel(true)
+                    build()
+                }
+            ))
         unzipFile()
         parseJSON()
-        sendParseCompletionIntent()
     }
 
     private fun unzipFile() {
-        val inputFile = File(filesDir, "file.zip")
-        val outputFolder = File(filesDir, "data")
+        val inputFile = File(applicationContext.filesDir, FILE_ZIP)
+        val outputFolder = File(applicationContext.filesDir, DATA_DIR)
         ZipArchive.unzip(inputFile.absolutePath, outputFolder.absolutePath, "")
     }
 
@@ -147,7 +152,7 @@ class DownloadService : IntentService("Download service") {
     }
 
     private fun saveTimestamp(timestamp: Long) {
-        getSharedPreferences(APP_SP, Context.MODE_PRIVATE).edit {
+        applicationContext.getSharedPreferences(APP_SP, Context.MODE_PRIVATE).edit {
             putLong(TIMESTAMP, timestamp)
         }
     }
@@ -163,8 +168,8 @@ class DownloadService : IntentService("Download service") {
     private fun saveRead(readJson: JSONArray) {
         val reads = mutableListOf<ModelRead>()
         val options = mutableListOf<ModelReadOption>()
-        for (i in 0 until readJson.length()) {
-            val currentReadJson = readJson.getJSONObject(i)
+        (0 until readJson.length()).forEach {
+            val currentReadJson = readJson.getJSONObject(it)
             val currentOptionsJson = currentReadJson.getJSONArray(OPTIONS)
             val read = Gson().fromJson<ModelRead>(currentReadJson)
             val currentOptions = Gson().fromJson<MutableList<ModelReadOption>>(currentOptionsJson)
@@ -184,8 +189,8 @@ class DownloadService : IntentService("Download service") {
         val understands = mutableListOf<ModelUnderstand>()
         val questions = mutableListOf<ModelQuestion>()
         val answers = mutableListOf<ModelAnswer>()
-        for (i in 0 until understandsJson.length()) {
-            val understandJson = understandsJson.getJSONObject(i)
+        (0 until understandsJson.length()).forEach {
+            val understandJson = understandsJson.getJSONObject(it)
             val currentQuestionsJson = understandJson.getJSONArray(QUESTIONS)
             val currentAnswersJson = understandJson.getJSONArray(ANSWERS)
             val understand = Gson().fromJson<ModelUnderstand>(understandJson)
@@ -203,8 +208,8 @@ class DownloadService : IntentService("Download service") {
     private fun saveFinalTest(finalTestJson: JSONArray) {
         val finalTests = mutableListOf<ModelFinalTest>()
         val questions = mutableListOf<ModelFinalTestQuestion>()
-        for (i in 0 until finalTestJson.length()) {
-            val currentFinalTestJson = finalTestJson.getJSONObject(i)
+        (0 until finalTestJson.length()).forEach {
+            val currentFinalTestJson = finalTestJson.getJSONObject(it)
             val currentQuestionsJson = currentFinalTestJson.getJSONArray(QUESTIONS)
             val finalTest = Gson().fromJson<ModelFinalTest>(currentFinalTestJson)
             val currentQuestions =
@@ -217,57 +222,43 @@ class DownloadService : IntentService("Download service") {
     }
 
     private fun getJSON(): String {
-        val dir = File(filesDir, "data")
+        val dir = File(applicationContext.filesDir, DATA_DIR)
         val file = File(dir.absolutePath, "book.json")
         var result: String
         val length = file.length()
         if (length < 1 || length > Integer.MAX_VALUE) {
             result = ""
-            Log.w(tag, "File is empty or huge: $file")
+            Log.w(TAG, "File is empty or huge: $file")
         } else {
             try {
                 FileReader(file).use {
                     val content = CharArray(length.toInt())
                     val numRead = it.read(content)
                     if (numRead.toLong() != length)
-                        Log.e(tag, "Incomplete read of $file. Read chars $numRead of $length")
+                        Log.e(TAG, "Incomplete read of $file. Read chars $numRead of $length")
                     result = String(content, 0, numRead)
                 }
             } catch (ex: Exception) {
-                Log.e(tag, "Failure reading $file", ex)
+                Log.e(TAG, "Failure reading $file", ex)
                 result = ""
             }
         }
         return result
     }
 
-    private fun createNotificationChannel() {
-        // Create NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                getString(R.string.notification_channel),
-                getString(R.string.notification_channel),
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            // Register the channel with the system; you can't change the importance or other notification behaviors after this
-            getSystemService(NotificationManager::class.java)?.createNotificationChannel(channel)
-        }
-    }
-
-    override fun onTaskRemoved(rootIntent: Intent) {
-        notificationManager?.cancel(0)
-    }
-
     companion object {
-        const val TIMESTAMP = "timestamp"
-        const val UNDERSTANDS = "understand"
-        const val QUESTIONS = "questions"
-        const val ANSWERS = "answers"
-        const val SPEAK = "speak"
-        const val READ = "read"
-        const val OPTIONS = "options"
-        const val WRITE = "write"
-        const val FINAL_TEST = "final"
-        const val ADVANCED = "advanced"
+        private const val TAG = "DownloadWorker"
+        private const val DATA_DIR = "data"
+        private const val FILE_ZIP = "file.zip"
+        private const val TIMESTAMP = "timestamp"
+        private const val UNDERSTANDS = "understand"
+        private const val QUESTIONS = "questions"
+        private const val ANSWERS = "answers"
+        private const val SPEAK = "speak"
+        private const val READ = "read"
+        private const val OPTIONS = "options"
+        private const val WRITE = "write"
+        private const val FINAL_TEST = "final"
+        private const val ADVANCED = "advanced"
     }
 }
