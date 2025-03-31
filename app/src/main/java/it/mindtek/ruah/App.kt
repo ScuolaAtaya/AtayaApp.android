@@ -1,5 +1,8 @@
 package it.mindtek.ruah
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
@@ -21,11 +24,13 @@ class App : MultiDexApplication() {
             applicationContext.getString(R.string.api_key)
         )
         ImageWithMarkersGenerator.init(applicationContext)
-        initRoom()
-        initUnits()
-    }
-
-    private fun initRoom() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) getSystemService(NotificationManager::class.java).createNotificationChannel(
+            NotificationChannel(
+                getString(R.string.notification_channel),
+                getString(R.string.notification_channel),
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+        )
         AppDatabase.setInstance(
             Room.databaseBuilder(
                 applicationContext,
@@ -35,9 +40,6 @@ class App : MultiDexApplication() {
                 .allowMainThreadQueries()
                 .build()
         )
-    }
-
-    private fun initUnits() {
         if (db.unitDao().count() == 0) {
             val units: MutableList<ModelUnit> = UnitGenerator.getUnits()
             try {

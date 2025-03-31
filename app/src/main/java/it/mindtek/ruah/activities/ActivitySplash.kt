@@ -44,12 +44,12 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     private fun download() {
-        startActivity(
-            Intent(this, ActivityDownload::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        )
+        startActivity(Intent(this, ActivityDownload::class.java))
+        finish()
     }
 
     private fun goToUnits() {
         startActivity(Intent(this, ActivityUnits::class.java))
+        finish()
     }
 }
