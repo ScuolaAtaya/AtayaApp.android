@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.item_answer.view.*
  * Created by alessandrogaboardi on 07/12/2017.
  */
 class AnswersAdapter(
-        val answers: MutableList<ModelAnswer>,
-        private val answerSelectedCallback: ((answer: ModelAnswer) -> Unit)?,
-        private val playAnswerCallback: ((answer: ModelAnswer) -> Unit)?
+    private val answers: MutableList<ModelAnswer>,
+    private val answerSelectedCallback: ((answer: ModelAnswer) -> Unit)?,
+    private val playAnswerCallback: ((answer: ModelAnswer) -> Unit)?
 ) : RecyclerView.Adapter<AnswerHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerHolder = AnswerHolder(

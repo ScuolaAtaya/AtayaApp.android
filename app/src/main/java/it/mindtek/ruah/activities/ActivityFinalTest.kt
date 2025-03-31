@@ -1,27 +1,26 @@
 package it.mindtek.ruah.activities
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.ActivityFinalTestBinding
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.final_test.FragmentFinalTest
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
-import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 
 class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
-    var unitId: Int = -1
+    private var unitId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_final_test)
+        ActivityFinalTestBinding.inflate(layoutInflater)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
@@ -34,13 +33,14 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
     }
 
     override fun goToFinish() {
-        val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.FINAL_TEST.value)
-        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
-        startActivity(intent)
+        startActivity(Intent(this, ActivityIntro::class.java).apply {
+            putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.FINAL_TEST.value)
+            putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
+        })
     }
 
+    @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.FINAL_TEST.title)
@@ -48,22 +48,17 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
         unitObservable.observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(
-                    ColorDrawable(ResourceProvider.getColor(this, it.name))
+                    ResourceProvider.getColor(this, it.name).toDrawable()
                 )
-                compat21(@TargetApi(21) {
-                    val window = window
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM)
                     window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
-                }, {})
             }
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressedDispatcher.onBackPressed()
-        }
-        return false
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

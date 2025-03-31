@@ -2,31 +2,27 @@ package it.mindtek.ruah.activities
 
 import android.content.Intent
 import android.graphics.Paint
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.core.net.toUri
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.UnitsAdapter
-import kotlinx.android.synthetic.main.activity_units.*
+import it.mindtek.ruah.databinding.ActivityUnitsBinding
 
 class ActivityUnits : AppCompatActivity() {
-    private lateinit var adapter: UnitsAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_units)
-        unitsRecycler.layoutManager = GridLayoutManager(this, 2)
-        adapter = UnitsAdapter(this) {
-            val intent = Intent(this@ActivityUnits, ActivityUnit::class.java)
-            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, it.id)
-            startActivity(intent)
+        val binding: ActivityUnitsBinding = ActivityUnitsBinding.inflate(layoutInflater)
+        val adapter = UnitsAdapter(this) {
+            startActivity(Intent(this@ActivityUnits, ActivityUnit::class.java).apply {
+                putExtra(ActivityUnit.EXTRA_UNIT_ID, it.id)
+            })
         }
-        unitsRecycler.adapter = adapter
-        privacyPolicy.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-        privacyPolicy.setOnClickListener {
+        binding.unitsRecycler.adapter = adapter
+        binding.privacyPolicy.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.privacyPolicy.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(getString(R.string.privacy_policy_url))
+                data = getString(R.string.privacy_policy_url).toUri()
             })
         }
     }

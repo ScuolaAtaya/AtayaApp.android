@@ -27,7 +27,7 @@ class ActivityDownload : AppCompatActivity() {
             }
         workManager.enqueueUniqueWork(DOWNLOAD_WORKER, ExistingWorkPolicy.REPLACE, request)
         workManager.getWorkInfoByIdLiveData(request.id).observe(this) {
-
+            //TODO
         }
     }
 
