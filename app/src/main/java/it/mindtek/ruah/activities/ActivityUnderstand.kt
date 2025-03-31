@@ -11,7 +11,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnderstandBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo
+import it.mindtek.ruah.fragments.FragmentUnderstandVideo
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
 

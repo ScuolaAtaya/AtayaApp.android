@@ -10,7 +10,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityReadBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.read.FragmentRead
+import it.mindtek.ruah.fragments.FragmentRead
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment

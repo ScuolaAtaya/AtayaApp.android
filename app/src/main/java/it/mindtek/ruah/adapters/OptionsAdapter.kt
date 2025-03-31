@@ -16,14 +16,14 @@ import it.mindtek.ruah.kotlin.extensions.setVisible
 
 class OptionsAdapter(
     private val context: Context,
-    private val listener: OnClickListener,
     private val answers: MutableList<String>,
-) : ListAdapter<OptionItem, OptionsAdapter.ItemViewHolder>(object :
-    DiffUtil.ItemCallback<OptionItem>() {
-    override fun areItemsTheSame(oldItem: OptionItem, newItem: OptionItem): Boolean =
+    private val listener: OnClickListener
+) : ListAdapter<ModelOptionItem, OptionsAdapter.ItemViewHolder>(object :
+    DiffUtil.ItemCallback<ModelOptionItem>() {
+    override fun areItemsTheSame(oldItem: ModelOptionItem, newItem: ModelOptionItem): Boolean =
         oldItem.option.id == newItem.option.id
 
-    override fun areContentsTheSame(oldItem: OptionItem, newItem: OptionItem): Boolean =
+    override fun areContentsTheSame(oldItem: ModelOptionItem, newItem: ModelOptionItem): Boolean =
         oldItem == newItem
 }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
@@ -46,7 +46,7 @@ class OptionsAdapter(
 
     inner class ItemViewHolder(private val binding: ItemOptionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: OptionItem) {
+        fun bind(item: ModelOptionItem) {
             binding.number.text = item.answer
             binding.optionText.text = item.option.body
             binding.correct.setGone()
@@ -90,4 +90,4 @@ class OptionsAdapter(
     }
 }
 
-data class OptionItem(val option: ModelReadOption, var answer: String?, var correct: Boolean?)
+data class ModelOptionItem(val option: ModelReadOption, var answer: String?, var correct: Boolean?)

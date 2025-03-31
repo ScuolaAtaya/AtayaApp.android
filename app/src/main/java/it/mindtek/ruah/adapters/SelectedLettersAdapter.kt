@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import it.mindtek.ruah.R
 import it.mindtek.ruah.databinding.ItemLetterEmptyBinding
 import it.mindtek.ruah.databinding.ItemLetterSelectableBinding
-import it.mindtek.ruah.db.models.ModelSyllable
 
 @SuppressLint("NotifyDataSetChanged")
 class SelectedLettersAdapter(
-    private val givenLetters: MutableList<ModelSyllable>,
+    private val givenLetters: MutableList<ModelSyllableItem>,
     private val listener: OnClickListener
 ) : RecyclerView.Adapter<ViewHolder>() {
     private var letters: MutableList<String> = mutableListOf()
@@ -32,7 +31,7 @@ class SelectedLettersAdapter(
         if (holder.itemViewType != 0) (holder as ItemViewHolder).bind(letters[position], position)
     }
 
-    fun select(letter: ModelSyllable) {
+    fun select(letter: ModelSyllableItem) {
         val firstEmpty = letters.indexOfFirst {
             it.isEmpty()
         }
@@ -82,6 +81,6 @@ class SelectedLettersAdapter(
     inner class EmptyLetterHolder(binding: ItemLetterEmptyBinding) : ViewHolder(binding.root)
 
     interface OnClickListener {
-        fun onLetterTapped(item: ModelSyllable)
+        fun onLetterTapped(item: ModelSyllableItem)
     }
 }

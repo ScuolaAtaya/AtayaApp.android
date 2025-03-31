@@ -1,4 +1,4 @@
-package it.mindtek.ruah.fragments.final_test
+package it.mindtek.ruah.fragments
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -16,26 +16,29 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.FragmentFinalTestBinding
 import it.mindtek.ruah.db.models.ModelFinalTestQuestion
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
-import kotlinx.android.synthetic.main.fragment_final_test.*
-import kotlinx.android.synthetic.main.item_final_test.view.*
 import java.io.File
+import androidx.core.view.isGone
 
 class FragmentFinalTest : Fragment() {
+    private lateinit var binding: FragmentFinalTestBinding
+    private lateinit var communicator: FinalTestActivityInterface
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var questions: MutableList<ModelFinalTestQuestion> = mutableListOf()
     private var player: MediaPlayer? = null
-    private lateinit var communicator: FinalTestActivityInterface
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_final_test, container, false)
+    ): View {
+        binding = FragmentFinalTestBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +50,6 @@ class FragmentFinalTest : Fragment() {
         setup()
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setup() {
         communicator = requireActivity() as FinalTestActivityInterface
         val finalTest = db.finalTestDao().getFinalTestByUnitId(unitId)
@@ -57,8 +59,8 @@ class FragmentFinalTest : Fragment() {
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
-            stepLayout.backgroundColor = color
-            questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
+            binding.stepLayout.setBackgroundColor(color)
+            binding.questionAudio.backgroundTintList = ColorStateList.valueOf(color)
         }
         setupAudio()
         setupPicture()
@@ -73,12 +75,12 @@ class FragmentFinalTest : Fragment() {
         player?.setOnCompletionListener {
             if (canAccessActivity) player?.pause()
         }
-        questionAudio.setOnClickListener {
+        binding.questionAudio.setOnClickListener {
             if (player?.isPlaying == true) player?.pause() else player?.start()
         }
         if (!audio.credits.isNullOrBlank()) {
-            questionAudioCredits.setVisible()
-            questionAudioCredits.text = audio.credits
+            binding.questionAudioCredits.setVisible()
+            binding.questionAudioCredits.text = audio.credits
         }
     }
 
@@ -87,18 +89,18 @@ class FragmentFinalTest : Fragment() {
         val picture = questions[stepIndex].picture
         picture?.let {
             if (it.value.isNotBlank()) {
-                stepImage.setVisible()
+                binding.stepImage.setVisible()
                 val pictureFile = File(fileFolder.absolutePath, it.value)
-                Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+                Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(binding.stepImage)
             }
             if (!picture.credits.isNullOrBlank()) {
-                stepImageCredits.setVisible()
-                stepImageCredits.text = picture.credits
+                binding.stepImageCredits.setVisible()
+                binding.stepImageCredits.text = picture.credits
             }
         }
-        if (stepImage.visibility == View.GONE) {
+        if (binding.stepImage.isGone) {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(root)
+            constraintSet.clone(binding.root)
             constraintSet.connect(
                 R.id.questionAudio,
                 ConstraintSet.END,
@@ -106,39 +108,39 @@ class FragmentFinalTest : Fragment() {
                 ConstraintSet.START,
                 LayoutUtils.dpToPx(requireActivity(), 16)
             )
-            constraintSet.applyTo(root)
+            constraintSet.applyTo(binding.root)
         }
     }
 
     private fun setupAnswers() {
-        yes.text.text = getString(R.string.yes)
-        no.text.text = getString(R.string.no)
-        yes.radioSelect.setOnClickListener {
-            yes.radioSelect.setGone()
+        binding.yes.text.text = getString(R.string.yes)
+        binding.no.text.text = getString(R.string.no)
+        binding.yes.radioSelect.setOnClickListener {
+            binding.yes.radioSelect.setGone()
             if (questions[stepIndex].answers) {
-                yes.correct.setVisible()
-                next.enable()
-            } else yes.wrong.setVisible()
+                binding.yes.correct.setVisible()
+                binding.next.enable()
+            } else binding.yes.wrong.setVisible()
         }
-        no.radioSelect.setOnClickListener {
-            no.radioSelect.setGone()
-            if (questions[stepIndex].answers) no.wrong.setVisible() else {
-                no.correct.setVisible()
-                next.enable()
+        binding.no.radioSelect.setOnClickListener {
+            binding.no.radioSelect.setGone()
+            if (questions[stepIndex].answers) binding.no.wrong.setVisible() else {
+                binding.no.correct.setVisible()
+                binding.next.enable()
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
-        step.text = "${stepIndex + 1}/${questions.size}"
-        description.text = questions[stepIndex].body
-        next.disable()
-        next.setOnClickListener {
+        binding.step.text = "${stepIndex + 1}/${questions.size}"
+        binding.description.text = questions[stepIndex].body
+        binding.next.disable()
+        binding.next.setOnClickListener {
             if (stepIndex + 1 < questions.size) {
                 player?.release()
-                yes.radioSelect.isChecked = false
-                no.radioSelect.isChecked = false
+                binding.yes.radioSelect.isChecked = false
+                binding.no.radioSelect.isChecked = false
                 communicator.goToNext(stepIndex + 1)
             } else communicator.goToFinish()
         }
@@ -150,15 +152,14 @@ class FragmentFinalTest : Fragment() {
     }
 
     companion object {
-        const val EXTRA_STEP = "extra_step_int_position"
+        private const val EXTRA_STEP = "extra_step_int_position"
 
-        fun newInstance(unitId: Int, stepIndex: Int): FragmentFinalTest {
-            val fragment = FragmentFinalTest()
-            val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            bundle.putInt(EXTRA_STEP, stepIndex)
-            fragment.arguments = bundle
-            return fragment
-        }
+        fun newInstance(unitId: Int, stepIndex: Int): FragmentFinalTest =
+            FragmentFinalTest().apply {
+                arguments = Bundle().apply {
+                    putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
+                    putInt(EXTRA_STEP, stepIndex)
+                }
+            }
     }
 }

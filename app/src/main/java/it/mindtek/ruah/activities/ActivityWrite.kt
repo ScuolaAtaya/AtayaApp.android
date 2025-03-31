@@ -10,7 +10,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityWriteBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.write.FragmentWrite
+import it.mindtek.ruah.fragments.FragmentWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment

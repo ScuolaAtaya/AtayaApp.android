@@ -58,4 +58,9 @@ class SelectableLettersAdapter(private val listener: OnClickListener) :
     }
 }
 
-data class ModelSyllableItem(var id: String, val text: String, var enabled: Boolean)
+data class ModelSyllableItem(
+    var id: String,
+    val text: String,
+    val occurences: MutableList<Int>,
+    var enabled: Boolean
+)

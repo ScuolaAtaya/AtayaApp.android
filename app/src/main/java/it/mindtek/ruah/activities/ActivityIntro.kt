@@ -32,7 +32,7 @@ class ActivityIntro : AppCompatActivity() {
         binding = ActivityIntroBinding.inflate(layoutInflater)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
-            category = Category.from(it.getIntExtra(EXTRA_CATEGORY_ID, -1))!!
+            category = Category.from(it.getIntExtra(EXTRA_CATEGORY_ID, -1))
             finish = it.getBooleanExtra(EXTRA_IS_FINISH, false)
         }
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

@@ -11,7 +11,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnderstandQuestionBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.understand.FragmentUnderstandQuestions
+import it.mindtek.ruah.fragments.FragmentUnderstandQuestions
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment

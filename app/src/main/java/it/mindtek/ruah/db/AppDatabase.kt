@@ -44,7 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInstance(): AppDatabase {
             INSTANCE?.let {
                 return it
-            } ?: throw Exception("No room instance has been set!!")
+            } ?: throw Exception("No room instance has been set!")
         }
     }
 }

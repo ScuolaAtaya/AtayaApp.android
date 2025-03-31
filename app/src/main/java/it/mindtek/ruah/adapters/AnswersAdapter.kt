@@ -61,7 +61,7 @@ class AnswersAdapter(private val listener: OnClickListener) :
 }
 
 data class ModelAnswerItem(
-    val id: Long,
+    val id: String,
     val body: String,
     val audio: ModelMedia,
     val correct: Boolean

@@ -10,7 +10,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityFinalTestBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.final_test.FragmentFinalTest
+import it.mindtek.ruah.fragments.FragmentFinalTest
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment

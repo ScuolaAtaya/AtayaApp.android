@@ -10,7 +10,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivitySpeakBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.speak.FragmentSpeak
+import it.mindtek.ruah.fragments.FragmentSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment

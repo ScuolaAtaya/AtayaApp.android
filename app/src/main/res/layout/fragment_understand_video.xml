@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo">
+    tools:context="it.mindtek.ruah.fragments.FragmentUnderstandVideo">
 
     <TextView
         android:id="@+id/title"

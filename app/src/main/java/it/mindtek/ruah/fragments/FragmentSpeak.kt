@@ -1,4 +1,4 @@
-package it.mindtek.ruah.fragments.speak
+package it.mindtek.ruah.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,16 +21,19 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.FragmentSpeakBinding
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
-import kotlinx.android.synthetic.main.fragment_speak.*
 import java.io.File
 
 /**
  * Created by alessandrogaboardi on 15/12/2017.
  */
 class FragmentSpeak : Fragment() {
+    private lateinit var binding: FragmentSpeakBinding
+    private lateinit var recorder: MediaRecorder
+    private lateinit var communicator: SpeakActivityInterface
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var recording: Boolean = false
@@ -38,15 +41,15 @@ class FragmentSpeak : Fragment() {
     private var speak: MutableList<ModelSpeak> = mutableListOf()
     private var recodedPlayer: MediaPlayer? = null
     private var player: MediaPlayer? = null
-    private lateinit var recorder: MediaRecorder
-    private lateinit var communicator: SpeakActivityInterface
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_speak, container, false)
+    ): View {
+        binding = FragmentSpeakBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,15 +61,14 @@ class FragmentSpeak : Fragment() {
         setup()
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setup() {
         communicator = requireActivity() as SpeakActivityInterface
         speak = db.speakDao().getSpeakByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
-            stepBackground.backgroundColor = color
-            listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
+            binding.stepBackground.setBackgroundColor(color)
+            binding.listenButton.backgroundTintList = ColorStateList.valueOf(color)
         }
         setupPicture()
         setupAudio()
@@ -76,41 +78,41 @@ class FragmentSpeak : Fragment() {
     private fun setupPicture() {
         val picture = speak[stepIndex].picture
         val pictureImage = File(fileFolder.absolutePath, picture.value)
-        Glide.with(this).load(pictureImage).placeholder(R.color.grey).into(stepImage)
+        Glide.with(this).load(pictureImage).placeholder(R.color.grey).into(binding.stepImage)
         if (!picture.credits.isNullOrBlank()) {
-            stepImageCredits.setVisible()
-            stepImageCredits.text = picture.credits
+            binding.stepImageCredits.setVisible()
+            binding.stepImageCredits.text = picture.credits
         }
     }
 
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
-        listenButton.setOnClickListener {
+        binding.listenButton.setOnClickListener {
             if (!recording) playAudio(audio.value)
         }
         if (!audio.credits.isNullOrBlank()) {
-            audioCredits.setVisible()
-            audioCredits.text = audio.credits
+            binding.audioCredits.setVisible()
+            binding.audioCredits.text = audio.credits
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
-        step.text = "${stepIndex + 1}/${speak.size}"
-        record.setOnClickListener {
+        binding.step.text = "${stepIndex + 1}/${speak.size}"
+        binding.record.setOnClickListener {
             if (isLocked) return@setOnClickListener
             if (recording) endRecording() else startRecording()
         }
-        next.disable()
-        next.setOnClickListener {
+        binding.next.disable()
+        binding.next.setOnClickListener {
             if (recording) endRecording()
             destroyPlayers()
             destroyFile()
             if (stepIndex + 1 < speak.size) communicator.goToNext(stepIndex + 1)
             else communicator.goToFinish()
         }
-        listenAgain.disable()
-        listenAgain.setOnClickListener {
+        binding.listenAgain.disable()
+        binding.listenAgain.setOnClickListener {
             playRecordedAudio()
         }
     }
@@ -123,6 +125,7 @@ class FragmentSpeak : Fragment() {
                 player = initPlayer(audioFile)
                 player?.start()
             }
+
             player?.isPlaying == true -> player?.pause()
             else -> player?.start()
         }
@@ -131,30 +134,30 @@ class FragmentSpeak : Fragment() {
     private fun startRecording() {
         player?.pause()
         recodedPlayer?.pause()
-        listenAgain.disable()
-        next.disable()
+        binding.listenAgain.disable()
+        binding.next.disable()
         if (initRecorder()) {
             recording = true
-            record.setImageResource(R.drawable.stop)
-            pulsator.start()
-            record.compatElevation =  LayoutUtils.dpToPx(requireActivity(), 16).toFloat()
+            binding.record.setImageResource(R.drawable.stop)
+            binding.pulsator.start()
+            binding.record.compatElevation = LayoutUtils.dpToPx(requireActivity(), 16).toFloat()
             recorder.start()
         }
     }
 
     private fun endRecording() {
         isLocked = true
-        loading.setVisible()
-        pulsator.stop()
-        record.compatElevation =  LayoutUtils.dpToPx(requireActivity(), 8).toFloat()
-        record.setImageResource(R.drawable.mic)
+        binding.loading.setVisible()
+        binding.pulsator.stop()
+        binding.record.compatElevation = LayoutUtils.dpToPx(requireActivity(), 8).toFloat()
+        binding.record.setImageResource(R.drawable.mic)
         Handler(Looper.getMainLooper()).postDelayed({
             recording = false
             isLocked = false
             recorder.stop()
-            loading.setGone()
-            listenAgain.enable()
-            next.enable()
+            binding.loading.setGone()
+            binding.listenAgain.enable()
+            binding.next.enable()
         }, 1000)
     }
 
@@ -189,6 +192,7 @@ class FragmentSpeak : Fragment() {
                 recodedPlayer = initPlayer(audioFile)
                 recodedPlayer?.start()
             }
+
             recodedPlayer?.isPlaying == true -> recodedPlayer?.pause()
             else -> recodedPlayer?.start()
         }
@@ -222,7 +226,7 @@ class FragmentSpeak : Fragment() {
             permissions.forEachIndexed { index: Int, s: String ->
                 if (s == Manifest.permission.RECORD_AUDIO) {
                     if (grantResults[index] == PackageManager.PERMISSION_GRANTED) setupRecorder()
-                    else record.isEnabled = false
+                    else binding.record.isEnabled = false
                 }
             }
         }
@@ -235,16 +239,14 @@ class FragmentSpeak : Fragment() {
     }
 
     companion object {
-        const val EXTRA_STEP = "extra step int position"
-        const val REQUEST_PERMISSION_AUDIO = 20183
+        private const val EXTRA_STEP = "extra step int position"
+        private const val REQUEST_PERMISSION_AUDIO = 20183
 
-        fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak {
-            val frag = FragmentSpeak()
-            val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            bundle.putInt(EXTRA_STEP, stepIndex)
-            frag.arguments = bundle
-            return frag
+        fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak = FragmentSpeak().apply {
+            arguments = Bundle().apply {
+                putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
+                putInt(EXTRA_STEP, stepIndex)
+            }
         }
     }
 }
