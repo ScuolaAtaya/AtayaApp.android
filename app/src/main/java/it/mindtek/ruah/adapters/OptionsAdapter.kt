@@ -1,99 +1,93 @@
 package it.mindtek.ruah.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
+import it.mindtek.ruah.databinding.ItemOptionBinding
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
-import kotlinx.android.synthetic.main.item_option.view.*
 
-@SuppressLint("NotifyDataSetChanged")
 class OptionsAdapter(
-        val context: Context,
-        val options: MutableList<OptionRenderViewModel>,
-        private val answers: MutableList<String>,
-        private val numberChangedCallback: ((answersNumber: Int) -> Unit)?,
-        private val playOptionCallback: ((option: ModelReadOption) -> Unit)?
-) : RecyclerView.Adapter<OptionHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionHolder = OptionHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_option, parent, false)
-    )
+    private val context: Context,
+    private val listener: OnClickListener,
+    private val answers: MutableList<String>,
+) : ListAdapter<OptionItem, OptionsAdapter.ItemViewHolder>(object :
+    DiffUtil.ItemCallback<OptionItem>() {
+    override fun areItemsTheSame(oldItem: OptionItem, newItem: OptionItem): Boolean =
+        oldItem.option.id == newItem.option.id
 
-    override fun getItemCount(): Int = options.size
+    override fun areContentsTheSame(oldItem: OptionItem, newItem: OptionItem): Boolean =
+        oldItem == newItem
+}) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
+        ItemViewHolder(
+            ItemOptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
-    @SuppressLint("RestrictedApi")
-    override fun onBindViewHolder(holder: OptionHolder, position: Int) {
-        val option = options[position]
-        val readOption = option.option
-        holder.number.text = option.answer
-        holder.text.text = readOption.body
-        holder.right.setGone()
-        holder.wrong.setGone()
-        holder.spinner.setGone()
-        when (option.correct) {
-            true -> holder.right.setVisible()
-            false -> holder.wrong.setVisible()
-            else -> holder.spinner.setVisible()
-        }
-        holder.audio.setOnClickListener {
-            playOptionCallback?.invoke(readOption)
-        }
-        if (!readOption.audio.credits.isNullOrBlank()) {
-            holder.credits.setVisible()
-            holder.credits.text = readOption.audio.credits
-        }
-        holder.numberView.setOnClickListener {
-            val listPopupWindow = ListPopupWindow(context)
-            listPopupWindow.setAdapter(ArrayAdapter(context, R.layout.item_number, R.id.numberText, answers))
-            listPopupWindow.anchorView = holder.numberView
-            listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-                option.correct = null
-                option.answer = answers[position]
-                val answersNumber = options.count {
-                    !it.answer.isNullOrBlank()
-                }
-                numberChangedCallback?.invoke(answersNumber)
-                listPopupWindow.dismiss()
-                notifyDataSetChanged()
-            }
-            listPopupWindow.show()
-        }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     fun completed(): Boolean {
-        options.forEach {
+        currentList.forEach {
             it.correct = it.answer == it.option.markerId
         }
-        notifyDataSetChanged()
-        return options.all {
+        return currentList.all {
             it.correct == true
         }
     }
+
+    inner class ItemViewHolder(private val binding: ItemOptionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: OptionItem) {
+            binding.number.text = item.answer
+            binding.optionText.text = item.option.body
+            binding.correct.setGone()
+            binding.wrong.setGone()
+            binding.spinner.setGone()
+            when (item.correct) {
+                true -> binding.correct.setVisible()
+                false -> binding.wrong.setVisible()
+                else -> binding.spinner.setVisible()
+            }
+            binding.optionAudio.setOnClickListener {
+                listener.onPlayOptionClicked(item.option)
+            }
+            if (!item.option.audio.credits.isNullOrEmpty()) {
+                binding.optionCredits.setVisible()
+                binding.optionCredits.text = item.option.audio.credits
+            }
+            binding.numberClickableView.setOnClickListener {
+                ListPopupWindow(context).apply {
+                    setAdapter(
+                        ArrayAdapter(context, R.layout.item_number, R.id.numberText, answers)
+                    )
+                    anchorView = binding.numberClickableView
+                    setOnItemClickListener { _, _, position, _ ->
+                        item.correct = null
+                        item.answer = answers[position]
+                        listener.onNumberChanged(currentList.count {
+                            !it.answer.isNullOrEmpty()
+                        })
+                        dismiss()
+                    }
+                    show()
+                }
+            }
+        }
+    }
+
+    interface OnClickListener {
+        fun onNumberChanged(answersNumber: Int)
+        fun onPlayOptionClicked(option: ModelReadOption)
+    }
 }
 
-data class OptionRenderViewModel(
-        var option: ModelReadOption,
-        var answer: String?,
-        var correct: Boolean?
-)
-
-class OptionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val wrong: ImageView = itemView.wrong
-    val right: ImageView = itemView.correct
-    val spinner: AppCompatSpinner = itemView.spinner
-    val number: TextView = itemView.number
-    val numberView: View = itemView.numberClickableView
-    val text: TextView = itemView.optionText
-    val audio: ImageView = itemView.optionAudio
-    val credits: TextView = itemView.optionCredits
-}
+data class OptionItem(val option: ModelReadOption, var answer: String?, var correct: Boolean?)

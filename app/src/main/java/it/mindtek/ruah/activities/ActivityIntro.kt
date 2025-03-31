@@ -1,6 +1,7 @@
 package it.mindtek.ruah.activities
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.WindowManager
@@ -81,7 +82,7 @@ class ActivityIntro : AppCompatActivity() {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
                 binding.coordinator.setBackgroundColor(color)
-                binding.fabBack.setTintPreLollipop(color, R.drawable.home)
+                binding.fabBack.imageTintList = ColorStateList.valueOf(color)
                 binding.unitIcon.setImageResource(ResourceProvider.getIcon(this, it.name))
                 val play = ContextCompat.getDrawable(this, R.drawable.play)
                 binding.buttonNext.setCompoundDrawables(null, null, play, null)
