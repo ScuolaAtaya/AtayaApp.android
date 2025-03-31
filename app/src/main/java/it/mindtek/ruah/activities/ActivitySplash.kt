@@ -14,8 +14,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
-    private val apiClient = ApiClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
@@ -41,7 +39,7 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     private fun checkUpdates() {
         val timestamp: Long =
             getSharedPreferences(APP_SP, MODE_PRIVATE).getLong(ActivityUnits.TIMESTAMP, 0)
-        val request: Call<ResponseBody> = apiClient.needsUpdate(timestamp)
+        val request: Call<ResponseBody> = ApiClient.needsUpdate(timestamp)
         request.enqueue(this)
     }
 

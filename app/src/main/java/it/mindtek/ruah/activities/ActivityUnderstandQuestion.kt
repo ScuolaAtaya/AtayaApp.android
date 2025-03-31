@@ -23,7 +23,9 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityUnderstandQuestionBinding.inflate(layoutInflater)
+        val binding: ActivityUnderstandQuestionBinding =
+            ActivityUnderstandQuestionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             understandIndex = it.getIntExtra(ActivityUnderstand.STEP_INDEX, -1)

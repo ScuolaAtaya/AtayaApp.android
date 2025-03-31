@@ -20,7 +20,8 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityWriteBinding.inflate(layoutInflater)
+        val binding: ActivityWriteBinding = ActivityWriteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }

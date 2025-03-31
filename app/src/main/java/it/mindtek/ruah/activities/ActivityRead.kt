@@ -20,7 +20,8 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityReadBinding.inflate(layoutInflater)
+        val binding: ActivityReadBinding = ActivityReadBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }

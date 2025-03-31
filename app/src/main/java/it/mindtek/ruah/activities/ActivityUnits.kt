@@ -16,6 +16,7 @@ class ActivityUnits : AppCompatActivity(), UnitsAdapter.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityUnitsBinding = ActivityUnitsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val adapter = UnitsAdapter(this)
         db.unitDao().getUnitsAsync().observe(this) {
             adapter.submitList(it.map { unit: ModelUnit ->

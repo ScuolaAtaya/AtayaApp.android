@@ -22,7 +22,8 @@ class ActivityUnderstand : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityUnderstandBinding.inflate(layoutInflater)
+        val binding: ActivityUnderstandBinding = ActivityUnderstandBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             stepIndex = it.getIntExtra(STEP_INDEX, -1)

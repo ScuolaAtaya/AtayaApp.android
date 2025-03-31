@@ -20,7 +20,8 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivitySpeakBinding.inflate(layoutInflater)
+        val binding: ActivitySpeakBinding = ActivitySpeakBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }

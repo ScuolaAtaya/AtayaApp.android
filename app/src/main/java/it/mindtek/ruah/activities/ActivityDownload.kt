@@ -14,7 +14,8 @@ import it.mindtek.ruah.services.DownloadWorker
 class ActivityDownload : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityDownloadBinding.inflate(layoutInflater)
+        val binding: ActivityDownloadBinding = ActivityDownloadBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val workManager: WorkManager = WorkManager.getInstance(this)
         val request: OneTimeWorkRequest =
             OneTimeWorkRequest.Builder(DownloadWorker::class.java).run {

@@ -20,7 +20,8 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityFinalTestBinding.inflate(layoutInflater)
+        val binding:ActivityFinalTestBinding = ActivityFinalTestBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
