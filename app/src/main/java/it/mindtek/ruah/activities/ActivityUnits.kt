@@ -11,6 +11,7 @@ import it.mindtek.ruah.adapters.UnitsAdapter
 import it.mindtek.ruah.databinding.ActivityUnitsBinding
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.setBottomPadding
 
 class ActivityUnits : AppCompatActivity(), UnitsAdapter.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,7 @@ class ActivityUnits : AppCompatActivity(), UnitsAdapter.OnClickListener {
             })
         }
         binding.unitsRecycler.adapter = adapter
+        binding.privacyPolicy.setBottomPadding()
         binding.privacyPolicy.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.privacyPolicy.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {

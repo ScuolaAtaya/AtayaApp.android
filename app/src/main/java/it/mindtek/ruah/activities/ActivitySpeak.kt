@@ -14,6 +14,7 @@ import it.mindtek.ruah.fragments.FragmentSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
     private var unitId: Int = -1
@@ -22,15 +23,25 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
         super.onCreate(savedInstanceState)
         val binding: ActivitySpeakBinding = ActivitySpeakBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activitySpeakToolbar.setTopPadding()
+        setSupportActionBar(binding.activitySpeakToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        replaceFragment(FragmentSpeak.newInstance(unitId, 0), R.id.placeholder, false)
+        replaceFragment(
+            FragmentSpeak.newInstance(unitId, 0),
+            R.id.activity_speak_placeholder,
+            false
+        )
     }
 
     override fun goToNext(index: Int) {
-        replaceFragment(FragmentSpeak.newInstance(unitId, index), R.id.placeholder, true)
+        replaceFragment(
+            FragmentSpeak.newInstance(unitId, index),
+            R.id.activity_speak_placeholder,
+            true
+        )
     }
 
     override fun goToFinish() {

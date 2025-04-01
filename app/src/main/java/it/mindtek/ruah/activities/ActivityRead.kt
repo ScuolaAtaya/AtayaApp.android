@@ -14,6 +14,7 @@ import it.mindtek.ruah.fragments.FragmentRead
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivityRead : AppCompatActivity(), ReadActivityInterface {
     private var unitId: Int = -1
@@ -22,15 +23,21 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
         super.onCreate(savedInstanceState)
         val binding: ActivityReadBinding = ActivityReadBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityReadToolbar.setTopPadding()
+        setSupportActionBar(binding.activityReadToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        replaceFragment(FragmentRead.newInstance(unitId, 0), R.id.placeholder, false)
+        replaceFragment(FragmentRead.newInstance(unitId, 0), R.id.activity_read_placeholder, false)
     }
 
     override fun goToNext(index: Int) {
-        replaceFragment(FragmentRead.newInstance(unitId, index), R.id.placeholder, true)
+        replaceFragment(
+            FragmentRead.newInstance(unitId, index),
+            R.id.activity_read_placeholder,
+            true
+        )
     }
 
     override fun goToFinish() {

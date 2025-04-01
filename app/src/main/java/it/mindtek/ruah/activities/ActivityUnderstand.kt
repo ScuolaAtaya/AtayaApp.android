@@ -14,6 +14,7 @@ import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.fragments.FragmentUnderstandVideo
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivityUnderstand : AppCompatActivity() {
     private var unitId: Int = -1
@@ -24,6 +25,8 @@ class ActivityUnderstand : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivityUnderstandBinding = ActivityUnderstandBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityUnderstandToolbar.setTopPadding()
+        setSupportActionBar(binding.activityUnderstandToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             stepIndex = it.getIntExtra(STEP_INDEX, -1)
@@ -48,7 +51,7 @@ class ActivityUnderstand : AppCompatActivity() {
         setup()
         replaceFragment(
             FragmentUnderstandVideo.newInstance(unitId, stepIndex, isVideoWatched),
-            R.id.placeholder,
+            R.id.activity_understand_placeholder,
             false
         )
     }

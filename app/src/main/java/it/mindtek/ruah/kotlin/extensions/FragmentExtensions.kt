@@ -7,7 +7,7 @@ import java.io.File
  * Created by alessandrogaboardi on 14/12/2017.
  */
 val Fragment.canAccessActivity: Boolean
-    get() = !this.isRemoving && this.isAdded && !this.isDetached
+    get() = !isRemoving && isAdded && !isDetached
 
 val Fragment.fileFolder: File
     get() = File(activity?.filesDir, "data")

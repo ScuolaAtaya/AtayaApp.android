@@ -1,6 +1,5 @@
 package it.mindtek.ruah.kotlin.extensions
 
-import android.os.Build
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import it.mindtek.ruah.db.AppDatabase
@@ -24,24 +23,11 @@ fun ioThread(f: () -> Unit) {
     IO_EXECUTOR.execute(f)
 }
 
-fun compat21(compatible: (() -> Unit)?, incompatible: (() -> Unit)?) {
-    compatCheck(Build.VERSION_CODES.LOLLIPOP, compatible, incompatible)
-}
+inline fun <reified T> Gson.fromJson(json: String): T =
+    fromJson(json, object : TypeToken<T>() {}.type)
 
-fun compatCheck(version: Int, compatible: (() -> Unit)?, incompatible: (() -> Unit)?) {
-    if (Build.VERSION.SDK_INT >= version) compatible?.invoke() else incompatible?.invoke()
-}
+inline fun <reified T> Gson.fromJson(json: JSONObject): T =
+    fromJson(json.toString(), object : TypeToken<T>() {}.type)
 
-inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson(json, object : TypeToken<T>() {}.type)
-
-inline fun <reified T> Gson.fromJson(json: JSONObject): T = this.fromJson(json.toString(), object : TypeToken<T>() {}.type)
-
-inline fun <reified T> Gson.fromJson(json: JSONArray): T = this.fromJson(json.toString(), object : TypeToken<T>() {}.type)
-
-inline fun <T> `while`(nextValue: () -> T, condition: (T) -> Boolean, body: (T) -> Unit) {
-    var value = nextValue()
-    while (condition(value)) {
-        body(value)
-        value = nextValue()
-    }
-}
+inline fun <reified T> Gson.fromJson(json: JSONArray): T =
+    fromJson(json.toString(), object : TypeToken<T>() {}.type)

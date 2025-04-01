@@ -14,23 +14,34 @@ import it.mindtek.ruah.fragments.FragmentFinalTest
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
     private var unitId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding:ActivityFinalTestBinding = ActivityFinalTestBinding.inflate(layoutInflater)
+        val binding: ActivityFinalTestBinding = ActivityFinalTestBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityFinalTestToolbar.setTopPadding()
+        setSupportActionBar(binding.activityFinalTestToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        replaceFragment(FragmentFinalTest.newInstance(unitId, 0), R.id.placeholder, false)
+        replaceFragment(
+            FragmentFinalTest.newInstance(unitId, 0),
+            R.id.activity_final_test_placeholder,
+            false
+        )
     }
 
     override fun goToNext(index: Int) {
-        replaceFragment(FragmentFinalTest.newInstance(unitId, index), R.id.placeholder, true)
+        replaceFragment(
+            FragmentFinalTest.newInstance(unitId, index),
+            R.id.activity_final_test_placeholder,
+            true
+        )
     }
 
     override fun goToFinish() {

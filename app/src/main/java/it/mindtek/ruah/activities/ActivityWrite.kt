@@ -14,6 +14,7 @@ import it.mindtek.ruah.fragments.FragmentWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     private var unitId: Int = -1
@@ -22,15 +23,17 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
         super.onCreate(savedInstanceState)
         val binding: ActivityWriteBinding = ActivityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityWriteToolbar.setTopPadding()
+        setSupportActionBar(binding.activityWriteToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        replaceFragment(FragmentWrite.newInstance(unitId, 0), R.id.placeholder, false)
+        replaceFragment(FragmentWrite.newInstance(unitId, 0), R.id.activity_write_placeholder, false)
     }
 
     override fun goToNext(index: Int) {
-        replaceFragment(FragmentWrite.newInstance(unitId, index), R.id.placeholder, true)
+        replaceFragment(FragmentWrite.newInstance(unitId, index), R.id.activity_write_placeholder, true)
     }
 
     override fun goToFinish() {

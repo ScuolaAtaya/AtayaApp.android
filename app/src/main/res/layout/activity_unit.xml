@@ -8,6 +8,16 @@
     android:clipChildren="false"
     tools:context="it.mindtek.ruah.activities.ActivityUnit">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_unit_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/white" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/verticalGuideline"
         android:layout_width="wrap_content"
@@ -35,7 +45,7 @@
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineBottom"
         app:layout_constraintStart_toStartOf="@id/verticalGuideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/activity_unit_toolbar" />
 
     <View
         android:layout_width="match_parent"
@@ -57,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineTop"
         app:layout_constraintEnd_toEndOf="@id/verticalGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/activity_unit_toolbar">
 
         <ImageView
             android:id="@+id/iconCapiamo"
@@ -98,7 +108,7 @@
         app:layout_constraintBottom_toBottomOf="@id/horizontalGuidelineTop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/verticalGuideline"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/activity_unit_toolbar">
 
         <ImageView
             android:id="@+id/iconParliamo"

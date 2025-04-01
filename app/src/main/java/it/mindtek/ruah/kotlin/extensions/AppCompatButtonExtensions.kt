@@ -9,7 +9,6 @@ import android.os.Build
 import androidx.appcompat.widget.AppCompatButton
 import it.mindtek.ruah.config.LayoutUtils
 
-
 /**
  * Created by alessandrogaboardi on 05/12/2017.
  */

@@ -15,6 +15,7 @@ import it.mindtek.ruah.fragments.FragmentUnderstandQuestions
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterface {
     private var unitId: Int = -1
@@ -26,6 +27,8 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         val binding: ActivityUnderstandQuestionBinding =
             ActivityUnderstandQuestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityUnderstandQuestionToolbar.setTopPadding()
+        setSupportActionBar(binding.activityUnderstandQuestionToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             understandIndex = it.getIntExtra(ActivityUnderstand.STEP_INDEX, -1)
@@ -38,7 +41,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         setup()
         replaceFragment(
             FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex),
-            R.id.placeholder,
+            R.id.activity_understand_question_placeholder,
             false
         )
     }
@@ -47,7 +50,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         questionIndex = index
         replaceFragment(
             FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex),
-            R.id.placeholder,
+            R.id.activity_understand_question_placeholder,
             true
         )
     }

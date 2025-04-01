@@ -14,6 +14,7 @@ import it.mindtek.ruah.databinding.ActivityUnitBinding
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 import it.mindtek.ruah.kotlin.extensions.setVisible
 
 class ActivityUnit : AppCompatActivity() {
@@ -24,6 +25,8 @@ class ActivityUnit : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUnitBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.activityUnitToolbar.setTopPadding()
+        setSupportActionBar(binding.activityUnitToolbar)
         intent?.let {
             unitId = it.getIntExtra(EXTRA_UNIT_ID, -1)
         }
