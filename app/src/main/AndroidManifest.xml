@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:name=".App"
@@ -59,7 +60,7 @@
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityDownload"
-            android:noHistory="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoToolbar"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
@@ -76,5 +77,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync" />
     </application>
 </manifest>
