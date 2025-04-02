@@ -2,55 +2,73 @@ package it.mindtek.ruah.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelSyllable
-import kotlinx.android.synthetic.main.item_letter_selectable.view.*
+import it.mindtek.ruah.databinding.ItemLetterSelectableBinding
 
-/**
- * Created by alessandrogaboardi on 08/01/2018.
- */
-@SuppressLint("NotifyDataSetChanged")
-class SelectableLettersAdapter(
-        private val syllables: MutableList<ModelSyllable>,
-        private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
-) : RecyclerView.Adapter<SyllablesHolder>() {
+class SelectableLettersAdapter(private val listener: OnClickListener) :
+    ListAdapter<ModelSyllableItem, SelectableLettersAdapter.ItemViewHolder>(object :
+        DiffUtil.ItemCallback<ModelSyllableItem>() {
+        override fun areItemsTheSame(
+            oldItem: ModelSyllableItem,
+            newItem: ModelSyllableItem
+        ): Boolean = oldItem.id == newItem.id
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllablesHolder = SyllablesHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selectable, parent, false)
-    )
+        override fun areContentsTheSame(
+            oldItem: ModelSyllableItem,
+            newItem: ModelSyllableItem
+        ): Boolean = oldItem == newItem
+    }) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
+        ItemViewHolder(
+            ItemLetterSelectableBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
-    override fun getItemCount(): Int = syllables.size
-
-    override fun onBindViewHolder(holder: SyllablesHolder, position: Int) {
-        val syllable = syllables[position]
-        holder.syllables.text = syllable.text
-        holder.background.background = if (syllable.enabled)
-            ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
-        else ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_disabled)
-        holder.itemView.setOnClickListener {
-            if (syllable.enabled) {
-                syllable.enabled = false
-                onLetterTap?.invoke(syllable)
-                notifyDataSetChanged()
-            }
-        }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    fun unlockLetter(letter: ModelSyllable) {
-        syllables.first {
+    @SuppressLint("NotifyDataSetChanged")
+    fun unlockLetter(letter: ModelSyllableItem) {
+        currentList.first {
             it.id == letter.id
         }.enabled = true
         notifyDataSetChanged()
     }
+
+    inner class ItemViewHolder(private val binding: ItemLetterSelectableBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ModelSyllableItem) {
+            binding.letter.text = item.text
+            setCardBackground(item.enabled)
+            binding.root.setOnClickListener {
+                if (item.enabled) {
+                    item.enabled = false
+                    setCardBackground(false)
+                    listener.onLetterTapped(item)
+                }
+            }
+        }
+
+        private fun setCardBackground(enabled: Boolean) {
+            binding.card.background =
+                if (enabled) ContextCompat.getDrawable(binding.root.context, R.drawable.card_blue)
+                else ContextCompat.getDrawable(binding.root.context, R.drawable.card_disabled)
+        }
+    }
+
+    interface OnClickListener {
+        fun onLetterTapped(item: ModelSyllableItem)
+    }
 }
 
-class SyllablesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val syllables: TextView = itemView.letter
-    val background: FrameLayout = itemView.card
-}
+data class ModelSyllableItem(
+    var id: String,
+    val text: String,
+    val occurences: MutableList<Int>,
+    var enabled: Boolean
+)

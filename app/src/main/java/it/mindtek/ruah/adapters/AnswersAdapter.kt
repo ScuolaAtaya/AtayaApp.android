@@ -1,61 +1,68 @@
 package it.mindtek.ruah.adapters
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.TextView
-import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelAnswer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import it.mindtek.ruah.databinding.ItemAnswerBinding
+import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
-import kotlinx.android.synthetic.main.item_answer.view.*
 
-/**
- * Created by alessandrogaboardi on 07/12/2017.
- */
-class AnswersAdapter(
-        val answers: MutableList<ModelAnswer>,
-        private val answerSelectedCallback: ((answer: ModelAnswer) -> Unit)?,
-        private val playAnswerCallback: ((answer: ModelAnswer) -> Unit)?
-) : RecyclerView.Adapter<AnswerHolder>() {
+class AnswersAdapter(private val listener: OnClickListener) :
+    ListAdapter<ModelAnswerItem, AnswersAdapter.ItemViewHolder>(object :
+        DiffUtil.ItemCallback<ModelAnswerItem>() {
+        override fun areItemsTheSame(oldItem: ModelAnswerItem, newItem: ModelAnswerItem): Boolean =
+            oldItem.id == newItem.id
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerHolder = AnswerHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_answer, parent, false)
-    )
+        override fun areContentsTheSame(
+            oldItem: ModelAnswerItem,
+            newItem: ModelAnswerItem
+        ): Boolean = oldItem == newItem
+    }) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
+        ItemViewHolder(
+            ItemAnswerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
-    override fun getItemCount(): Int = answers.size
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
-    override fun onBindViewHolder(holder: AnswerHolder, position: Int) {
-        val answer = answers[position]
-        holder.text.text = answer.body
-        holder.select.setOnClickListener {
-            holder.select.setGone()
-            if (answer.correct) {
-                holder.right.setVisible()
-                answerSelectedCallback?.invoke(answer)
-            } else {
-                holder.wrong.setVisible()
-                answerSelectedCallback?.invoke(answer)
+    inner class ItemViewHolder(private val binding: ItemAnswerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ModelAnswerItem) {
+            binding.answerText.text = item.body
+            binding.radioSelect.setOnClickListener {
+                binding.radioSelect.setGone()
+                if (item.correct) {
+                    binding.correct.setVisible()
+                    listener.onAnswerSelected(item)
+                } else {
+                    binding.wrong.setVisible()
+                    listener.onAnswerSelected(item)
+                }
+            }
+            binding.answerAudio.setOnClickListener {
+                listener.onAnswerAudioClicked(item)
+            }
+            if (!item.audio.credits.isNullOrBlank()) {
+                binding.answerCredits.setVisible()
+                binding.answerCredits.text = item.audio.credits
             }
         }
-        holder.audio.setOnClickListener {
-            playAnswerCallback?.invoke(answer)
-        }
-        if (!answer.audio.credits.isNullOrBlank()) {
-            holder.credits.setVisible()
-            holder.credits.text = answer.audio.credits
-        }
+    }
+
+    interface OnClickListener {
+        fun onAnswerSelected(answer: ModelAnswerItem)
+        fun onAnswerAudioClicked(answer: ModelAnswerItem)
     }
 }
 
-class AnswerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val wrong: ImageView = itemView.wrong
-    val right: ImageView = itemView.correct
-    val select: RadioButton = itemView.radioSelect
-    val text: TextView = itemView.answerText
-    val audio: ImageView = itemView.answerAudio
-    val credits: TextView = itemView.answerCredits
-}
+data class ModelAnswerItem(
+    val id: String,
+    val body: String,
+    val audio: ModelMedia,
+    val correct: Boolean
+)

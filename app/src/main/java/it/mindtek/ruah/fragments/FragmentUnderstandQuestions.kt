@@ -1,4 +1,4 @@
-package it.mindtek.ruah.fragments.understand
+package it.mindtek.ruah.fragments
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -10,22 +10,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import it.mindtek.ruah.R
 import it.mindtek.ruah.adapters.AnswersAdapter
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.FragmentUnderstandQuestionsBinding
 import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoQuestion
-import kotlinx.android.synthetic.main.fragment_understand_questions.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
 import java.io.File
+import androidx.core.view.isGone
+import it.mindtek.ruah.adapters.ModelAnswerItem
 
 
 class FragmentUnderstandQuestions : Fragment() {
+    private lateinit var binding: FragmentUnderstandQuestionsBinding
+    private lateinit var communicator: UnderstandActivityInterface
     private var unitId: Int = -1
     private var questionIndex: Int = -1
     private var understandIndex: Int = -1
@@ -34,29 +36,35 @@ class FragmentUnderstandQuestions : Fragment() {
     private var understandSize: Int = -1
     private var answersPlayer: MediaPlayer? = null
     private var questionPlayer: MediaPlayer? = null
-    private lateinit var communicator: UnderstandActivityInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_understand_questions, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentUnderstandQuestionsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             if (it.containsKey(EXTRA_UNIT_ID)) unitId = it.getInt(EXTRA_UNIT_ID, -1)
-            if (it.containsKey(EXTRA_QUESTION_NUMBER)) questionIndex = it.getInt(EXTRA_QUESTION_NUMBER, -1)
+            if (it.containsKey(EXTRA_QUESTION_NUMBER)) questionIndex = it.getInt(
+                EXTRA_QUESTION_NUMBER, -1
+            )
             if (it.containsKey(EXTRA_STEP)) understandIndex = it.getInt(EXTRA_STEP, -1)
         }
         setup()
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setup() {
         communicator = requireActivity() as UnderstandActivityInterface
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             val color = ResourceProvider.getColor(requireActivity(), it.name)
-            stepLayout.backgroundColor = color
-            questionAudio.supportBackgroundTintList = ColorStateList.valueOf(color)
+            binding.stepLayout.setBackgroundColor(color)
+            binding.questionAudio.backgroundTintList = ColorStateList.valueOf(color)
         }
         understandSize = db.understandDao().countByUnitId(unitId)
         val understand = db.understandDao().getUnderstandByUnitId(unitId)
@@ -67,16 +75,18 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupQuestion() {
-        title.text = getString(R.string.question)
+        binding.title.text = getString(R.string.question)
         questions[questionIndex].question?.let {
-            description.text = it.body
+            binding.description.text = it.body
             setupPicture(it.picture)
             setupQuestionAudio(it.audio)
         }
     }
 
     private fun setupAnswers() {
-        val answers = questions[questionIndex].answers
+        val answers = questions[questionIndex].answers.map {
+            ModelAnswerItem(it.id, it.body, it.audio, it.correct)
+        }
         answers.forEach {
             val audioFile = File(fileFolder.absolutePath, it.audio.value)
             val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
@@ -84,23 +94,27 @@ class FragmentUnderstandQuestions : Fragment() {
                 if (canAccessActivity) player.pause()
             }
         }
-        val adapter = AnswersAdapter(answers, {
-            if (it.correct) next.enable()
-        }, {
-            playAnswerAudio(answers.indexOf(it), it.audio.value)
+        val adapter = AnswersAdapter(object : AnswersAdapter.OnClickListener {
+            override fun onAnswerSelected(answer: ModelAnswerItem) {
+                if (answer.correct) binding.next.enable()
+            }
+
+            override fun onAnswerAudioClicked(answer: ModelAnswerItem) {
+                playAnswerAudio(answers.indexOf(answer), answer.audio.value)
+            }
         })
-        answersRecycler.layoutManager = LinearLayoutManager(requireActivity())
-        answersRecycler.adapter = adapter
+        binding.answersRecycler.adapter = adapter
+        adapter.submitList(answers)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
-        step.text = "${questionIndex + 1}/${questions.size}"
-        reset.setOnClickListener {
+        binding.step.text = "${questionIndex + 1}/${questions.size}"
+        binding.reset.setOnClickListener {
             communicator.goToVideo(understandIndex, true)
         }
-        next.disable()
-        next.setOnClickListener {
+        binding.next.disable()
+        binding.next.setOnClickListener {
             destroyPlayers()
             if (questionIndex + 1 < questions.size) communicator.goToNextQuestion(questionIndex + 1)
             else {
@@ -114,30 +128,36 @@ class FragmentUnderstandQuestions : Fragment() {
     private fun setupPicture(picture: ModelMedia?) {
         picture?.let {
             if (picture.value.isNotBlank()) {
-                stepImage.setVisible()
+                binding.stepImage.setVisible()
                 val pictureFile = File(fileFolder.absolutePath, picture.value)
-                GlideApp.with(this).load(pictureFile).placeholder(R.color.grey).into(stepImage)
+                Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(binding.stepImage)
             }
             if (!picture.credits.isNullOrBlank()) {
-                stepImageCredits.setVisible()
-                stepImageCredits.text = picture.credits
+                binding.stepImageCredits.setVisible()
+                binding.stepImageCredits.text = picture.credits
             }
         }
-        if (stepImage.visibility == View.GONE) {
+        if (binding.stepImage.isGone) {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(root)
-            constraintSet.connect(R.id.questionAudio, ConstraintSet.END, R.id.stepLayout, ConstraintSet.START, requireActivity().dip(16))
-            constraintSet.applyTo(root)
+            constraintSet.clone(binding.container)
+            constraintSet.connect(
+                R.id.questionAudio,
+                ConstraintSet.END,
+                R.id.stepLayout,
+                ConstraintSet.START,
+                LayoutUtils.dpToPx(requireActivity(), 16)
+            )
+            constraintSet.applyTo(binding.container)
         }
     }
 
     private fun setupQuestionAudio(audio: ModelMedia) {
-        questionAudio.setOnClickListener {
+        binding.questionAudio.setOnClickListener {
             playQuestionAudio(audio.value)
         }
         if (!audio.credits.isNullOrBlank()) {
-            questionAudioCredits.setVisible()
-            questionAudioCredits.text = audio.credits
+            binding.questionAudioCredits.setVisible()
+            binding.questionAudioCredits.text = audio.credits
         }
     }
 
@@ -148,6 +168,7 @@ class FragmentUnderstandQuestions : Fragment() {
                 questionPlayer = initPlayer(audio)
                 questionPlayer?.start()
             }
+
             questionPlayer?.isPlaying == true -> questionPlayer?.pause()
             else -> questionPlayer?.start()
         }
@@ -161,10 +182,12 @@ class FragmentUnderstandQuestions : Fragment() {
                 answersPlayer = initPlayer(audio)
                 answersPlayer?.start()
             }
+
             answersPlayer?.isPlaying == true -> {
                 if (currentAudioIndex == index) answersPlayer?.pause()
                 else resetAnswerPlayer(index, audio)
             }
+
             else -> {
                 if (currentAudioIndex == index) answersPlayer?.start()
                 else resetAnswerPlayer(index, audio)
@@ -201,18 +224,20 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     companion object {
-        const val EXTRA_QUESTION_NUMBER = "question_number_extra"
-        const val EXTRA_UNIT_ID = "unit_id_extra"
-        const val EXTRA_STEP = "extra step int position"
+        private const val EXTRA_QUESTION_NUMBER = "question_number_extra"
+        private const val EXTRA_UNIT_ID = "unit_id_extra"
+        private const val EXTRA_STEP = "extra step int position"
 
-        fun newInstance(questionIndex: Int, unitId: Int, stepIndex: Int): FragmentUnderstandQuestions {
-            val fragment = FragmentUnderstandQuestions()
-            val bundle = Bundle()
-            bundle.putInt(EXTRA_QUESTION_NUMBER, questionIndex)
-            bundle.putInt(EXTRA_UNIT_ID, unitId)
-            bundle.putInt(EXTRA_STEP, stepIndex)
-            fragment.arguments = bundle
-            return fragment
+        fun newInstance(
+            questionIndex: Int,
+            unitId: Int,
+            stepIndex: Int
+        ): FragmentUnderstandQuestions = FragmentUnderstandQuestions().apply {
+            arguments = Bundle().apply {
+                putInt(EXTRA_QUESTION_NUMBER, questionIndex)
+                putInt(EXTRA_UNIT_ID, unitId)
+                putInt(EXTRA_STEP, stepIndex)
+            }
         }
     }
 }

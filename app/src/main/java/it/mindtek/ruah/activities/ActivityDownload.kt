@@ -1,55 +1,92 @@
 package it.mindtek.ruah.activities
 
-import android.content.BroadcastReceiver
-import android.content.Context
+import android.Manifest
 import android.content.Intent
-import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import it.mindtek.ruah.R
-import it.mindtek.ruah.pojos.Download
-import it.mindtek.ruah.services.DownloadService
-import kotlinx.android.synthetic.main.activity_download.*
+import it.mindtek.ruah.databinding.ActivityDownloadBinding
+import it.mindtek.ruah.services.DownloadWorker
 
 class ActivityDownload : AppCompatActivity() {
+    private lateinit var workManager: WorkManager
+    private lateinit var request: OneTimeWorkRequest
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_download)
-        registerReceiver()
-        startService(Intent(this, DownloadService::class.java))
-    }
-
-    private fun registerReceiver() {
-        val bManager = LocalBroadcastManager.getInstance(this)
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(MESSAGE_PROGRESS)
-        intentFilter.addAction(PARSE_COMPLETED)
-        bManager.registerReceiver(broadcastReceiver, intentFilter)
-    }
-
-    private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == MESSAGE_PROGRESS) {
-                val download = intent.getParcelableExtra<Download>(DOWNLOAD)!!
-                progress.progress = download.progress
-                if (download.progress == 100) {
-                    progressText.text = getString(R.string.downloaded)
-                    progress.isIndeterminate = true
-                } else
-                    progressText.text = String.format(getString(R.string.downloaded_mb), download.currentFileSize, download.totalFileSize)
-            } else if (intent.action == PARSE_COMPLETED) {
-                progress.isIndeterminate = false
-                progress.progress = 100
-                startActivity(Intent(this@ActivityDownload, ActivityUnits::class.java))
-                finish()
+        val binding: ActivityDownloadBinding = ActivityDownloadBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        workManager = WorkManager.getInstance(this)
+        request = OneTimeWorkRequest.Builder(DownloadWorker::class.java).run {
+            setConstraints(Constraints.Builder().run {
+                setRequiredNetworkType(NetworkType.CONNECTED)
+                build()
+            })
+            setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            build()
+        }
+        workManager.getWorkInfoByIdLiveData(request.id).observe(this) {
+            it?.let {
+                if (it.state == WorkInfo.State.SUCCEEDED) {
+                    startActivity(Intent(this, ActivityUnits::class.java))
+                    finish()
+                } else {
+                    binding.progress.progress = it.progress.getInt(PROGRESS, 0)
+                    binding.progressText.text = if (it.progress.getBoolean(COMPLETED, false))
+                        getString(R.string.downloaded) else String.format(
+                        getString(R.string.downloaded_mb),
+                        it.progress.getLong(READ_MB, 0),
+                        it.progress.getLong(TOTAL_MB, 0)
+                    )
+                }
             }
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Dexter.withContext(this)
+            .withPermission(Manifest.permission.POST_NOTIFICATIONS)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    workManager.enqueueUniqueWork(DOWNLOAD_WORKER, ExistingWorkPolicy.KEEP, request)
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    workManager.enqueueUniqueWork(DOWNLOAD_WORKER, ExistingWorkPolicy.KEEP, request)
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    token?.continuePermissionRequest()
+                }
+
+            }).check()
+        else workManager.enqueueUniqueWork(DOWNLOAD_WORKER, ExistingWorkPolicy.KEEP, request)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        workManager.cancelUniqueWork(DOWNLOAD_WORKER)
     }
 
     companion object {
-        const val MESSAGE_PROGRESS = "message_progress"
-        const val PARSE_COMPLETED = "book_parse_completed"
-        const val DOWNLOAD = "download"
+        const val READ_MB = "read_mb"
+        const val TOTAL_MB = "total_mb"
+        const val PROGRESS = "progress"
+        const val COMPLETED = "completed"
+        private const val DOWNLOAD_WORKER = "download_worker"
     }
 }

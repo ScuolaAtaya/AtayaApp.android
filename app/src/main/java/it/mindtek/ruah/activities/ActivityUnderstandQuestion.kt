@@ -1,21 +1,21 @@
 package it.mindtek.ruah.activities
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.ActivityUnderstandQuestionBinding
 import it.mindtek.ruah.enums.Category
-import it.mindtek.ruah.fragments.understand.FragmentUnderstandQuestions
+import it.mindtek.ruah.fragments.FragmentUnderstandQuestions
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
-import it.mindtek.ruah.kotlin.extensions.compat21
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
+import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
 class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterface {
     private var unitId: Int = -1
@@ -24,7 +24,11 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_understand_question)
+        val binding: ActivityUnderstandQuestionBinding =
+            ActivityUnderstandQuestionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.activityUnderstandQuestionToolbar.setTopPadding()
+        setSupportActionBar(binding.activityUnderstandQuestionToolbar)
         intent?.let {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
             understandIndex = it.getIntExtra(ActivityUnderstand.STEP_INDEX, -1)
@@ -36,42 +40,39 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         })
         setup()
         replaceFragment(
-            FragmentUnderstandQuestions.newInstance(
-                questionIndex,
-                unitId,
-                understandIndex
-            ), R.id.placeholder, false
+            FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex),
+            R.id.activity_understand_question_placeholder,
+            false
         )
     }
 
     override fun goToNextQuestion(index: Int) {
         questionIndex = index
         replaceFragment(
-            FragmentUnderstandQuestions.newInstance(
-                questionIndex,
-                unitId,
-                understandIndex
-            ), R.id.placeholder, true
+            FragmentUnderstandQuestions.newInstance(questionIndex, unitId, understandIndex),
+            R.id.activity_understand_question_placeholder,
+            true
         )
     }
 
     override fun goToFinish() {
-        val intent = Intent(this, ActivityIntro::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
-        intent.putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
-        startActivity(intent)
+        startActivity(Intent(this, ActivityIntro::class.java).apply {
+            putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
+            putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
+        })
     }
 
     override fun goToVideo(index: Int, isVideoWatched: Boolean) {
-        val intent = Intent(this, ActivityUnderstand::class.java)
-        intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-        intent.putExtra(ActivityUnderstand.STEP_INDEX, index)
-        intent.putExtra(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
-        startActivity(intent)
+        startActivity(Intent(this, ActivityUnderstand::class.java).apply {
+            putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            putExtra(ActivityUnderstand.STEP_INDEX, index)
+            putExtra(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
+        })
         finish()
     }
 
+    @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)
@@ -79,22 +80,17 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         unitObservable.observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(
-                    ColorDrawable(ResourceProvider.getColor(this, it.name))
+                    ResourceProvider.getColor(this, it.name).toDrawable()
                 )
-                compat21(@TargetApi(21) {
-                    val window = window
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM)
                     window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
-                }, {})
             }
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressedDispatcher.onBackPressed()
-        }
-        return false
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

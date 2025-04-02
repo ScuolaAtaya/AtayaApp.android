@@ -1,4 +1,4 @@
-package it.mindtek.ruah.fragments.understand
+package it.mindtek.ruah.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -19,15 +19,14 @@ import it.mindtek.ruah.activities.ActivityUnderstand
 import it.mindtek.ruah.activities.ActivityUnderstandQuestion
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.FragmentUnderstandVideoBinding
 import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.kotlin.extensions.*
 import it.mindtek.ruah.pojos.PojoUnderstand
-import kotlinx.android.synthetic.main.fragment_understand_video.*
-import org.jetbrains.anko.backgroundColor
 import java.io.File
 
-
 class FragmentUnderstandVideo : Fragment() {
+    private lateinit var binding: FragmentUnderstandVideoBinding
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var isVideoWatched: Boolean = false
@@ -40,8 +39,10 @@ class FragmentUnderstandVideo : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_understand_video, container, false)
+    ): View {
+        binding = FragmentUnderstandVideoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,7 +65,9 @@ class FragmentUnderstandVideo : Fragment() {
         understand = db.understandDao().getUnderstandByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
-            stepLayout.backgroundColor = ResourceProvider.getColor(requireActivity(), it.name)
+            binding.stepLayout.setBackgroundColor(
+                ResourceProvider.getColor(requireActivity(), it.name)
+            )
         }
         setupVideoAndAudio(understand[stepIndex])
         setupSection()
@@ -79,14 +82,14 @@ class FragmentUnderstandVideo : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
-        step.text = "${stepIndex + 1}/${understand.size}"
-        next.isEnabled = isVideoWatched
-        next.setOnClickListener {
+        binding.step.text = "${stepIndex + 1}/${understand.size}"
+        binding.next.isEnabled = isVideoWatched
+        binding.next.setOnClickListener {
             audioPlayer?.release()
-            val intent = Intent(requireActivity(), ActivityUnderstandQuestion::class.java)
-            intent.putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            intent.putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
-            startActivity(intent)
+            startActivity(Intent(requireActivity(), ActivityUnderstandQuestion::class.java).apply {
+                putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
+                putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
+            })
         }
     }
 
@@ -94,7 +97,7 @@ class FragmentUnderstandVideo : Fragment() {
         videoPlayerView?.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 videoPlayer = youTubePlayer
-                videoPlayer!!.loadVideo(video.value, 0f)
+                videoPlayer?.loadVideo(video.value, 0f)
             }
 
             override fun onStateChange(
@@ -106,7 +109,7 @@ class FragmentUnderstandVideo : Fragment() {
                     PlayerConstants.PlayerState.ENDED -> {
                         if (canAccessActivity) {
                             isVideoWatched = true
-                            next.enable()
+                            binding.next.enable()
                         }
                     }
 
@@ -119,18 +122,18 @@ class FragmentUnderstandVideo : Fragment() {
             }
         })
         if (!video.credits.isNullOrBlank()) {
-            videoCredits.setVisible()
-            videoCredits.text = video.credits
+            binding.videoCredits.setVisible()
+            binding.videoCredits.text = video.credits
         }
     }
 
     private fun setupAudio(audio: ModelMedia) {
-        listen.setOnClickListener {
+        binding.listen.setOnClickListener {
             playAudio(audio.value)
         }
         if (!audio.credits.isNullOrBlank()) {
-            audioCredits.setVisible()
-            audioCredits.text = audio.credits
+            binding.audioCredits.setVisible()
+            binding.audioCredits.text = audio.credits
         }
     }
 
@@ -161,14 +164,12 @@ class FragmentUnderstandVideo : Fragment() {
             unitId: Int,
             stepIndex: Int,
             isVideoWatched: Boolean
-        ): FragmentUnderstandVideo {
-            val fragment = FragmentUnderstandVideo()
-            val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            bundle.putInt(ActivityUnderstand.STEP_INDEX, stepIndex)
-            bundle.putBoolean(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
-            fragment.arguments = bundle
-            return fragment
+        ): FragmentUnderstandVideo = FragmentUnderstandVideo().apply {
+            arguments = Bundle().apply {
+                putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
+                putInt(ActivityUnderstand.STEP_INDEX, stepIndex)
+                putBoolean(ActivityUnderstand.VIDEO_WATCHED, isVideoWatched)
+            }
         }
     }
 }

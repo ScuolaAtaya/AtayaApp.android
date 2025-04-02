@@ -16,6 +16,8 @@ enum class Category(val value: Int, @StringRes val title: Int, @DrawableRes val 
     FINAL_TEST(4, R.string.section_final_test, R.drawable.edit, R.string.section_final_test_description, R.raw.verifica_finale);
 
     companion object {
-        fun from(value: Int): Category? = values().firstOrNull { it.value == value }
+        fun from(value: Int): Category = entries.first {
+            it.value == value
+        }
     }
 }

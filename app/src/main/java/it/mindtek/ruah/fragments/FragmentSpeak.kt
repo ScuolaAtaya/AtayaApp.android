@@ -1,12 +1,12 @@
-package it.mindtek.ruah.fragments.speak
+package it.mindtek.ruah.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,24 +14,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
-import it.mindtek.ruah.config.GlideApp
+import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
+import it.mindtek.ruah.databinding.FragmentSpeakBinding
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
-import it.mindtek.ruah.kotlin.extensions.*
-import kotlinx.android.synthetic.main.fragment_speak.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
+import it.mindtek.ruah.kotlin.extensions.canAccessActivity
+import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.disable
+import it.mindtek.ruah.kotlin.extensions.enable
+import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.setGone
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import java.io.File
 
 /**
  * Created by alessandrogaboardi on 15/12/2017.
  */
 class FragmentSpeak : Fragment() {
+    private lateinit var binding: FragmentSpeakBinding
+    private lateinit var recorder: MediaRecorder
+    private lateinit var communicator: SpeakActivityInterface
     private var unitId: Int = -1
     private var stepIndex: Int = -1
     private var recording: Boolean = false
@@ -39,15 +52,15 @@ class FragmentSpeak : Fragment() {
     private var speak: MutableList<ModelSpeak> = mutableListOf()
     private var recodedPlayer: MediaPlayer? = null
     private var player: MediaPlayer? = null
-    private lateinit var recorder: MediaRecorder
-    private lateinit var communicator: SpeakActivityInterface
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_speak, container, false)
+    ): View {
+        binding = FragmentSpeakBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,15 +72,14 @@ class FragmentSpeak : Fragment() {
         setup()
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setup() {
         communicator = requireActivity() as SpeakActivityInterface
         speak = db.speakDao().getSpeakByUnitId(unitId)
         val unit = db.unitDao().getUnitById(unitId)
         unit?.let {
             @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
-            stepBackground.backgroundColor = color
-            listenButton.supportBackgroundTintList = ColorStateList.valueOf(color)
+            binding.stepBackground.setBackgroundColor(color)
+            binding.listenButton.backgroundTintList = ColorStateList.valueOf(color)
         }
         setupPicture()
         setupAudio()
@@ -77,41 +89,41 @@ class FragmentSpeak : Fragment() {
     private fun setupPicture() {
         val picture = speak[stepIndex].picture
         val pictureImage = File(fileFolder.absolutePath, picture.value)
-        GlideApp.with(this).load(pictureImage).placeholder(R.color.grey).into(stepImage)
+        Glide.with(this).load(pictureImage).placeholder(R.color.grey).into(binding.stepImage)
         if (!picture.credits.isNullOrBlank()) {
-            stepImageCredits.setVisible()
-            stepImageCredits.text = picture.credits
+            binding.stepImageCredits.setVisible()
+            binding.stepImageCredits.text = picture.credits
         }
     }
 
     private fun setupAudio() {
         val audio = speak[stepIndex].audio
-        listenButton.setOnClickListener {
+        binding.listenButton.setOnClickListener {
             if (!recording) playAudio(audio.value)
         }
         if (!audio.credits.isNullOrBlank()) {
-            audioCredits.setVisible()
-            audioCredits.text = audio.credits
+            binding.audioCredits.setVisible()
+            binding.audioCredits.text = audio.credits
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupSection() {
-        step.text = "${stepIndex + 1}/${speak.size}"
-        record.setOnClickListener {
+        binding.step.text = "${stepIndex + 1}/${speak.size}"
+        binding.record.setOnClickListener {
             if (isLocked) return@setOnClickListener
             if (recording) endRecording() else startRecording()
         }
-        next.disable()
-        next.setOnClickListener {
+        binding.next.disable()
+        binding.next.setOnClickListener {
             if (recording) endRecording()
             destroyPlayers()
             destroyFile()
             if (stepIndex + 1 < speak.size) communicator.goToNext(stepIndex + 1)
             else communicator.goToFinish()
         }
-        listenAgain.disable()
-        listenAgain.setOnClickListener {
+        binding.listenAgain.disable()
+        binding.listenAgain.setOnClickListener {
             playRecordedAudio()
         }
     }
@@ -124,6 +136,7 @@ class FragmentSpeak : Fragment() {
                 player = initPlayer(audioFile)
                 player?.start()
             }
+
             player?.isPlaying == true -> player?.pause()
             else -> player?.start()
         }
@@ -132,48 +145,54 @@ class FragmentSpeak : Fragment() {
     private fun startRecording() {
         player?.pause()
         recodedPlayer?.pause()
-        listenAgain.disable()
-        next.disable()
-        if (initRecorder()) {
-            recording = true
-            record.setImageResource(R.drawable.stop)
-            pulsator.start()
-            record.compatElevation = requireActivity().dip(16f).toFloat()
-            recorder.start()
-        }
+        binding.listenAgain.disable()
+        binding.next.disable()
+        Dexter.withContext(requireActivity()).withPermission(Manifest.permission.RECORD_AUDIO)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    setupRecorder()
+                    recording = true
+                    binding.record.setImageResource(R.drawable.stop)
+                    binding.pulsator.start()
+                    binding.record.compatElevation =
+                        LayoutUtils.dpToPx(requireActivity(), 16).toFloat()
+                    recorder.start()
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    binding.record.isEnabled = false
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    token?.continuePermissionRequest()
+                }
+
+            }).check()
     }
 
     private fun endRecording() {
         isLocked = true
-        loading.setVisible()
-        pulsator.stop()
-        record.compatElevation = requireActivity().dip(8f).toFloat()
-        record.setImageResource(R.drawable.mic)
+        binding.loading.setVisible()
+        binding.pulsator.stop()
+        binding.record.compatElevation = LayoutUtils.dpToPx(requireActivity(), 8).toFloat()
+        binding.record.setImageResource(R.drawable.mic)
         Handler(Looper.getMainLooper()).postDelayed({
             recording = false
             isLocked = false
             recorder.stop()
-            loading.setGone()
-            listenAgain.enable()
-            next.enable()
+            binding.loading.setGone()
+            binding.listenAgain.enable()
+            binding.next.enable()
         }, 1000)
     }
 
-    private fun initRecorder(): Boolean =
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.RECORD_AUDIO
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            setupRecorder()
-            true
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
-            false
-        }
-
+    @Suppress("DEPRECATION")
     private fun setupRecorder() {
-        recorder = MediaRecorder()
+        recorder =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) MediaRecorder(requireActivity()) else MediaRecorder()
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB)
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB)
@@ -190,6 +209,7 @@ class FragmentSpeak : Fragment() {
                 recodedPlayer = initPlayer(audioFile)
                 recodedPlayer?.start()
             }
+
             recodedPlayer?.isPlaying == true -> recodedPlayer?.pause()
             else -> recodedPlayer?.start()
         }
@@ -213,22 +233,6 @@ class FragmentSpeak : Fragment() {
         if (file.exists()) file.delete()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_PERMISSION_AUDIO) {
-            permissions.forEachIndexed { index: Int, s: String ->
-                if (s == Manifest.permission.RECORD_AUDIO) {
-                    if (grantResults[index] == PackageManager.PERMISSION_GRANTED) setupRecorder()
-                    else record.isEnabled = false
-                }
-            }
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         destroyPlayers()
@@ -236,16 +240,13 @@ class FragmentSpeak : Fragment() {
     }
 
     companion object {
-        const val EXTRA_STEP = "extra step int position"
-        const val REQUEST_PERMISSION_AUDIO = 20183
+        private const val EXTRA_STEP = "extra step int position"
 
-        fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak {
-            val frag = FragmentSpeak()
-            val bundle = Bundle()
-            bundle.putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            bundle.putInt(EXTRA_STEP, stepIndex)
-            frag.arguments = bundle
-            return frag
+        fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak = FragmentSpeak().apply {
+            arguments = Bundle().apply {
+                putInt(ActivityUnit.EXTRA_UNIT_ID, unitId)
+                putInt(EXTRA_STEP, stepIndex)
+            }
         }
     }
 }
