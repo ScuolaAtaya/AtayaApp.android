@@ -28,7 +28,7 @@ class App : MultiDexApplication() {
             NotificationChannel(
                 getString(R.string.notification_channel),
                 getString(R.string.notification_channel),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             )
         )
         AppDatabase.setInstance(
