@@ -3,6 +3,7 @@ package it.mindtek.ruah.config
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Build
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.view.WindowManager
@@ -12,6 +13,7 @@ import it.mindtek.ruah.db.models.ModelMarker
 import java.io.File
 
 
+@Suppress("DEPRECATION")
 @SuppressLint("StaticFieldLeak")
 object ImageWithMarkersGenerator {
     private lateinit var context: Context
@@ -21,24 +23,29 @@ object ImageWithMarkersGenerator {
     }
 
     fun createImageWithMarkers(markerList: MutableList<ModelMarker>, file: File): Bitmap? {
-        val options = BitmapFactory.Options()
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888
-        options.inMutable = true
-        val bitmap: Bitmap = BitmapFactory.decodeFile(file.absolutePath, options) ?: return null
+        val bitmap: Bitmap =
+            BitmapFactory.decodeFile(file.absolutePath, BitmapFactory.Options().apply {
+                inPreferredConfig = Bitmap.Config.ARGB_8888
+                inMutable = true
+            }) ?: return null
         val canvas = Canvas(bitmap)
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val displayMetrics = DisplayMetrics()
-        wm.defaultDisplay.getMetrics(displayMetrics)
+        val wm: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val widthPixels: Int =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) wm.currentWindowMetrics.bounds.width() else {
+                val displayMetrics = DisplayMetrics()
+                wm.defaultDisplay.getMetrics(displayMetrics)
+                displayMetrics.widthPixels
+            }
         markerList.forEach {
-            createMarker(it, canvas, displayMetrics.widthPixels)
+            createMarker(it, canvas, widthPixels)
         }
         return bitmap
     }
 
     private fun createMarker(marker: ModelMarker, canvas: Canvas, width: Int) {
-        val radius = (LayoutUtils.dpToPx(context, 14) * canvas.width / width).toFloat()
-        var x = (marker.x * canvas.width).toFloat()
-        var y = (marker.y * canvas.height).toFloat()
+        val radius: Float = (LayoutUtils.dpToPx(context, 14) * canvas.width / width).toFloat()
+        var x: Float = (marker.x * canvas.width).toFloat()
+        var y: Float = (marker.y * canvas.height).toFloat()
         x = when {
             x < radius -> radius
             x > canvas.width - radius -> canvas.width - radius
@@ -49,14 +56,15 @@ object ImageWithMarkersGenerator {
             y > canvas.height - radius -> canvas.height - radius
             else -> y
         }
-        val paint = Paint()
-        paint.color = ContextCompat.getColor(context, R.color.blue)
-        paint.isAntiAlias = true
-        canvas.drawCircle(x, y, radius, paint)
-        val paintText = TextPaint()
-        paintText.color = ContextCompat.getColor(context, R.color.white)
-        paintText.textSize = LayoutUtils.spToPx(context, 16).toFloat()
-        paintText.textAlign = Paint.Align.CENTER
+        canvas.drawCircle(x, y, radius, Paint().apply {
+            color = ContextCompat.getColor(context, R.color.blue)
+            isAntiAlias = true
+        })
+        val paintText: TextPaint = TextPaint().apply {
+            color = ContextCompat.getColor(context, R.color.white)
+            textSize = LayoutUtils.spToPx(context, 16).toFloat()
+            textAlign = Paint.Align.CENTER
+        }
         val textOffset: Float = (paintText.descent() - paintText.ascent()) / 2 - paintText.descent()
         canvas.drawText(marker.id, x, y + textOffset, paintText)
     }
