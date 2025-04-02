@@ -6,18 +6,18 @@
     tools:context="it.mindtek.ruah.fragments.FragmentFinalTest">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/root"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="16dp">
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingBottom="32dp">
 
         <ImageView
             android:id="@+id/stepImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:visibility="gone"
             app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,8 +33,8 @@
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/stepImage"
-            app:layout_constraintStart_toStartOf="@id/stepImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
         <FrameLayout
@@ -42,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -63,9 +62,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/volume"
             android:paddingStart="16dp"
             android:text="@string/listen"
@@ -83,8 +80,8 @@
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/questionAudio"
-            app:layout_constraintStart_toStartOf="@id/questionAudio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/questionAudio" />
 
         <TextView
@@ -95,17 +92,15 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/blackAlpha54"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@id/questionAudio"
-            app:layout_constraintStart_toStartOf="@id/questionAudio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/questionAudioCredits" />
 
         <LinearLayout
             android:id="@+id/answers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +121,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/check"
             android:drawablePadding="12dp"
             android:paddingStart="16dp"

@@ -1,5 +1,6 @@
 package it.mindtek.ruah.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -31,25 +32,32 @@ class SelectableLettersAdapter(private val listener: OnClickListener) :
         holder.bind(getItem(position))
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun unlockLetter(letter: ModelSyllableItem) {
         currentList.first {
             it.id == letter.id
         }.enabled = true
+        notifyDataSetChanged()
     }
 
     inner class ItemViewHolder(private val binding: ItemLetterSelectableBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelSyllableItem) {
             binding.letter.text = item.text
-            binding.card.background = if (item.enabled)
-                ContextCompat.getDrawable(binding.root.context, R.drawable.card_blue)
-            else ContextCompat.getDrawable(binding.root.context, R.drawable.card_disabled)
+            setCardBackground(item.enabled)
             binding.root.setOnClickListener {
                 if (item.enabled) {
                     item.enabled = false
+                    setCardBackground(false)
                     listener.onLetterTapped(item)
                 }
             }
+        }
+
+        private fun setCardBackground(enabled: Boolean) {
+            binding.card.background =
+                if (enabled) ContextCompat.getDrawable(binding.root.context, R.drawable.card_blue)
+                else ContextCompat.getDrawable(binding.root.context, R.drawable.card_disabled)
         }
     }
 

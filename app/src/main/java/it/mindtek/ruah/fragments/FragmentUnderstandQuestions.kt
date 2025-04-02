@@ -139,7 +139,7 @@ class FragmentUnderstandQuestions : Fragment() {
         }
         if (binding.stepImage.isGone) {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(binding.root)
+            constraintSet.clone(binding.container)
             constraintSet.connect(
                 R.id.questionAudio,
                 ConstraintSet.END,
@@ -147,7 +147,7 @@ class FragmentUnderstandQuestions : Fragment() {
                 ConstraintSet.START,
                 LayoutUtils.dpToPx(requireActivity(), 16)
             )
-            constraintSet.applyTo(binding.root)
+            constraintSet.applyTo(binding.container)
         }
     }
 

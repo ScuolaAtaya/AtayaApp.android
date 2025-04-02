@@ -15,7 +15,7 @@ class SelectedLettersAdapter(
     private val givenLetters: MutableList<ModelSyllableItem>,
     private val listener: OnClickListener
 ) : RecyclerView.Adapter<ViewHolder>() {
-    private var letters: MutableList<String> = mutableListOf()
+    private var letters: MutableList<String> = MutableList(givenLetters.size) { "" }
 
     override fun getItemViewType(position: Int): Int = if (letters[position].isEmpty()) 0 else 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =

@@ -1,5 +1,6 @@
 package it.mindtek.ruah.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -35,10 +36,12 @@ class OptionsAdapter(
         holder.bind(getItem(position))
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun completed(): Boolean {
         currentList.forEach {
             it.correct = it.answer == it.option.markerId
         }
+        notifyDataSetChanged()
         return currentList.all {
             it.correct == true
         }
@@ -73,6 +76,7 @@ class OptionsAdapter(
                     setOnItemClickListener { _, _, position, _ ->
                         item.correct = null
                         item.answer = answers[position]
+                        binding.number.text = item.answer
                         listener.onNumberChanged(currentList.count {
                             !it.answer.isNullOrEmpty()
                         })

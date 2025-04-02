@@ -194,6 +194,7 @@ class FragmentWrite : Fragment() {
             })
         binding.compile.adapter = selectedAdapter
         binding.available.adapter = selectableAdapter
+        selectableAdapter.submitList(letters)
         binding.compile.addItemDecoration(
             GridSpaceItemDecoration(
                 LayoutUtils.dpToPx(requireActivity(), 4),

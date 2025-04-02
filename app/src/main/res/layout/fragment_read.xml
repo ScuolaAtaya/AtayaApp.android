@@ -8,13 +8,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="32dp">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:autoSizeMaxTextSize="14sp"
@@ -37,7 +38,6 @@
             android:id="@+id/stepBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/title"
@@ -61,8 +61,8 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:layout_constraintDimensionRatio="16:9"
-            app:layout_constraintEnd_toEndOf="@id/stepBackground"
-            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             tools:ignore="ContentDescription" />
 
@@ -74,17 +74,15 @@
             android:textColor="@color/blackAlpha54"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/stepImage"
-            app:layout_constraintStart_toStartOf="@id/stepImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
