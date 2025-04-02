@@ -31,7 +31,6 @@
             android:name=".activities.ActivityUnits"
             android:noHistory="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityUnit"
@@ -40,7 +39,6 @@
         <activity
             android:name=".activities.ActivityIntro"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivityUnderstand"
@@ -62,7 +60,6 @@
             android:name=".activities.ActivityDownload"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".activities.ActivitySplash"
