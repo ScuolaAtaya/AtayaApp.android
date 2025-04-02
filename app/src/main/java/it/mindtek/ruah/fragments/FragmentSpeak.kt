@@ -2,11 +2,11 @@ package it.mindtek.ruah.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,9 +14,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import it.mindtek.ruah.R
 import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.LayoutUtils
@@ -24,7 +29,13 @@ import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.FragmentSpeakBinding
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
-import it.mindtek.ruah.kotlin.extensions.*
+import it.mindtek.ruah.kotlin.extensions.canAccessActivity
+import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.disable
+import it.mindtek.ruah.kotlin.extensions.enable
+import it.mindtek.ruah.kotlin.extensions.fileFolder
+import it.mindtek.ruah.kotlin.extensions.setGone
+import it.mindtek.ruah.kotlin.extensions.setVisible
 import java.io.File
 
 /**
@@ -136,13 +147,30 @@ class FragmentSpeak : Fragment() {
         recodedPlayer?.pause()
         binding.listenAgain.disable()
         binding.next.disable()
-        if (initRecorder()) {
-            recording = true
-            binding.record.setImageResource(R.drawable.stop)
-            binding.pulsator.start()
-            binding.record.compatElevation = LayoutUtils.dpToPx(requireActivity(), 16).toFloat()
-            recorder.start()
-        }
+        Dexter.withContext(requireActivity()).withPermission(Manifest.permission.RECORD_AUDIO)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    setupRecorder()
+                    recording = true
+                    binding.record.setImageResource(R.drawable.stop)
+                    binding.pulsator.start()
+                    binding.record.compatElevation =
+                        LayoutUtils.dpToPx(requireActivity(), 16).toFloat()
+                    recorder.start()
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    binding.record.isEnabled = false
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    token?.continuePermissionRequest()
+                }
+
+            }).check()
     }
 
     private fun endRecording() {
@@ -161,21 +189,10 @@ class FragmentSpeak : Fragment() {
         }, 1000)
     }
 
-    private fun initRecorder(): Boolean =
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.RECORD_AUDIO
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            setupRecorder()
-            true
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_PERMISSION_AUDIO)
-            false
-        }
-
+    @Suppress("DEPRECATION")
     private fun setupRecorder() {
-        recorder = MediaRecorder()
+        recorder =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) MediaRecorder(requireActivity()) else MediaRecorder()
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB)
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB)
@@ -216,22 +233,6 @@ class FragmentSpeak : Fragment() {
         if (file.exists()) file.delete()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_PERMISSION_AUDIO) {
-            permissions.forEachIndexed { index: Int, s: String ->
-                if (s == Manifest.permission.RECORD_AUDIO) {
-                    if (grantResults[index] == PackageManager.PERMISSION_GRANTED) setupRecorder()
-                    else binding.record.isEnabled = false
-                }
-            }
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         destroyPlayers()
@@ -240,7 +241,6 @@ class FragmentSpeak : Fragment() {
 
     companion object {
         private const val EXTRA_STEP = "extra step int position"
-        private const val REQUEST_PERMISSION_AUDIO = 20183
 
         fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak = FragmentSpeak().apply {
             arguments = Bundle().apply {
