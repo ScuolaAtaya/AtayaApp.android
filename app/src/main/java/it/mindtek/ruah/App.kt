@@ -3,6 +3,7 @@ package it.mindtek.ruah
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.util.Log
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
@@ -45,7 +46,7 @@ class App : MultiDexApplication() {
             try {
                 ioThread { db.unitDao().saveUnits(units) }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("APP", "An error occurred while generating units", e)
             }
         }
     }
