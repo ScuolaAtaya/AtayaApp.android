@@ -112,6 +112,7 @@ class FragmentRead : Fragment() {
             if (adapter.completed()) {
                 if (stepIndex + 1 < read.size) {
                     optionsPlayers?.release()
+                    optionsPlayers = null
                     communicator.goToNext(stepIndex + 1)
                 } else communicator.goToFinish()
             }

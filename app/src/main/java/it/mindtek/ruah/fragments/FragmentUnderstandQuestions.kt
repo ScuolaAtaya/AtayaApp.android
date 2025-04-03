@@ -116,6 +116,8 @@ class FragmentUnderstandQuestions : Fragment() {
         binding.next.disable()
         binding.next.setOnClickListener {
             destroyPlayers()
+            questionPlayer = null
+            answersPlayer = null
             if (questionIndex + 1 < questions.size) communicator.goToNextQuestion(questionIndex + 1)
             else {
                 if (understandIndex + 1 < understandSize)

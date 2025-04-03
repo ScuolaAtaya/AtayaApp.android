@@ -86,6 +86,7 @@ class FragmentUnderstandVideo : Fragment() {
         binding.next.isEnabled = isVideoWatched
         binding.next.setOnClickListener {
             audioPlayer?.release()
+            audioPlayer = null
             startActivity(Intent(requireActivity(), ActivityUnderstandQuestion::class.java).apply {
                 putExtra(ActivityUnderstand.STEP_INDEX, stepIndex)
                 putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)

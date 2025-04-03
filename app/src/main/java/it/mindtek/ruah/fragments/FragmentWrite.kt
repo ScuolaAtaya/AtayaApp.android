@@ -110,6 +110,7 @@ class FragmentWrite : Fragment() {
         binding.next.disable()
         binding.next.setOnClickListener {
             player?.release()
+            player = null
             if (stepIndex + 1 < write.size) communicator.goToNext(stepIndex + 1)
             else communicator.goToFinish()
         }

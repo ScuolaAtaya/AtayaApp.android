@@ -119,6 +119,8 @@ class FragmentSpeak : Fragment() {
             if (recording) endRecording()
             destroyPlayers()
             destroyFile()
+            player = null
+            recodedPlayer = null
             if (stepIndex + 1 < speak.size) communicator.goToNext(stepIndex + 1)
             else communicator.goToFinish()
         }
