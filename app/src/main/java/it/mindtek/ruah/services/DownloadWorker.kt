@@ -40,6 +40,7 @@ import java.io.FileReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 
 class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
@@ -142,38 +143,36 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
         val inputFile = File(applicationContext.filesDir, FILE_ZIP)
         val outputFolder = File(applicationContext.filesDir, DATA_DIR)
         ZipArchive.unzip(inputFile.absolutePath, outputFolder.absolutePath, "")
-        val json = JSONObject(getJSON())
-        saveUnderstands(json.getJSONArray(UNDERSTANDS))
-        saveSpeak(json.getJSONArray(SPEAK))
-        saveRead(json.getJSONArray(READ))
-        saveWrite(json.getJSONArray(WRITE))
-        saveFinalTest(json.getJSONArray(FINAL_TEST))
-        saveTimestamp(json.getLong(TIMESTAMP))
+        getJSON()?.let {
+            val json = JSONObject(it)
+            db.runInTransaction(Callable {
+                saveUnderstands(json.getJSONArray(UNDERSTANDS))
+                saveSpeak(json.getJSONArray(SPEAK))
+                saveRead(json.getJSONArray(READ))
+                saveWrite(json.getJSONArray(WRITE))
+                saveFinalTest(json.getJSONArray(FINAL_TEST))
+                saveTimestamp(json.getLong(TIMESTAMP))
+            })
+        }
     }
 
-    private fun getJSON(): String {
+    private fun getJSON(): String? {
         val dir = File(applicationContext.filesDir, DATA_DIR)
-        val file = File(dir.absolutePath, "book.json")
-        var result: String
+        val file = File(dir.absolutePath, FILE_JSON)
         val length = file.length()
-        if (length < 1 || length > Integer.MAX_VALUE) {
-            result = ""
+        return if (length < 1 || length > Integer.MAX_VALUE) {
             Log.w(TAG, "File is empty or huge: $file")
-        } else {
-            try {
-                FileReader(file).use {
-                    val content = CharArray(length.toInt())
-                    val numRead = it.read(content)
-                    if (numRead.toLong() != length)
-                        Log.e(TAG, "Incomplete read of $file. Read chars $numRead of $length")
-                    result = String(content, 0, numRead)
-                }
-            } catch (ex: Exception) {
-                Log.e(TAG, "Failure reading $file", ex)
-                result = ""
-            }
+            null
+        } else try {
+            val content = CharArray(length.toInt())
+            val numRead = FileReader(file).read(content)
+            if (numRead.toLong() != length)
+                Log.e(TAG, "Incomplete read of $file. Read chars $numRead of $length")
+            String(content, 0, numRead)
+        } catch (ex: Exception) {
+            Log.e(TAG, "Failure reading $file", ex)
+            null
         }
-        return result
     }
 
     private fun saveUnderstands(understandsJson: JSONArray) {
@@ -255,6 +254,7 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
         private const val TAG = "DownloadWorker"
         private const val DATA_DIR = "data"
         private const val FILE_ZIP = "file.zip"
+        private const val FILE_JSON = "book.json"
         private const val TIMESTAMP = "timestamp"
         private const val UNDERSTANDS = "understand"
         private const val QUESTIONS = "questions"
