@@ -35,7 +35,10 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
         }
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (questionIndex == 0) goToVideo(understandIndex, true)
+                if (questionIndex == 0) goToVideo(understandIndex, true) else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
             }
         })
         setup()
