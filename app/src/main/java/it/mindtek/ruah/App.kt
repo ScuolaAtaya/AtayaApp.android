@@ -37,7 +37,7 @@ class App : MultiDexApplication() {
                 applicationContext,
                 AppDatabase::class.java,
                 getString(R.string.database_name)
-            ).fallbackToDestructiveMigration()
+            ).fallbackToDestructiveMigration(false)
                 .allowMainThreadQueries()
                 .build()
         )
