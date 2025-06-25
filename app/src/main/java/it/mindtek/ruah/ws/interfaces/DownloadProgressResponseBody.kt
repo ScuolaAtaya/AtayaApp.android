@@ -40,7 +40,7 @@ class DownloadProgressInterceptor(private val listener: DownloadProgressListener
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalResponse: Response = chain.proceed(chain.request())
         return originalResponse.newBuilder().run {
-            originalResponse.body()?.let {
+            originalResponse.body?.let {
                 body(DownloadProgressResponseBody(it, listener))
             }
             build()

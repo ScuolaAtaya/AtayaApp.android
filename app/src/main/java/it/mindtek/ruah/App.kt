@@ -52,6 +52,6 @@ class App : MultiDexApplication() {
     }
 
     companion object {
-        const val APP_SP = "app"
+        const val APP_SP: String = "app"
     }
 }

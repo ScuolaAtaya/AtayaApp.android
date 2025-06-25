@@ -60,8 +60,7 @@ class ActivityUnderstand : AppCompatActivity() {
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.UNDERSTAND.title)
-        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this) {
+        db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(
                     ResourceProvider.getColor(this, it.name).toDrawable()
@@ -79,7 +78,7 @@ class ActivityUnderstand : AppCompatActivity() {
     }
 
     companion object {
-        const val STEP_INDEX = "step_index"
-        const val VIDEO_WATCHED = "video_watched"
+        const val STEP_INDEX: String = "step_index"
+        const val VIDEO_WATCHED: String = "video_watched"
     }
 }

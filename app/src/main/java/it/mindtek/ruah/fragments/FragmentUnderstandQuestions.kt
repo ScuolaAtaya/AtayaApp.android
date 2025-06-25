@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -60,15 +61,13 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun setup() {
         communicator = requireActivity() as UnderstandActivityInterface
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
-            val color = ResourceProvider.getColor(requireActivity(), it.name)
+        db.unitDao().getUnitById(unitId)?.let {
+            @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             binding.stepLayout.setBackgroundColor(color)
             binding.questionAudio.backgroundTintList = ColorStateList.valueOf(color)
         }
         understandSize = db.understandDao().countByUnitId(unitId)
-        val understand = db.understandDao().getUnderstandByUnitId(unitId)
-        questions = understand[understandIndex].questions
+        questions = db.understandDao().getUnderstandByUnitId(unitId)[understandIndex].questions
         setupQuestion()
         setupAnswers()
         setupSection()
@@ -84,12 +83,13 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     private fun setupAnswers() {
-        val answers = questions[questionIndex].answers.map {
+        val answers: List<ModelAnswerItem> = questions[questionIndex].answers.map {
             ModelAnswerItem(it.id, it.body, it.audio, it.correct)
         }
         answers.forEach {
             val audioFile = File(fileFolder.absolutePath, it.audio.value)
-            val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+            val player: MediaPlayer =
+                MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
             player.setOnCompletionListener {
                 if (canAccessActivity) player.pause()
             }
@@ -129,27 +129,26 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun setupPicture(picture: ModelMedia?) {
         picture?.let {
-            if (picture.value.isNotBlank()) {
+            if (it.value.isNotBlank()) {
                 binding.stepImage.setVisible()
-                val pictureFile = File(fileFolder.absolutePath, picture.value)
+                val pictureFile = File(fileFolder.absolutePath, it.value)
                 Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(binding.stepImage)
             }
-            if (!picture.credits.isNullOrBlank()) {
+            if (!it.credits.isNullOrBlank()) {
                 binding.stepImageCredits.setVisible()
-                binding.stepImageCredits.text = picture.credits
+                binding.stepImageCredits.text = it.credits
             }
         }
-        if (binding.stepImage.isGone) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(binding.container)
-            constraintSet.connect(
+        if (binding.stepImage.isGone) ConstraintSet().apply {
+            clone(binding.container)
+            connect(
                 R.id.questionAudio,
                 ConstraintSet.END,
                 R.id.stepLayout,
                 ConstraintSet.START,
                 LayoutUtils.dpToPx(requireActivity(), 16)
             )
-            constraintSet.applyTo(binding.container)
+            applyTo(binding.container)
         }
     }
 
@@ -208,7 +207,7 @@ class FragmentUnderstandQuestions : Fragment() {
 
     private fun initPlayer(audio: String): MediaPlayer {
         val audioFile = File(fileFolder.absolutePath, audio)
-        val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        val player: MediaPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
             if (canAccessActivity) player.pause()
         }
@@ -226,9 +225,9 @@ class FragmentUnderstandQuestions : Fragment() {
     }
 
     companion object {
-        private const val EXTRA_QUESTION_NUMBER = "question_number_extra"
-        private const val EXTRA_UNIT_ID = "unit_id_extra"
-        private const val EXTRA_STEP = "extra step int position"
+        private const val EXTRA_QUESTION_NUMBER: String = "question_number_extra"
+        private const val EXTRA_UNIT_ID: String = "unit_id_extra"
+        private const val EXTRA_STEP: String = "extra step int position"
 
         fun newInstance(
             questionIndex: Int,

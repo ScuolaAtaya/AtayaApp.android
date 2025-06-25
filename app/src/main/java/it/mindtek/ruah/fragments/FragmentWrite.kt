@@ -24,6 +24,7 @@ import it.mindtek.ruah.adapters.dividers.GridSpaceItemDecoration
 import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.FragmentWriteBinding
+import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.db.models.ModelWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
@@ -62,8 +63,7 @@ class FragmentWrite : Fragment() {
     private fun setup() {
         communicator = requireActivity() as WriteActivityInterface
         write = db.writeDao().getWriteByUnitId(unitId)
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
+        db.unitDao().getUnitById(unitId)?.let {
             @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             binding.stepLayout.setBackgroundColor(color)
             binding.editText.backgroundTintList = ColorStateList.valueOf(color)
@@ -79,7 +79,7 @@ class FragmentWrite : Fragment() {
     }
 
     private fun setupAudio() {
-        val audio = write[stepIndex].audio
+        val audio: ModelMedia = write[stepIndex].audio
         val audioFile = File(fileFolder.absolutePath, audio.value)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player?.setOnCompletionListener {
@@ -95,7 +95,7 @@ class FragmentWrite : Fragment() {
     }
 
     private fun setupPicture() {
-        val picture = write[stepIndex].picture
+        val picture: ModelMedia = write[stepIndex].picture
         val pictureFile = File(fileFolder.absolutePath, picture.value)
         Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(binding.stepImage)
         if (!picture.credits.isNullOrBlank()) {
@@ -166,14 +166,14 @@ class FragmentWrite : Fragment() {
     }
 
     private fun setupRecyclers() {
-        val letters = write[stepIndex].letters.map {
+        val letters: MutableList<ModelSyllableItem> = write[stepIndex].letters.map {
             ModelSyllableItem(it.id, it.text, it.occurences, it.enabled)
         }.toMutableList()
-        val selectableCol = calculateSelectableColumns()
-        val selectedCol = calculateColumns()
-        val selectedSpanCount =
+        val selectableCol: Int = calculateSelectableColumns()
+        val selectedCol: Int = calculateColumns()
+        val selectedSpanCount: Int =
             if (letters.size >= selectedCol) selectedCol else letters.size
-        val selectableSpanCount =
+        val selectableSpanCount: Int =
             if (letters.size >= selectableCol) selectableCol else letters.size
         binding.compile.layoutManager = GridLayoutManager(requireActivity(), selectedSpanCount)
         binding.available.layoutManager = GridLayoutManager(requireActivity(), selectableSpanCount)
@@ -211,15 +211,15 @@ class FragmentWrite : Fragment() {
     }
 
     private fun calculateColumns(): Int {
-        val displayMetrics = requireContext().resources.displayMetrics
-        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-        val columns = ((dpWidth - 32) / 40) - 1
+        val dpWidth: Float =
+            requireContext().resources.displayMetrics.widthPixels / requireContext().resources.displayMetrics.density
+        val columns: Float = ((dpWidth - 32) / 40) - 1
         return columns.toInt()
     }
 
     private fun calculateSelectableColumns(): Int {
-        val displayMetrics = requireContext().resources.displayMetrics
-        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+        val dpWidth =
+            requireContext().resources.displayMetrics.widthPixels / requireContext().resources.displayMetrics.density
         val columns = ((dpWidth - 32) / 40) - 1
         return columns.toInt()
     }
@@ -232,8 +232,8 @@ class FragmentWrite : Fragment() {
     private fun setLowerCase(text: String) = text.lowercase(Locale.ITALIAN)
 
     companion object {
-        private const val EXTRA_STEP = "extra step int position"
-        private const val BASIC = "basic"
+        private const val EXTRA_STEP: String = "extra step int position"
+        private const val BASIC: String = "basic"
 
         fun newInstance(unitId: Int, stepIndex: Int): FragmentWrite = FragmentWrite().apply {
             arguments = Bundle().apply {

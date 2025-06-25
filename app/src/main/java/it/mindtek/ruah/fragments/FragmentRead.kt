@@ -15,6 +15,7 @@ import it.mindtek.ruah.adapters.OptionsAdapter
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.FragmentReadBinding
+import it.mindtek.ruah.db.models.ModelMarker
 import it.mindtek.ruah.db.models.ModelReadOption
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
@@ -56,13 +57,12 @@ class FragmentRead : Fragment() {
 
     private fun setup() {
         communicator = requireActivity() as ReadActivityInterface
-        val read = db.readDao().getReadByUnitId(unitId)
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
+        db.unitDao().getUnitById(unitId)?.let {
             binding.stepBackground.setBackgroundColor(
                 ResourceProvider.getColor(requireActivity(), it.name)
             )
         }
+        val read: MutableList<PojoRead> = db.readDao().getReadByUnitId(unitId)
         setupPicture(read[stepIndex])
         setupOptions(read[stepIndex])
         setupSection(read)
@@ -82,8 +82,8 @@ class FragmentRead : Fragment() {
     }
 
     private fun setupOptions(read: PojoRead) {
-        val markerList = read.read?.markers ?: mutableListOf()
-        val answerList = markerList.map {
+        val markerList: MutableList<ModelMarker> = read.read?.markers ?: mutableListOf()
+        val answerList: MutableList<String> = markerList.map {
             it.id
         }.toMutableList()
         adapter =
@@ -157,7 +157,7 @@ class FragmentRead : Fragment() {
     }
 
     companion object {
-        private const val EXTRA_STEP = "extra_current_step_number"
+        private const val EXTRA_STEP: String = "extra_current_step_number"
 
         fun newInstance(unitId: Int, stepIndex: Int): FragmentRead = FragmentRead().apply {
             arguments = Bundle().apply {

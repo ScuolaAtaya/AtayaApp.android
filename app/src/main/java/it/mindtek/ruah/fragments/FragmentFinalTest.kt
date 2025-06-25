@@ -22,6 +22,7 @@ import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.*
 import java.io.File
 import androidx.core.view.isGone
+import it.mindtek.ruah.db.models.ModelMedia
 
 class FragmentFinalTest : Fragment() {
     private lateinit var binding: FragmentFinalTestBinding
@@ -52,12 +53,10 @@ class FragmentFinalTest : Fragment() {
 
     private fun setup() {
         communicator = requireActivity() as FinalTestActivityInterface
-        val finalTest = db.finalTestDao().getFinalTestByUnitId(unitId)
-        finalTest.forEach {
+        db.finalTestDao().getFinalTestByUnitId(unitId).forEach {
             questions.addAll(it.questions)
         }
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
+        db.unitDao().getUnitById(unitId)?.let {
             @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             binding.stepLayout.setBackgroundColor(color)
             binding.questionAudio.backgroundTintList = ColorStateList.valueOf(color)
@@ -69,7 +68,7 @@ class FragmentFinalTest : Fragment() {
     }
 
     private fun setupAudio() {
-        val audio = questions[stepIndex].audio
+        val audio: ModelMedia = questions[stepIndex].audio
         val audioFile = File(fileFolder.absolutePath, audio.value)
         player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player?.setOnCompletionListener {
@@ -86,29 +85,27 @@ class FragmentFinalTest : Fragment() {
 
 
     private fun setupPicture() {
-        val picture = questions[stepIndex].picture
-        picture?.let {
+        questions[stepIndex].picture?.let {
             if (it.value.isNotBlank()) {
                 binding.stepImage.setVisible()
                 val pictureFile = File(fileFolder.absolutePath, it.value)
                 Glide.with(this).load(pictureFile).placeholder(R.color.grey).into(binding.stepImage)
             }
-            if (!picture.credits.isNullOrBlank()) {
+            if (!it.credits.isNullOrBlank()) {
                 binding.stepImageCredits.setVisible()
-                binding.stepImageCredits.text = picture.credits
+                binding.stepImageCredits.text = it.credits
             }
         }
-        if (binding.stepImage.isGone) {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(binding.container)
-            constraintSet.connect(
+        if (binding.stepImage.isGone) ConstraintSet().apply {
+            clone(binding.container)
+            connect(
                 R.id.questionAudio,
                 ConstraintSet.END,
                 R.id.stepLayout,
                 ConstraintSet.START,
                 LayoutUtils.dpToPx(requireActivity(), 16)
             )
-            constraintSet.applyTo(binding.container)
+            applyTo(binding.container)
         }
     }
 
@@ -153,7 +150,7 @@ class FragmentFinalTest : Fragment() {
     }
 
     companion object {
-        private const val EXTRA_STEP = "extra_step_int_position"
+        private const val EXTRA_STEP: String = "extra_step_int_position"
 
         fun newInstance(unitId: Int, stepIndex: Int): FragmentFinalTest =
             FragmentFinalTest().apply {

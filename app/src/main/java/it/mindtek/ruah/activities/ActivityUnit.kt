@@ -48,19 +48,19 @@ class ActivityUnit : AppCompatActivity() {
         binding.scrivere.setOnClickListener {
             openIntro(Category.WRITE.value)
         }
-        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this) {
+        db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
-                val isUnderstandCompleted = isCategoryCompleted(it, Category.UNDERSTAND.value)
-                val isSpeakingCompleted = isCategoryCompleted(it, Category.TALK.value)
-                val isReadingCompleted = isCategoryCompleted(it, Category.READ.value)
-                val isWritingCompleted = isCategoryCompleted(it, Category.WRITE.value)
-                val isFinalTestCompleted = isCategoryCompleted(it, Category.FINAL_TEST.value)
+                val isUnderstandCompleted: Boolean =
+                    isCategoryCompleted(it, Category.UNDERSTAND.value)
+                val isSpeakingCompleted: Boolean = isCategoryCompleted(it, Category.TALK.value)
+                val isReadingCompleted: Boolean = isCategoryCompleted(it, Category.READ.value)
+                val isWritingCompleted: Boolean = isCategoryCompleted(it, Category.WRITE.value)
                 if (isUnderstandCompleted) binding.capiamoDone.setVisible()
                 if (isSpeakingCompleted) binding.parliamoDone.setVisible()
                 if (isReadingCompleted) binding.leggiamoDone.setVisible()
                 if (isWritingCompleted) binding.scriviamoDone.setVisible()
-                if (isFinalTestCompleted) binding.verificaFinaleDone.setVisible()
+                if (isCategoryCompleted(it, Category.FINAL_TEST.value))
+                    binding.verificaFinaleDone.setVisible()
                 if (isUnderstandCompleted && isSpeakingCompleted && isReadingCompleted && isWritingCompleted) {
                     binding.iconVerificaFinale.setImageResource(R.drawable.verifica_finale)
                     binding.verificaFinaleText.setTextColor(
@@ -104,6 +104,6 @@ class ActivityUnit : AppCompatActivity() {
         }
 
     companion object {
-        const val EXTRA_UNIT_ID = "unit_id_extra"
+        const val EXTRA_UNIT_ID: String = "unit_id_extra"
     }
 }

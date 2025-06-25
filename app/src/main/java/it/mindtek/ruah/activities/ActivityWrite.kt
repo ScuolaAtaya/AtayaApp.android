@@ -29,11 +29,19 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
             unitId = it.getIntExtra(ActivityUnit.EXTRA_UNIT_ID, -1)
         }
         setup()
-        replaceFragment(FragmentWrite.newInstance(unitId, 0), R.id.activity_write_placeholder, false)
+        replaceFragment(
+            FragmentWrite.newInstance(unitId, 0),
+            R.id.activity_write_placeholder,
+            false
+        )
     }
 
     override fun goToNext(index: Int) {
-        replaceFragment(FragmentWrite.newInstance(unitId, index), R.id.activity_write_placeholder, true)
+        replaceFragment(
+            FragmentWrite.newInstance(unitId, index),
+            R.id.activity_write_placeholder,
+            true
+        )
     }
 
     override fun goToFinish() {
@@ -48,8 +56,7 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.WRITE.title)
-        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this) {
+        db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(
                     ResourceProvider.getColor(this, it.name).toDrawable()

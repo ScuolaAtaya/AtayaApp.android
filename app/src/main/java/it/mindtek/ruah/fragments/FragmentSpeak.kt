@@ -27,6 +27,7 @@ import it.mindtek.ruah.activities.ActivityUnit
 import it.mindtek.ruah.config.LayoutUtils
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.FragmentSpeakBinding
+import it.mindtek.ruah.db.models.ModelMedia
 import it.mindtek.ruah.db.models.ModelSpeak
 import it.mindtek.ruah.interfaces.SpeakActivityInterface
 import it.mindtek.ruah.kotlin.extensions.canAccessActivity
@@ -75,8 +76,7 @@ class FragmentSpeak : Fragment() {
     private fun setup() {
         communicator = requireActivity() as SpeakActivityInterface
         speak = db.speakDao().getSpeakByUnitId(unitId)
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
+        db.unitDao().getUnitById(unitId)?.let {
             @ColorInt val color: Int = ResourceProvider.getColor(requireActivity(), it.name)
             binding.stepBackground.setBackgroundColor(color)
             binding.listenButton.backgroundTintList = ColorStateList.valueOf(color)
@@ -87,7 +87,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun setupPicture() {
-        val picture = speak[stepIndex].picture
+        val picture: ModelMedia = speak[stepIndex].picture
         val pictureImage = File(fileFolder.absolutePath, picture.value)
         Glide.with(this).load(pictureImage).placeholder(R.color.grey).into(binding.stepImage)
         if (!picture.credits.isNullOrBlank()) {
@@ -97,7 +97,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun setupAudio() {
-        val audio = speak[stepIndex].audio
+        val audio: ModelMedia = speak[stepIndex].audio
         binding.listenButton.setOnClickListener {
             if (!recording) playAudio(audio.value)
         }
@@ -218,7 +218,7 @@ class FragmentSpeak : Fragment() {
     }
 
     private fun initPlayer(audioFile: File): MediaPlayer {
-        val player = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
+        val player: MediaPlayer = MediaPlayer.create(requireActivity(), Uri.fromFile(audioFile))
         player.setOnCompletionListener {
             if (canAccessActivity) player.pause()
         }
@@ -242,7 +242,7 @@ class FragmentSpeak : Fragment() {
     }
 
     companion object {
-        private const val EXTRA_STEP = "extra step int position"
+        private const val EXTRA_STEP: String = "extra step int position"
 
         fun newInstance(unitId: Int, stepIndex: Int): FragmentSpeak = FragmentSpeak().apply {
             arguments = Bundle().apply {

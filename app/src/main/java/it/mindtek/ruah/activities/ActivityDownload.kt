@@ -83,10 +83,10 @@ class ActivityDownload : AppCompatActivity() {
     }
 
     companion object {
-        const val READ_MB = "read_mb"
-        const val TOTAL_MB = "total_mb"
-        const val PROGRESS = "progress"
-        const val COMPLETED = "completed"
-        private const val DOWNLOAD_WORKER = "download_worker"
+        const val READ_MB: String = "read_mb"
+        const val TOTAL_MB: String = "total_mb"
+        const val PROGRESS: String = "progress"
+        const val COMPLETED: String = "completed"
+        private const val DOWNLOAD_WORKER: String = "download_worker"
     }
 }

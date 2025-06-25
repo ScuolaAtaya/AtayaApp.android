@@ -2,6 +2,7 @@ package it.mindtek.ruah.activities
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.WindowManager
@@ -74,18 +75,16 @@ class ActivityIntro : AppCompatActivity() {
             .override(LayoutUtils.dpToPx(this, 24), LayoutUtils.dpToPx(this, 24))
             .into(binding.sectionIcon)
         binding.sectionName.text = getString(category.title)
-        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this) {
+        db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 unitObject = it
                 @ColorInt val color: Int = ResourceProvider.getColor(this, it.name)
-                val window = window
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
                 binding.coordinator.setBackgroundColor(color)
                 binding.fabBack.imageTintList = ColorStateList.valueOf(color)
                 binding.unitIcon.setImageResource(ResourceProvider.getIcon(this, it.name))
-                val play = ContextCompat.getDrawable(this, R.drawable.play)
+                val play: Drawable? = ContextCompat.getDrawable(this, R.drawable.play)
                 binding.buttonNext.setCompoundDrawables(null, null, play, null)
                 binding.buttonNext.setColor(color)
             }
@@ -169,7 +168,7 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_CATEGORY_ID = "category_id"
-        const val EXTRA_IS_FINISH = "extra_is_finish_section"
+        const val EXTRA_CATEGORY_ID: String = "category_id"
+        const val EXTRA_IS_FINISH: String = "extra_is_finish_section"
     }
 }

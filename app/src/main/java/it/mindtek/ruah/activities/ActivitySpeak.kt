@@ -56,8 +56,7 @@ class ActivitySpeak : AppCompatActivity(), SpeakActivityInterface {
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(Category.TALK.title)
-        val unitObservable = db.unitDao().getUnitByIdAsync(unitId)
-        unitObservable.observe(this) {
+        db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(
                     ResourceProvider.getColor(this, it.name).toDrawable()

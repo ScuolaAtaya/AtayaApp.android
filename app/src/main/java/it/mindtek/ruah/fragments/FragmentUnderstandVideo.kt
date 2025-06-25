@@ -63,8 +63,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setup() {
         understand = db.understandDao().getUnderstandByUnitId(unitId)
-        val unit = db.unitDao().getUnitById(unitId)
-        unit?.let {
+        db.unitDao().getUnitById(unitId)?.let {
             binding.stepLayout.setBackgroundColor(
                 ResourceProvider.getColor(requireActivity(), it.name)
             )

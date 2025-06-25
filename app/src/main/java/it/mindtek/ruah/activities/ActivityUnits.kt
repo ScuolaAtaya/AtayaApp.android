@@ -62,6 +62,6 @@ class ActivityUnits : AppCompatActivity(), UnitsAdapter.OnClickListener {
     }
 
     companion object {
-        const val TIMESTAMP = "timestamp"
+        const val TIMESTAMP: String = "timestamp"
     }
 }

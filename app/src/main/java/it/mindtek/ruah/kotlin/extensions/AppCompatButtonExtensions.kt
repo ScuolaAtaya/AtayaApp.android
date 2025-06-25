@@ -12,10 +12,6 @@ import it.mindtek.ruah.config.LayoutUtils
 /**
  * Created by alessandrogaboardi on 05/12/2017.
  */
-const val LEFT = 0
-const val TOP = 1
-const val RIGHT = 2
-const val BOTTOM = 3
 
 fun AppCompatButton.setColor(color: Int) {
     setTextColor(color)
@@ -23,17 +19,16 @@ fun AppCompatButton.setColor(color: Int) {
 }
 
 fun AppCompatButton.setDrawableColor(color: Int) {
-    val drawables = compoundDrawables
-    val left = tint(drawables[LEFT], color, context)
-    val top = tint(drawables[TOP], color, context)
-    val right = tint(drawables[RIGHT], color, context)
-    val bottom = tint(drawables[BOTTOM], color, context)
+    val left: Drawable? = tint(compoundDrawables[0], color, context)
+    val top: Drawable? = tint(compoundDrawables[1], color, context)
+    val right: Drawable? = tint(compoundDrawables[2], color, context)
+    val bottom: Drawable? = tint(compoundDrawables[3], color, context)
     setCompoundDrawables(left, top, right, bottom)
 }
 
 @Suppress("DEPRECATION")
 fun tint(drawable: Drawable?, color: Int, context: Context): Drawable? = drawable?.let {
-    drawable.constantState?.newDrawable()?.apply {
+    it.constantState?.newDrawable()?.apply {
         setBounds(0, 0, LayoutUtils.dpToPx(context, 24), LayoutUtils.dpToPx(context, 24))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             mutate().colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)

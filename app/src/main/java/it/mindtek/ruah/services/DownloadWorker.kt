@@ -33,6 +33,7 @@ import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.fromJson
 import it.mindtek.ruah.ws.interfaces.ApiClient
 import it.mindtek.ruah.ws.interfaces.DownloadProgressListener
+import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -41,6 +42,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
@@ -48,12 +50,12 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
     private var lastUpdateTime: Long = 0L
 
     override fun startWork(): ListenableFuture<Result> = CallbackToFutureAdapter.getFuture {
-        Executors.newSingleThreadExecutor().apply {
-            execute {
+        Executors.newSingleThreadExecutor().let { executor: ExecutorService ->
+            executor.execute {
                 try {
-                    ApiClient.downloadFile(this@DownloadWorker).execute().body()?.let {
+                    ApiClient.downloadFile(this).execute().body()?.let { response: ResponseBody ->
                         val outputFile = File(applicationContext.filesDir, FILE_ZIP)
-                        val inputStream: InputStream = it.byteStream()
+                        val inputStream: InputStream = response.byteStream()
                         val outputStream: OutputStream = outputFile.outputStream()
                         inputStream.copyTo(outputStream)
                         outputStream.flush()
@@ -65,7 +67,7 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
                     Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
                 }
                 it.set(Result.success())
-                shutdown()
+                executor.shutdown()
             }
         }
     }
@@ -159,13 +161,13 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
     private fun getJSON(): String? {
         val dir = File(applicationContext.filesDir, DATA_DIR)
         val file = File(dir.absolutePath, FILE_JSON)
-        val length = file.length()
+        val length: Long = file.length()
         return if (length < 1 || length > Integer.MAX_VALUE) {
             Log.w(TAG, "File is empty or huge: $file")
             null
         } else try {
             val content = CharArray(length.toInt())
-            val numRead = FileReader(file).read(content)
+            val numRead: Int = FileReader(file).read(content)
             if (numRead.toLong() != length)
                 Log.e(TAG, "Incomplete read of $file. Read chars $numRead of $length")
             String(content, 0, numRead)
@@ -176,16 +178,18 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
     }
 
     private fun saveUnderstands(understandsJson: JSONArray) {
-        val understands = mutableListOf<ModelUnderstand>()
-        val questions = mutableListOf<ModelQuestion>()
-        val answers = mutableListOf<ModelAnswer>()
+        val understands: MutableList<ModelUnderstand> = mutableListOf()
+        val questions: MutableList<ModelQuestion> = mutableListOf()
+        val answers: MutableList<ModelAnswer> = mutableListOf()
         (0 until understandsJson.length()).forEach {
-            val understandJson = understandsJson.getJSONObject(it)
-            val currentQuestionsJson = understandJson.getJSONArray(QUESTIONS)
-            val currentAnswersJson = understandJson.getJSONArray(ANSWERS)
-            val understand = Gson().fromJson<ModelUnderstand>(understandJson)
-            val currentQuestions = Gson().fromJson<MutableList<ModelQuestion>>(currentQuestionsJson)
-            val currentAnswers = Gson().fromJson<MutableList<ModelAnswer>>(currentAnswersJson)
+            val understandJson: JSONObject = understandsJson.getJSONObject(it)
+            val currentQuestionsJson: JSONArray = understandJson.getJSONArray(QUESTIONS)
+            val currentAnswersJson: JSONArray = understandJson.getJSONArray(ANSWERS)
+            val understand: ModelUnderstand = Gson().fromJson<ModelUnderstand>(understandJson)
+            val currentQuestions: MutableList<ModelQuestion> =
+                Gson().fromJson<MutableList<ModelQuestion>>(currentQuestionsJson)
+            val currentAnswers: MutableList<ModelAnswer> =
+                Gson().fromJson<MutableList<ModelAnswer>>(currentAnswersJson)
             understands.add(understand)
             questions.addAll(currentQuestions)
             answers.addAll(currentAnswers)
@@ -196,18 +200,19 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
     }
 
     private fun saveSpeak(speakJson: JSONArray) {
-        val speaks = Gson().fromJson<MutableList<ModelSpeak>>(speakJson)
+        val speaks: MutableList<ModelSpeak> = Gson().fromJson<MutableList<ModelSpeak>>(speakJson)
         db.speakDao().saveCategories(speaks)
     }
 
     private fun saveRead(readJson: JSONArray) {
-        val reads = mutableListOf<ModelRead>()
-        val options = mutableListOf<ModelReadOption>()
+        val reads: MutableList<ModelRead> = mutableListOf()
+        val options: MutableList<ModelReadOption> = mutableListOf()
         (0 until readJson.length()).forEach {
-            val currentReadJson = readJson.getJSONObject(it)
-            val currentOptionsJson = currentReadJson.getJSONArray(OPTIONS)
-            val read = Gson().fromJson<ModelRead>(currentReadJson)
-            val currentOptions = Gson().fromJson<MutableList<ModelReadOption>>(currentOptionsJson)
+            val currentReadJson: JSONObject = readJson.getJSONObject(it)
+            val currentOptionsJson: JSONArray = currentReadJson.getJSONArray(OPTIONS)
+            val read: ModelRead = Gson().fromJson<ModelRead>(currentReadJson)
+            val currentOptions: MutableList<ModelReadOption> =
+                Gson().fromJson<MutableList<ModelReadOption>>(currentOptionsJson)
             reads.add(read)
             options.addAll(currentOptions)
         }
@@ -216,7 +221,7 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
     }
 
     private fun saveWrite(writeJson: JSONArray) {
-        val writes = Gson().fromJson<MutableList<ModelWrite>>(writeJson)
+        val writes: MutableList<ModelWrite> = Gson().fromJson<MutableList<ModelWrite>>(writeJson)
         writes.map {
             if (it.type == ADVANCED) it.letters = mutableListOf()
         }
@@ -224,13 +229,13 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
     }
 
     private fun saveFinalTest(finalTestJson: JSONArray) {
-        val finalTests = mutableListOf<ModelFinalTest>()
-        val questions = mutableListOf<ModelFinalTestQuestion>()
+        val finalTests: MutableList<ModelFinalTest> = mutableListOf()
+        val questions: MutableList<ModelFinalTestQuestion> = mutableListOf()
         (0 until finalTestJson.length()).forEach {
-            val currentFinalTestJson = finalTestJson.getJSONObject(it)
-            val currentQuestionsJson = currentFinalTestJson.getJSONArray(QUESTIONS)
-            val finalTest = Gson().fromJson<ModelFinalTest>(currentFinalTestJson)
-            val currentQuestions =
+            val currentFinalTestJson: JSONObject = finalTestJson.getJSONObject(it)
+            val currentQuestionsJson: JSONArray = currentFinalTestJson.getJSONArray(QUESTIONS)
+            val finalTest: ModelFinalTest = Gson().fromJson<ModelFinalTest>(currentFinalTestJson)
+            val currentQuestions: MutableList<ModelFinalTestQuestion> =
                 Gson().fromJson<MutableList<ModelFinalTestQuestion>>(currentQuestionsJson)
             finalTests.add(finalTest)
             questions.addAll(currentQuestions)
@@ -251,19 +256,19 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
         else ForegroundInfo(101, notification)
 
     companion object {
-        private const val TAG = "DownloadWorker"
-        private const val DATA_DIR = "data"
-        private const val FILE_ZIP = "file.zip"
-        private const val FILE_JSON = "book.json"
-        private const val TIMESTAMP = "timestamp"
-        private const val UNDERSTANDS = "understand"
-        private const val QUESTIONS = "questions"
-        private const val ANSWERS = "answers"
-        private const val SPEAK = "speak"
-        private const val READ = "read"
-        private const val OPTIONS = "options"
-        private const val WRITE = "write"
-        private const val FINAL_TEST = "final"
-        private const val ADVANCED = "advanced"
+        private const val TAG: String = "DownloadWorker"
+        private const val DATA_DIR: String = "data"
+        private const val FILE_ZIP: String = "file.zip"
+        private const val FILE_JSON: String = "book.json"
+        private const val TIMESTAMP: String = "timestamp"
+        private const val UNDERSTANDS: String = "understand"
+        private const val QUESTIONS: String = "questions"
+        private const val ANSWERS: String = "answers"
+        private const val SPEAK: String = "speak"
+        private const val READ: String = "read"
+        private const val OPTIONS: String = "options"
+        private const val WRITE: String = "write"
+        private const val FINAL_TEST: String = "final"
+        private const val ADVANCED: String = "advanced"
     }
 }
