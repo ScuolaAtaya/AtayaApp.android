@@ -10,7 +10,7 @@ import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnderstandQuestionBinding
-import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.fragments.FragmentUnderstandQuestions
 import it.mindtek.ruah.interfaces.UnderstandActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
@@ -61,7 +61,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
     override fun goToFinish() {
         startActivity(Intent(this, ActivityIntro::class.java).apply {
             putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
+            putExtra(ActivityIntro.EXTRA_EXERCISE_ID, Exercise.UNDERSTAND.value)
             putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         })
     }
@@ -78,7 +78,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
     @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(Category.UNDERSTAND.title)
+        supportActionBar?.title = getString(Exercise.UNDERSTAND.title)
         db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(

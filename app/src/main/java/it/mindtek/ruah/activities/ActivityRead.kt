@@ -9,7 +9,7 @@ import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityReadBinding
-import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.fragments.FragmentRead
 import it.mindtek.ruah.interfaces.ReadActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
@@ -43,7 +43,7 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
     override fun goToFinish() {
         startActivity(Intent(this, ActivityIntro::class.java).apply {
             putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.READ.value)
+            putExtra(ActivityIntro.EXTRA_EXERCISE_ID, Exercise.READ.value)
             putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         })
     }
@@ -51,7 +51,7 @@ class ActivityRead : AppCompatActivity(), ReadActivityInterface {
     @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(Category.READ.title)
+        supportActionBar?.title = getString(Exercise.READ.title)
         db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(

@@ -12,7 +12,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnitBinding
 import it.mindtek.ruah.db.models.ModelUnit
-import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.setTopPadding
 import it.mindtek.ruah.kotlin.extensions.setVisible
@@ -37,29 +37,29 @@ class ActivityUnit : AppCompatActivity() {
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.capire.setOnClickListener {
-            openIntro(Category.UNDERSTAND.value)
+            openIntro(Exercise.UNDERSTAND.value)
         }
         binding.parlare.setOnClickListener {
-            openIntro(Category.TALK.value)
+            openIntro(Exercise.TALK.value)
         }
         binding.leggere.setOnClickListener {
-            openIntro(Category.READ.value)
+            openIntro(Exercise.READ.value)
         }
         binding.scrivere.setOnClickListener {
-            openIntro(Category.WRITE.value)
+            openIntro(Exercise.WRITE.value)
         }
         db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 val isUnderstandCompleted: Boolean =
-                    isCategoryCompleted(it, Category.UNDERSTAND.value)
-                val isSpeakingCompleted: Boolean = isCategoryCompleted(it, Category.TALK.value)
-                val isReadingCompleted: Boolean = isCategoryCompleted(it, Category.READ.value)
-                val isWritingCompleted: Boolean = isCategoryCompleted(it, Category.WRITE.value)
+                    isExerciseCompleted(it, Exercise.UNDERSTAND.value)
+                val isSpeakingCompleted: Boolean = isExerciseCompleted(it, Exercise.TALK.value)
+                val isReadingCompleted: Boolean = isExerciseCompleted(it, Exercise.READ.value)
+                val isWritingCompleted: Boolean = isExerciseCompleted(it, Exercise.WRITE.value)
                 if (isUnderstandCompleted) binding.capiamoDone.setVisible()
                 if (isSpeakingCompleted) binding.parliamoDone.setVisible()
                 if (isReadingCompleted) binding.leggiamoDone.setVisible()
                 if (isWritingCompleted) binding.scriviamoDone.setVisible()
-                if (isCategoryCompleted(it, Category.FINAL_TEST.value))
+                if (isExerciseCompleted(it, Exercise.FINAL_TEST.value))
                     binding.verificaFinaleDone.setVisible()
                 if (isUnderstandCompleted && isSpeakingCompleted && isReadingCompleted && isWritingCompleted) {
                     binding.iconVerificaFinale.setImageResource(R.drawable.verifica_finale)
@@ -67,7 +67,7 @@ class ActivityUnit : AppCompatActivity() {
                         ContextCompat.getColor(this, R.color.white)
                     )
                     binding.verificaFinale.setOnClickListener {
-                        openIntro(Category.FINAL_TEST.value)
+                        openIntro(Exercise.FINAL_TEST.value)
                     }
                 } else {
                     binding.iconVerificaFinale.setImageResource(R.drawable.verifica_finale_disattivato)
@@ -91,16 +91,16 @@ class ActivityUnit : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun openIntro(categoryId: Int) {
+    private fun openIntro(exerciseId: Int) {
         startActivity(Intent(this, ActivityIntro::class.java).apply {
             putExtra(EXTRA_UNIT_ID, unitId)
-            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, categoryId)
+            putExtra(ActivityIntro.EXTRA_EXERCISE_ID, exerciseId)
         })
     }
 
-    private fun isCategoryCompleted(modelUnit: ModelUnit, categoryId: Int): Boolean =
+    private fun isExerciseCompleted(modelUnit: ModelUnit, exerciseId: Int): Boolean =
         modelUnit.completed.any {
-            it == categoryId
+            it == exerciseId
         }
 
     companion object {

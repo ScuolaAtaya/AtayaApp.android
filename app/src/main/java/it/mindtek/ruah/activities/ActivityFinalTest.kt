@@ -9,7 +9,7 @@ import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityFinalTestBinding
-import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.fragments.FragmentFinalTest
 import it.mindtek.ruah.interfaces.FinalTestActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
@@ -47,7 +47,7 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
     override fun goToFinish() {
         startActivity(Intent(this, ActivityIntro::class.java).apply {
             putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.FINAL_TEST.value)
+            putExtra(ActivityIntro.EXTRA_EXERCISE_ID, Exercise.FINAL_TEST.value)
             putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         })
     }
@@ -55,7 +55,7 @@ class ActivityFinalTest : AppCompatActivity(), FinalTestActivityInterface {
     @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(Category.FINAL_TEST.title)
+        supportActionBar?.title = getString(Exercise.FINAL_TEST.title)
         db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(

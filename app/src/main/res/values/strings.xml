@@ -54,7 +54,7 @@
     <string name="write">Scrivi</string>
     <string name="downloaded_mb">Scaricati %d MB di %d MB</string>
     <string name="privacy_policy">Clicca qui per visualizzare la privacy policy</string>
-    <string name="category_empty_error">Nessun esercizio presente per questa categoria</string>
+    <string name="exercise_empty_error">Nessun esercizio presente per questa unità</string>
 
     <string name="yes">Sì</string>
     <string name="no">No</string>

@@ -8,7 +8,7 @@ import it.mindtek.ruah.R
 /**
  * Created by alessandrogaboardi on 04/12/2017.
  */
-enum class Category(
+enum class Exercise(
     val value: Int,
     @param:StringRes val title: Int,
     @param:DrawableRes val icon: Int,
@@ -52,7 +52,7 @@ enum class Category(
     );
 
     companion object {
-        fun from(value: Int): Category = entries.first {
+        fun from(value: Int): Exercise = entries.first {
             it.value == value
         }
     }

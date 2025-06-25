@@ -10,7 +10,7 @@ import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnderstandBinding
-import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.fragments.FragmentUnderstandVideo
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.replaceFragment
@@ -38,7 +38,7 @@ class ActivityUnderstand : AppCompatActivity() {
                     if (stepIndex == 0)
                         Intent(this@ActivityUnderstand, ActivityIntro::class.java).apply {
                             putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-                            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.UNDERSTAND.value)
+                            putExtra(ActivityIntro.EXTRA_EXERCISE_ID, Exercise.UNDERSTAND.value)
                         }
                     else Intent(this@ActivityUnderstand, ActivityUnderstand::class.java).apply {
                         putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
@@ -59,7 +59,7 @@ class ActivityUnderstand : AppCompatActivity() {
     @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(Category.UNDERSTAND.title)
+        supportActionBar?.title = getString(Exercise.UNDERSTAND.title)
         db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(

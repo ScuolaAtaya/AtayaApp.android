@@ -9,7 +9,7 @@ import androidx.core.graphics.drawable.toDrawable
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityWriteBinding
-import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.fragments.FragmentWrite
 import it.mindtek.ruah.interfaces.WriteActivityInterface
 import it.mindtek.ruah.kotlin.extensions.db
@@ -47,7 +47,7 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     override fun goToFinish() {
         startActivity(Intent(this, ActivityIntro::class.java).apply {
             putExtra(ActivityUnit.EXTRA_UNIT_ID, unitId)
-            putExtra(ActivityIntro.EXTRA_CATEGORY_ID, Category.WRITE.value)
+            putExtra(ActivityIntro.EXTRA_EXERCISE_ID, Exercise.WRITE.value)
             putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         })
     }
@@ -55,7 +55,7 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
     @Suppress("DEPRECATION")
     private fun setup() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(Category.WRITE.title)
+        supportActionBar?.title = getString(Exercise.WRITE.title)
         db.unitDao().getUnitByIdAsync(unitId).observe(this) {
             it?.let {
                 supportActionBar?.setBackgroundDrawable(
