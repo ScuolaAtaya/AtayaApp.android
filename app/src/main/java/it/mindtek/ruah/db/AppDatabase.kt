@@ -14,6 +14,7 @@ import it.mindtek.ruah.db.models.*
  */
 @Database(
     entities = [
+        ModelCategory::class,
         ModelUnit::class,
         ModelUnderstand::class,
         ModelQuestion::class,
@@ -24,11 +25,12 @@ import it.mindtek.ruah.db.models.*
         ModelWrite::class,
         ModelFinalTest::class,
         ModelFinalTestQuestion::class
-    ], version = 33
+    ], version = 34
 )
 
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class, MarkerArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
+    abstract fun categoryDao(): DaoCategory
     abstract fun unitDao(): DaoUnit
     abstract fun understandDao(): DaoUnderstand
     abstract fun speakDao(): DaoSpeak

@@ -1,5 +1,6 @@
 package it.mindtek.ruah.config
 
+import it.mindtek.ruah.db.models.ModelCategory
 import it.mindtek.ruah.db.models.ModelUnit
 
 /**
@@ -7,23 +8,31 @@ import it.mindtek.ruah.db.models.ModelUnit
  */
 class UnitGenerator {
     companion object {
-        fun getUnits(): MutableList<ModelUnit> {
-            val units: MutableList<ModelUnit> = mutableListOf()
-            units.add(ModelUnit(0, "accoglienza", 1))
-            units.add(ModelUnit(1, "lavoro", 2))
-            units.add(ModelUnit(2, "cibo", 3))
-            units.add(ModelUnit(3, "telefono", 4))
-            units.add(ModelUnit(4, "stato", 5))
-            units.add(ModelUnit(5, "salute", 6))
-            units.add(ModelUnit(6, "citta", 7))
-            units.add(ModelUnit(7, "mezzi", 8))
-            units.add(ModelUnit(8, "casa", 9))
-            units.add(ModelUnit(9, "viaggio", 10))
-            units.add(ModelUnit(10, "cartellonistica", 11))
-            units.add(ModelUnit(11, "rischi_pericoli", 12))
-            units.add(ModelUnit(12, "benessere", 13))
-            units.add(ModelUnit(13, "patente", 14))
-            return units
-        }
+        fun getCategories(): MutableList<ModelCategory> = mutableListOf(
+            ModelCategory(0, "presentazione", 1),
+            ModelCategory(1, "lavoro", 2),
+            ModelCategory(2, "edilizia", 9),
+        )
+
+        fun getUnits(): MutableList<ModelUnit> = mutableListOf(
+            ModelUnit(id = 0, categoryId = 0, name = "accoglienza", position = 1),
+            ModelUnit(id = 1, categoryId = 0, name = "stato", position = 2),
+            ModelUnit(id = 2, categoryId = 1, name = "generico", position = 1),
+            ModelUnit(id = 3, categoryId = 1, name = "cartellonistica", position = 2),
+            ModelUnit(id = 4, categoryId = 1, name = "rischi_pericoli", position = 3),
+            ModelUnit(id = 5, categoryId = 1, name = "benessere", position = 4),
+            ModelUnit(id = 6, name = "cibo", position = 3),
+            ModelUnit(id = 7, name = "telefono", position = 4),
+            ModelUnit(id = 8, name = "citta", position = 5),
+            ModelUnit(id = 9, name = "mezzi", position = 6),
+            ModelUnit(id = 10, name = "patente", position = 7),
+            ModelUnit(id = 11, name = "viaggio", position = 8),
+            ModelUnit(id = 12, categoryId = 2, name = "edilizia_1", position = 1), // TODO name
+            ModelUnit(id = 13, categoryId = 2, name = "edilizia_2", position = 2), // TODO name
+            ModelUnit(id = 14, name = "salute", position = 10),
+            ModelUnit(id = 15, name = "persona", position = 11),
+            ModelUnit(id = 16, name = "casa", position = 12), // TODO name
+            ModelUnit(id = 17, name = "pulizie", position = 12) // TODO name
+        )
     }
 }
