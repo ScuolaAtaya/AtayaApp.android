@@ -1,5 +1,6 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,11 +10,9 @@ import androidx.room.PrimaryKey
  */
 @Entity
 open class ModelAnswer(
-        @PrimaryKey
-        var id: String,
-        var question_id: String,
-        var body: String,
-        @Embedded(prefix = "audio_")
-        var audio: ModelMedia,
-        var correct: Boolean
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "question_id") val questionId: String,
+    val body: String,
+    @Embedded(prefix = "audio_") val audio: ModelMedia,
+    val correct: Boolean
 )

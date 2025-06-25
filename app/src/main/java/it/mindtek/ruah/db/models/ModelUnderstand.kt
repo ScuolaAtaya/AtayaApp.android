@@ -1,5 +1,6 @@
 package it.mindtek.ruah.db.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,11 +10,8 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "understand")
 open class ModelUnderstand(
-        @PrimaryKey
-        var id: String,
-        var unit_id: Int,
-        @Embedded(prefix = "audio_")
-        var audio: ModelMedia,
-        @Embedded(prefix = "video_url_")
-        var video_url: ModelMedia
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "unit_id") val unitId: Int,
+    @Embedded(prefix = "audio_") val audio: ModelMedia,
+    @Embedded(prefix = "video_url_") val videoUrl: ModelMedia
 )

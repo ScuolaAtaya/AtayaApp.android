@@ -55,6 +55,6 @@ data class ModelUnitItem(
     val position: Int,
     val completed: MutableList<Int>,
     val title: String,
-    @DrawableRes val icon: Int,
-    @ColorInt val color: Int
+    @param:DrawableRes val icon: Int,
+    @param:ColorInt val color: Int
 )
