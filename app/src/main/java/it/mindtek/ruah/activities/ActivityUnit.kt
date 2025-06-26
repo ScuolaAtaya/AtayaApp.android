@@ -3,11 +3,15 @@ package it.mindtek.ruah.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnitBinding
@@ -20,6 +24,7 @@ import it.mindtek.ruah.kotlin.extensions.setVisible
 class ActivityUnit : AppCompatActivity() {
     private lateinit var binding: ActivityUnitBinding
     private var unitId: Int = -1
+    private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,11 @@ class ActivityUnit : AppCompatActivity() {
             unitId = it.getIntExtra(EXTRA_UNIT_ID, -1)
         }
         setup()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.clear()
     }
 
     @Suppress("DEPRECATION")
@@ -48,8 +58,10 @@ class ActivityUnit : AppCompatActivity() {
         binding.scrivere.setOnClickListener {
             openIntro(Exercise.WRITE.value)
         }
-        db.unitDao().getUnitByIdAsync(unitId).observe(this) {
-            it?.let {
+        db.unitDao().getUnitByIdAsync(unitId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
                 val isUnderstandCompleted: Boolean =
                     isExerciseCompleted(it, Exercise.UNDERSTAND.value)
                 val isSpeakingCompleted: Boolean = isExerciseCompleted(it, Exercise.TALK.value)
@@ -82,8 +94,11 @@ class ActivityUnit : AppCompatActivity() {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM)
                     window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
+            }, {
+                Log.e("ActivityUnit", "Error loading unit data", it)
+            }).let {
+                disposable.add(it)
             }
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

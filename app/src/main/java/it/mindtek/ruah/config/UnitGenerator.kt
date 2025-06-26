@@ -3,9 +3,6 @@ package it.mindtek.ruah.config
 import it.mindtek.ruah.db.models.ModelCategory
 import it.mindtek.ruah.db.models.ModelUnit
 
-/**
- * Created by alessandrogaboardi on 29/11/2017.
- */
 class UnitGenerator {
     companion object {
         fun getCategories(): MutableList<ModelCategory> = mutableListOf(
