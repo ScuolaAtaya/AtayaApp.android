@@ -109,8 +109,10 @@ class ActivityIntro : AppCompatActivity() {
     }
 
     private fun completeExercise(exercise: Exercise) {
-        unitObject.completed.add(exercise.value)
-        db.unitDao().updateUnit(unitObject)
+        if (!unitObject.completed.contains(exercise.value)) {
+            unitObject.completed.add(exercise.value)
+            db.unitDao().updateUnit(unitObject)
+        }
     }
 
     private fun dispatch() {

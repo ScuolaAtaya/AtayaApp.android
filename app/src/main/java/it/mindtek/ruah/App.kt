@@ -9,7 +9,6 @@ import androidx.room.Room
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
 import it.mindtek.ruah.config.UnitGenerator
 import it.mindtek.ruah.db.AppDatabase
-import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.ioThread
 import it.mindtek.ruah.ws.interfaces.ApiClient
@@ -41,13 +40,19 @@ class App : MultiDexApplication() {
                 .allowMainThreadQueries()
                 .build()
         )
-        if (db.unitDao().count() == 0) {
-            val units: MutableList<ModelUnit> = UnitGenerator.getUnits()
-            try {
-                ioThread { db.unitDao().saveUnits(units) }
-            } catch (e: Exception) {
-                Log.e("APP", "An error occurred while generating units", e)
+        if (db.categoryDao().count() == 0) try {
+            ioThread {
+                db.categoryDao().saveCategories(UnitGenerator.getCategories())
             }
+        } catch (e: Exception) {
+            Log.e("APP", "An error occurred while generating categories", e)
+        }
+        if (db.unitDao().count() == 0) try {
+            ioThread {
+                db.unitDao().saveUnits(UnitGenerator.getUnits())
+            }
+        } catch (e: Exception) {
+            Log.e("APP", "An error occurred while generating units", e)
         }
     }
 

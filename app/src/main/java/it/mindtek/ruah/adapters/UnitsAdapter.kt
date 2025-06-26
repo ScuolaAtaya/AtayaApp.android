@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import it.mindtek.ruah.databinding.ItemUnitBinding
+import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
 
@@ -35,7 +36,7 @@ class UnitsAdapter(private val listener: OnClickListener) :
         fun bind(item: ModelUnitItem) {
             binding.unitNumber.text = item.position.toString()
             binding.unitBackground.setBackgroundColor(item.color)
-            if (item.completed.size >= 5) binding.check.setVisible() else binding.check.setGone()
+            if (item.completed) binding.check.setVisible() else binding.check.setGone()
             Glide.with(binding.root.context).load(item.icon).into(binding.unitIcon)
             binding.unitText.text = item.title
             binding.root.setOnClickListener {
@@ -51,10 +52,10 @@ class UnitsAdapter(private val listener: OnClickListener) :
 
 data class ModelUnitItem(
     val id: Int,
-    val name: String,
-    val position: Int,
-    val completed: MutableList<Int>,
     val title: String,
+    val position: Int,
+    val completed: Boolean,
+    val children: List<ModelUnit>?,
     @param:DrawableRes val icon: Int,
     @param:ColorInt val color: Int
 )
