@@ -18,7 +18,7 @@ interface DaoUnit {
     @Query("SELECT * FROM units")
     fun getUnitsAsync(): Single<MutableList<ModelUnit>>
 
-    @Query("SELECT * FROM units WHERE category_id = :categoryId")
+    @Query("SELECT * FROM units WHERE categoryId = :categoryId")
     fun getUnitsByCategoryIdAsync(categoryId: Int): Single<MutableList<ModelUnit>>
 
     @Query("SELECT * FROM units WHERE id = :unitId LIMIT 1")

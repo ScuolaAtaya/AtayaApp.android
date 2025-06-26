@@ -1,6 +1,5 @@
 package it.mindtek.ruah.db.models
 
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,7 +12,7 @@ import it.mindtek.ruah.db.converters.StringArrayConverter
 @Entity(tableName = "write")
 open class ModelWrite(
     @PrimaryKey val id: String,
-    @ColumnInfo(name = "unit_id") val unitId: Int,
+    val unit_id: Int,
     val word: String,
     val type: String,
     @Embedded(prefix = "audio_") val audio: ModelMedia,

@@ -74,7 +74,7 @@ class FragmentUnderstandVideo : Fragment() {
 
     private fun setupVideoAndAudio(understand: PojoUnderstand) {
         understand.understand?.let {
-            setupVideo(it.videoUrl)
+            setupVideo(it.video_url)
             setupAudio(it.audio)
         }
     }

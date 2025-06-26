@@ -25,7 +25,7 @@ import it.mindtek.ruah.db.models.*
         ModelWrite::class,
         ModelFinalTest::class,
         ModelFinalTestQuestion::class
-    ], version = 34
+    ], version = 35
 )
 
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class, MarkerArrayConverter::class)
