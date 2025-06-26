@@ -16,7 +16,6 @@ interface DaoRead {
     @Insert
     fun insertOptions(options: MutableList<ModelReadOption>)
 
-    @Transaction
     @Query("SELECT * FROM read WHERE unit_id = :unitId")
     fun getReadByUnitId(unitId: Int): MutableList<PojoRead>
 

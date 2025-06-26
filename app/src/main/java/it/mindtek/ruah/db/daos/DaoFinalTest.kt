@@ -13,7 +13,6 @@ interface DaoFinalTest {
     @Insert
     fun insertQuestions(questions: MutableList<ModelFinalTestQuestion>)
 
-    @Transaction
     @Query("SELECT * FROM final WHERE unit_id = :unitId")
     fun getFinalTestByUnitId(unitId: Int): MutableList<PojoFinalTest>
 

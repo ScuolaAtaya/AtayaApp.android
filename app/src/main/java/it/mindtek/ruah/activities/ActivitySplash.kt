@@ -49,7 +49,7 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     private fun goToUnits() {
-        startActivity(Intent(this, ActivityUnits::class.java))
+        startActivity(Intent(this, ActivityMain::class.java))
         finish()
     }
 
