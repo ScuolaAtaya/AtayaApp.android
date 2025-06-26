@@ -92,6 +92,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.code.gson:gson:2.13.1'
     implementation 'androidx.room:room-runtime:2.7.2'
+    implementation 'androidx.room:room-rxjava2:2.7.2'
     implementation 'com.google.guava:guava:33.4.8-jre'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.ghost1372:Mzip-Android:0.4.0'
