@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 35,
-    "identityHash": "43d49ae80dcbf2ea6d7ab9a18ab2ad04",
+    "identityHash": "3e85155ec6fdba45f942967a62cf3b2b",
     "entities": [
       {
         "tableName": "category",
@@ -36,7 +36,7 @@
       },
       {
         "tableName": "units",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER, `name` TEXT NOT NULL, `position` INTEGER NOT NULL, `advanced` INTEGER NOT NULL, `enabled` INTEGER NOT NULL, `completed` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `name` TEXT NOT NULL, `position` INTEGER NOT NULL, `advanced` INTEGER NOT NULL, `enabled` INTEGER NOT NULL, `completed` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -47,7 +47,8 @@
           {
             "fieldPath": "categoryId",
             "columnName": "categoryId",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "name",
@@ -513,7 +514,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '43d49ae80dcbf2ea6d7ab9a18ab2ad04')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e85155ec6fdba45f942967a62cf3b2b')"
     ]
   }
 }
