@@ -8,7 +8,7 @@ import it.mindtek.ruah.db.converters.IntArrayConverter
 @Entity(tableName = "units")
 open class ModelUnit(
     @PrimaryKey val id: Int,
-    val categoryId: Int,
+    val category: String,
     val name: String,
     val position: Int,
     val advanced: Boolean = false,

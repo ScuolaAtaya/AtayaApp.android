@@ -40,13 +40,6 @@ class App : MultiDexApplication() {
                 .allowMainThreadQueries()
                 .build()
         )
-        if (db.categoryDao().count() == 0) try {
-            ioThread {
-                db.categoryDao().saveCategories(UnitGenerator.getCategories())
-            }
-        } catch (e: Exception) {
-            Log.e("APP", "An error occurred while generating categories", e)
-        }
         if (db.unitDao().count() == 0) try {
             ioThread {
                 db.unitDao().saveUnits(UnitGenerator.getUnits())

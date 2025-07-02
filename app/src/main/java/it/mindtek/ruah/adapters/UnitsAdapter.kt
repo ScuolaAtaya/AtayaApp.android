@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import it.mindtek.ruah.databinding.ItemUnitBinding
-import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
 
@@ -55,7 +54,6 @@ data class ModelUnitItem(
     val title: String,
     val position: Int,
     val completed: Boolean,
-    val children: List<ModelUnit>?,
     @param:DrawableRes val icon: Int,
     @param:ColorInt val color: Int
 )
