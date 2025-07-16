@@ -1,28 +1,29 @@
 package it.mindtek.ruah.config
 
 import it.mindtek.ruah.db.models.ModelUnit
+import it.mindtek.ruah.enums.Category
 
 class UnitGenerator {
     companion object {
         fun getUnits(): MutableList<ModelUnit> = mutableListOf(
-            ModelUnit(0, "italiano", "accoglienza", 1),
-            ModelUnit(1, "italiano", "lavoro", 2),
-            ModelUnit(2, "italiano", "cibo", 3),
-            ModelUnit(3, "italiano", "telefono", 4),
-            ModelUnit(4, "italiano", "stato", 5),
-            ModelUnit(5, "italiano", "salute", 6),
-            ModelUnit(6, "italiano", "citta", 7),
-            ModelUnit(7, "italiano", "mezzi", 8),
-            ModelUnit(8, "italiano", "casa", 9), // TODO name
-            ModelUnit(9, "italiano", "viaggio", 10),
-            ModelUnit(10, "sicurezza", "cartellonistica", 1),
-            ModelUnit(11, "sicurezza", "rischi_pericoli", 2),
-            ModelUnit(12, "sicurezza", "benessere", 3),
-            ModelUnit(13, "sicurezza", "patente", 4),
-            ModelUnit(14, "lingua", "edilizia_1", 1), // TODO name
-            ModelUnit(15, "lingua", "edilizia_2", 2), // TODO name
-            ModelUnit(16, "lingua", "persona", 3),
-            ModelUnit(17, "lingua", "pulizie", 4) // TODO name
+            ModelUnit(0, Category.ITALIANO, "accoglienza", 1),
+            ModelUnit(1, Category.ITALIANO, "lavoro", 2),
+            ModelUnit(2, Category.ITALIANO, "cibo", 3),
+            ModelUnit(3, Category.ITALIANO, "telefono", 4),
+            ModelUnit(4, Category.ITALIANO, "stato", 5),
+            ModelUnit(5, Category.ITALIANO, "salute", 6),
+            ModelUnit(6, Category.ITALIANO, "citta", 7),
+            ModelUnit(7, Category.ITALIANO, "mezzi", 8),
+            ModelUnit(8, Category.ITALIANO, "casa", 9),
+            ModelUnit(9, Category.ITALIANO, "viaggio", 10),
+            ModelUnit(10, Category.SICUREZZA, "cartellonistica", 1),
+            ModelUnit(11, Category.SICUREZZA, "rischi_pericoli", 2),
+            ModelUnit(12, Category.SICUREZZA, "benessere", 3),
+            ModelUnit(13, Category.SICUREZZA, "patente", 4),
+            ModelUnit(14, Category.LINGUA, "edilizia", 1), // TODO name
+            ModelUnit(15, Category.LINGUA, "edilizia_2", 2), // TODO name
+            ModelUnit(16, Category.LINGUA, "persona", 3),
+            ModelUnit(17, Category.LINGUA, "pulizie", 4)
         )
     }
 }
