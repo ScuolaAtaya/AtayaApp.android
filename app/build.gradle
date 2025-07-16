@@ -46,13 +46,13 @@ android {
         develop {
             dimension "buildType"
             applicationIdSuffix ".develop"
-            resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
+            resValue "string", "api_base_url", '"https://api-dev.ruah.mindtek.it/api/"'
             resValue "string", "api_key", "apiKey"
         }
 
         production {
             dimension "buildType"
-            resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
+            resValue "string", "api_base_url", 'https://api.ruah.mindtek.it/api/'
             resValue "string", "api_key", "892a487f-ccaf-4b99-94a6-733640bfb9cb"
         }
     }
@@ -102,8 +102,6 @@ dependencies {
     implementation 'androidx.concurrent:concurrent-futures:1.2.0'
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.0'
     ksp 'com.github.bumptech.glide:compiler:4.16.0'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     ksp 'androidx.room:room-compiler:2.7.2'
