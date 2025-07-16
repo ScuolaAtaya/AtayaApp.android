@@ -16,39 +16,39 @@ enum class Exercise(
     @param:RawRes val audio: Int
 ) {
     UNDERSTAND(
-        0,
-        R.string.section_understand,
-        R.drawable.volume,
-        R.string.section_understand_description,
-        R.raw.capiamo
+        value = 0,
+        title = R.string.section_understand,
+        icon = R.drawable.volume,
+        description = R.string.section_understand_description,
+        audio = R.raw.capiamo
     ),
     TALK(
-        1,
-        R.string.section_talk,
-        R.drawable.mic,
-        R.string.section_talk_description,
-        R.raw.parliamo
+        value = 1,
+        title = R.string.section_talk,
+        icon = R.drawable.mic,
+        description = R.string.section_talk_description,
+        audio = R.raw.parliamo
     ),
     READ(
-        2,
-        R.string.section_read,
-        R.drawable.eye,
-        R.string.section_read_description,
-        R.raw.leggiamo
+        value = 2,
+        title = R.string.section_read,
+        icon = R.drawable.eye,
+        description = R.string.section_read_description,
+        audio = R.raw.leggiamo
     ),
     WRITE(
-        3,
-        R.string.section_write,
-        R.drawable.edit,
-        R.string.section_write_description,
-        R.raw.scriviamo
+        value = 3,
+        title = R.string.section_write,
+        icon = R.drawable.edit,
+        description = R.string.section_write_description,
+        audio = R.raw.scriviamo
     ),
     FINAL_TEST(
-        4,
-        R.string.section_final_test,
-        R.drawable.edit,
-        R.string.section_final_test_description,
-        R.raw.verifica_finale
+        value = 4,
+        title = R.string.section_final_test,
+        icon = R.drawable.edit,
+        description = R.string.section_final_test_description,
+        audio = R.raw.verifica_finale
     );
 
     companion object {

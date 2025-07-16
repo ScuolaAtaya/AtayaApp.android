@@ -95,6 +95,30 @@ class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
                 }).let {
                     disposable.add(it)
                 }
+            category.funded?.let {
+                binding.fragmentUnitsFounded.setVisible()
+                binding.fragmentUnitsFounded.text = getString(it)
+            } ?: binding.fragmentUnitsFounded.setGone()
+            category.fundedIcon?.let {
+                binding.fragmentUnitsFoundedIcon.setVisible()
+                binding.fragmentUnitsFoundedIcon.setImageResource(it)
+                binding.fragmentUnitsFoundedIcon.contentDescription =
+                    category.fundedAlt?.let { alt: Int ->
+                        getString(alt)
+                    }
+            } ?: binding.fragmentUnitsFoundedIcon.setGone()
+            category.cofunded?.let {
+                binding.fragmentUnitsCofounded.setVisible()
+                binding.fragmentUnitsCofounded.text = getString(it)
+            } ?: binding.fragmentUnitsCofounded.setGone()
+            category.cofundedIcon?.let {
+                binding.fragmentUnitsCofoundedIcon.setVisible()
+                binding.fragmentUnitsCofoundedIcon.setImageResource(it)
+                binding.fragmentUnitsFoundedIcon.contentDescription =
+                    category.cofundedAlt?.let { alt: Int ->
+                        getString(alt)
+                    }
+            } ?: binding.fragmentUnitsCofoundedIcon.setGone()
         }
     }
 
