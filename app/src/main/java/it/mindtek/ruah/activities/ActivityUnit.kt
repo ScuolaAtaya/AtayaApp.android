@@ -16,6 +16,7 @@ import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnitBinding
 import it.mindtek.ruah.db.models.ModelUnit
+import it.mindtek.ruah.enums.Category
 import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.kotlin.extensions.db
 import it.mindtek.ruah.kotlin.extensions.setTopPadding

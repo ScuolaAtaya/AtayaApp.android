@@ -24,6 +24,7 @@ import it.mindtek.ruah.databinding.ActivityIntroBinding
 import it.mindtek.ruah.db.models.ModelUnit
 import it.mindtek.ruah.enums.Exercise
 import it.mindtek.ruah.kotlin.extensions.db
+import it.mindtek.ruah.kotlin.extensions.setBottomMargin
 import it.mindtek.ruah.kotlin.extensions.setColor
 import it.mindtek.ruah.kotlin.extensions.setGone
 import it.mindtek.ruah.kotlin.extensions.setVisible
@@ -171,14 +172,15 @@ class ActivityIntro : AppCompatActivity() {
         }
     }
 
-    private fun check(count: Int): Boolean {
-        if (count == 0) {
-            Snackbar.make(binding.root, R.string.exercise_empty_error, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(ContextCompat.getColor(this, R.color.red)).show()
-            return false
-        }
+    private fun check(count: Int): Boolean = if (count == 0) {
+        Snackbar.make(binding.root, R.string.exercise_empty_error, Snackbar.LENGTH_SHORT)
+            .setBottomMargin(binding.root)
+            .setBackgroundTint(ContextCompat.getColor(this, R.color.red))
+            .show()
+        false
+    } else {
         player.release()
-        return true
+        true
     }
 
     companion object {
