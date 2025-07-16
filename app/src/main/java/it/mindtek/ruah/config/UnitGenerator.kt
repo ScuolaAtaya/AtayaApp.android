@@ -6,7 +6,7 @@ import it.mindtek.ruah.enums.Category
 class UnitGenerator {
     companion object {
         fun getUnits(): MutableList<ModelUnit> = mutableListOf(
-            ModelUnit(0, Category.ITALIANO, "accoglienza", 1),
+            ModelUnit(0, Category.ITALIANO, "presentazione", 1),
             ModelUnit(1, Category.ITALIANO, "lavoro", 2),
             ModelUnit(2, Category.ITALIANO, "cibo", 3),
             ModelUnit(3, Category.ITALIANO, "telefono", 4),

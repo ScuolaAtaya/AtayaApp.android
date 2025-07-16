@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import io.reactivex.Single
 import it.mindtek.ruah.db.models.ModelUnit
+import it.mindtek.ruah.enums.Category
 
 @Dao
 interface DaoUnit {
@@ -19,7 +20,7 @@ interface DaoUnit {
     fun getUnitsAsync(): Single<MutableList<ModelUnit>>
 
     @Query("SELECT * FROM units WHERE category = :category")
-    fun getUnitsByCategoryAsync(category: String): Single<MutableList<ModelUnit>>
+    fun getUnitsByCategoryAsync(category: Category): Single<MutableList<ModelUnit>>
 
     @Query("SELECT * FROM units WHERE id = :unitId LIMIT 1")
     fun getUnitByIdAsync(unitId: Int): Single<ModelUnit>

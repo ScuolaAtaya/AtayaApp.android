@@ -16,7 +16,7 @@
     <string name="lingua">Lingua per il lavoro</string>
 
     <!-- Titoli unità -->
-    <string name="accoglienza">Presentazione</string>
+    <string name="presentazione">Presentazione</string>
     <string name="lavoro">Lavoro</string>
     <string name="cibo">Cibo</string>
     <string name="telefono">Telefono</string>

@@ -34,13 +34,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.ActivityDownload"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
             android:name=".activities.ActivityMain"
             android:noHistory="false"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
-            android:name=".activities.ActivityDownload"
-            android:launchMode="singleTask"
+            android:name=".activities.ActivityUnits"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
@@ -80,4 +84,5 @@
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync" />
     </application>
+
 </manifest>
