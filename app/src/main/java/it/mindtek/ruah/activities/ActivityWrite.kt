@@ -78,4 +78,9 @@ class ActivityWrite : AppCompatActivity(), WriteActivityInterface {
             putExtra(ActivityIntro.EXTRA_IS_FINISH, true)
         })
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
+    }
 }
