@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="it">
     <string name="privacy_policy_url">https://www.iubenda.com/privacy-policy/84388498</string>
 
     <string name="app_name">Ataya-app</string>
@@ -6,6 +6,9 @@
     <string name="background">background</string>
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
+
+    <string name="hello">Ciao!</string>
+    <string name="category_header">Da dove vuoi iniziare oggi?</string>
 
     <!-- Titoli categorie -->
     <string name="italiano">L‘italiano per vivere in Italia</string>
