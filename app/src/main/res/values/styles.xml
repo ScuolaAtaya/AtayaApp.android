@@ -9,7 +9,7 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenBackground">@color/backgroundGrey</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/app_logo</item>
         <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
