@@ -31,14 +31,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontalGuidelineBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.82" />
 
     <View
         android:layout_width="1dp"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iconCapiamo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="24dp"
             android:text="@string/section_understand"
             android:textAllCaps="true"
             android:textColor="@color/white"
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iconParliamo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="24dp"
             android:text="@string/section_talk"
             android:textAllCaps="true"
             android:textColor="@color/white"
@@ -164,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iconLeggere"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="@string/section_read"
             android:textAllCaps="true"
             android:textColor="@color/white"
@@ -204,7 +204,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iconScriviamo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="24dp"
             android:text="@string/section_write"
             android:textAllCaps="true"
             android:textColor="@color/white"
