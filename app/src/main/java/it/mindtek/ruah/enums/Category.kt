@@ -1,23 +1,30 @@
 package it.mindtek.ruah.enums
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import it.mindtek.ruah.R
 
-/**
- * Created by alessandrogaboardi on 04/12/2017.
- */
-enum class Category(val value: Int, @StringRes val title: Int, @DrawableRes val icon: Int, @StringRes val description: Int, @RawRes val audio: Int) {
-    UNDERSTAND(0, R.string.section_understand, R.drawable.volume, R.string.section_understand_description, R.raw.capiamo),
-    TALK(1, R.string.section_talk, R.drawable.mic, R.string.section_talk_description, R.raw.parliamo),
-    READ(2, R.string.section_read, R.drawable.eye, R.string.section_read_description, R.raw.leggiamo),
-    WRITE(3, R.string.section_write, R.drawable.edit, R.string.section_write_description, R.raw.scriviamo),
-    FINAL_TEST(4, R.string.section_final_test, R.drawable.edit, R.string.section_final_test_description, R.raw.verifica_finale);
-
-    companion object {
-        fun from(value: Int): Category = entries.first {
-            it.value == value
-        }
-    }
+enum class Category(
+    @param:StringRes val funded: Int? = null,
+    @param:DrawableRes val fundedIcon: Int? = null,
+    @param:StringRes val fundedAlt: Int? = null,
+    @param:StringRes val cofunded: Int? = null,
+    @param:DrawableRes val cofundedIcon: Int? = null,
+    @param:StringRes val cofundedAlt: Int? = null
+) {
+    ITALIANO,
+    SICUREZZA(
+        funded = R.string.sicurezza_funded,
+        cofunded = R.string.sicurezza_cofunded,
+        cofundedIcon = R.drawable.ue,
+        cofundedAlt = R.string.sicurezza_cofunded_alt
+    ),
+    LINGUA(
+        funded = R.string.lingua_funded,
+        fundedIcon = R.drawable.ue,
+        fundedAlt = R.string.lingua_funded_alt,
+        cofunded = R.string.lingua_cofunded,
+        cofundedIcon = R.drawable.brick,
+        cofundedAlt = R.string.lingua_cofunded_alt
+    );
 }

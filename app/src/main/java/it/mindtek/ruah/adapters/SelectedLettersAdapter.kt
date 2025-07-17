@@ -67,8 +67,8 @@ class SelectedLettersAdapter(
                 it == position
             }
             binding.card.background = if (right)
-                ContextCompat.getDrawable(binding.root.context, R.drawable.card_blue)
-            else ContextCompat.getDrawable(binding.root.context, R.drawable.card_red)
+                ContextCompat.getDrawable(binding.root.context, R.drawable.letter_card_blue)
+            else ContextCompat.getDrawable(binding.root.context, R.drawable.letter_card_red)
             binding.letter.text = syllable.text
             binding.root.setOnClickListener {
                 letters[position] = ""

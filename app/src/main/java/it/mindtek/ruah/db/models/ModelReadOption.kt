@@ -9,11 +9,9 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "read_option")
 open class ModelReadOption(
-        @PrimaryKey
-        var id: String,
-        var read_id: String,
-        var body: String,
-        @Embedded(prefix = "audio_")
-        var audio: ModelMedia,
-        var markerId: String
+    @PrimaryKey val id: String,
+     val read_id: String,
+    val body: String,
+    @Embedded(prefix = "audio_") val audio: ModelMedia,
+    val markerId: String
 )

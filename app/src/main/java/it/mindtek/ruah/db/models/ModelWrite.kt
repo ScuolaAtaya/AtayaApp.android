@@ -11,15 +11,11 @@ import it.mindtek.ruah.db.converters.StringArrayConverter
  */
 @Entity(tableName = "write")
 open class ModelWrite(
-        @PrimaryKey
-        var id: String,
-        var unit_id: Int,
-        var word: String,
-        var type: String,
-        @Embedded(prefix = "audio_")
-        var audio: ModelMedia,
-        @Embedded(prefix = "picture_")
-        var picture: ModelMedia,
-        @TypeConverters(StringArrayConverter::class)
-        var letters: MutableList<ModelSyllable> = mutableListOf()
+    @PrimaryKey val id: String,
+    val unit_id: Int,
+    val word: String,
+    val type: String,
+    @Embedded(prefix = "audio_") val audio: ModelMedia,
+    @Embedded(prefix = "picture_") val picture: ModelMedia,
+    @param:TypeConverters(StringArrayConverter::class) var letters: MutableList<ModelSyllable> = mutableListOf()
 )

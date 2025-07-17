@@ -56,8 +56,8 @@ class SelectableLettersAdapter(private val listener: OnClickListener) :
 
         private fun setCardBackground(enabled: Boolean) {
             binding.card.background =
-                if (enabled) ContextCompat.getDrawable(binding.root.context, R.drawable.card_blue)
-                else ContextCompat.getDrawable(binding.root.context, R.drawable.card_disabled)
+                if (enabled) ContextCompat.getDrawable(binding.root.context, R.drawable.letter_card_blue)
+                else ContextCompat.getDrawable(binding.root.context, R.drawable.letter_card_disabled)
         }
     }
 

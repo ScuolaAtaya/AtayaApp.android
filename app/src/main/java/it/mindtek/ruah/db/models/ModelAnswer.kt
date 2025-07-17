@@ -9,11 +9,9 @@ import androidx.room.PrimaryKey
  */
 @Entity
 open class ModelAnswer(
-        @PrimaryKey
-        var id: String,
-        var question_id: String,
-        var body: String,
-        @Embedded(prefix = "audio_")
-        var audio: ModelMedia,
-        var correct: Boolean
+    @PrimaryKey val id: String,
+    val question_id: String,
+    val body: String,
+    @Embedded(prefix = "audio_") val audio: ModelMedia,
+    val correct: Boolean
 )

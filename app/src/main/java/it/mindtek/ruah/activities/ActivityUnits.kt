@@ -1,67 +1,50 @@
 package it.mindtek.ruah.activities
 
+import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import it.mindtek.ruah.R
-import it.mindtek.ruah.adapters.ModelUnitItem
-import it.mindtek.ruah.adapters.UnitsAdapter
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnitsBinding
-import it.mindtek.ruah.db.models.ModelUnit
-import it.mindtek.ruah.kotlin.extensions.db
-import it.mindtek.ruah.kotlin.extensions.setBottomPadding
+import it.mindtek.ruah.enums.Category
+import it.mindtek.ruah.fragments.FragmentUnits
+import it.mindtek.ruah.kotlin.extensions.replaceFragment
 import it.mindtek.ruah.kotlin.extensions.setTopPadding
 
-class ActivityUnits : AppCompatActivity(), UnitsAdapter.OnClickListener {
+class ActivityUnits : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityUnitsBinding = ActivityUnitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val adapter = UnitsAdapter(this)
-        db.unitDao().getUnitsAsync().observe(this) {
-            val list: MutableList<ModelUnitItem> = mutableListOf()
-            it.forEach { unit: ModelUnit ->
-                try {
-                    list.add(
-                        ModelUnitItem(
-                            unit.id,
-                            unit.name,
-                            unit.position,
-                            unit.completed,
-                            getString(ResourceProvider.getString(this, unit.name)),
-                            ResourceProvider.getIcon(this, unit.name),
-                            ResourceProvider.getColor(this, unit.name)
-                        )
-                    )
-                } catch (e: Resources.NotFoundException) {
-                    Log.e("ActivityUnits", "Resources not found for unit: ${unit.name}", e)
-                }
-            }
-            adapter.submitList(list)
-        }
-        binding.root.setTopPadding()
-        binding.unitsRecycler.adapter = adapter
-        binding.privacyPolicy.setBottomPadding()
-        binding.privacyPolicy.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-        binding.privacyPolicy.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = getString(R.string.privacy_policy_url).toUri()
-            })
+        binding.activityUnitsToolbar.setTopPadding()
+        setSupportActionBar(binding.activityUnitsToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        getCategory()?.let {
+            supportActionBar?.title =
+                getString(ResourceProvider.getString(this, it.name.lowercase()))
+            replaceFragment(FragmentUnits.newInstance(it), R.id.activity_units_fragment_spot, false)
         }
     }
 
-    override fun onItemClicked(unit: ModelUnitItem) {
-        startActivity(Intent(this@ActivityUnits, ActivityUnit::class.java).apply {
-            putExtra(ActivityUnit.EXTRA_UNIT_ID, unit.id)
-        })
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
     }
+
+    @Suppress("DEPRECATION")
+    private fun getCategory(): Category? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            intent?.getSerializableExtra(CATEGORY_KEY, Category::class.java) else
+            intent?.getSerializableExtra(CATEGORY_KEY) as? Category
 
     companion object {
-        const val TIMESTAMP: String = "timestamp"
+        const val CATEGORY_KEY: String = "category_key"
+
+        fun createIntent(context: Context, category: Category): Intent =
+            Intent(context, ActivityUnits::class.java).apply {
+                putExtra(CATEGORY_KEY, category)
+            }
     }
 }

@@ -4,8 +4,4 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "final")
-open class ModelFinalTest (
-        @PrimaryKey
-        var id: String,
-        var unit_id: Int
-)
+open class ModelFinalTest(@PrimaryKey val id: String, val unit_id: Int)

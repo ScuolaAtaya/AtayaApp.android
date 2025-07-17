@@ -1,42 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
-    android:fillViewport="true">
+    android:background="@color/backgroundGrey"
+    android:orientation="vertical"
+    tools:context=".activities.ActivityUnits">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_units_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="it.mindtek.ruah.activities.ActivityUnits">
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"
+        app:titleTextColor="@color/black" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/unitsRecycler"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:spanCount="2"
-            tools:ignore="UnusedAttribute" />
-
-        <TextView
-            android:id="@+id/privacyPolicy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/privacy_policy"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/unitsRecycler"
-            app:layout_constraintVertical_bias="1" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/activity_units_fragment_spot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

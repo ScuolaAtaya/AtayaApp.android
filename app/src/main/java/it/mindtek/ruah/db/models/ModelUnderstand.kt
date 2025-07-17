@@ -9,11 +9,8 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "understand")
 open class ModelUnderstand(
-        @PrimaryKey
-        var id: String,
-        var unit_id: Int,
-        @Embedded(prefix = "audio_")
-        var audio: ModelMedia,
-        @Embedded(prefix = "video_url_")
-        var video_url: ModelMedia
+    @PrimaryKey val id: String,
+    val unit_id: Int,
+    @Embedded(prefix = "audio_") val audio: ModelMedia,
+    @Embedded(prefix = "video_url_") val video_url: ModelMedia
 )

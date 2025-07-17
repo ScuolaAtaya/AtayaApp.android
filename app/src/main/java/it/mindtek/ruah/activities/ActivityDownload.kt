@@ -42,7 +42,7 @@ class ActivityDownload : AppCompatActivity() {
         workManager.getWorkInfoByIdLiveData(request.id).observe(this) {
             it?.let {
                 if (it.state == WorkInfo.State.SUCCEEDED) {
-                    startActivity(Intent(this, ActivityUnits::class.java))
+                    startActivity(Intent(this, ActivityMain::class.java))
                     finish()
                 } else {
                     binding.progress.progress = it.progress.getInt(PROGRESS, 0)

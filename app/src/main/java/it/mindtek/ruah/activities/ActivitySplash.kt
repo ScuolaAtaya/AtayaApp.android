@@ -38,7 +38,7 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
 
     private fun checkUpdates() {
         val timestamp: Long =
-            getSharedPreferences(APP_SP, MODE_PRIVATE).getLong(ActivityUnits.TIMESTAMP, 0)
+            getSharedPreferences(APP_SP, MODE_PRIVATE).getLong(TIMESTAMP, 0)
         val request: Call<ResponseBody> = ApiClient.needsUpdate(timestamp)
         request.enqueue(this)
     }
@@ -49,7 +49,11 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     private fun goToUnits() {
-        startActivity(Intent(this, ActivityUnits::class.java))
+        startActivity(Intent(this, ActivityMain::class.java))
         finish()
+    }
+
+    companion object {
+        private const val TIMESTAMP: String = "timestamp"
     }
 }
