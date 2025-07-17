@@ -12,8 +12,8 @@
         android:id="@+id/activity_unit_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:theme="@style/ToolbarUnitTheme"
         android:elevation="8dp"
+        android:theme="@style/ToolbarUnitTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -75,8 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/capiamo"
-            tools:ignore="ContentDescription" />
+            android:importantForAccessibility="no"
+            android:src="@drawable/capiamo" />
 
         <TextView
             android:id="@+id/textView"
@@ -96,9 +96,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/iconCapiamo"
+            android:contentDescription="@string/done"
             android:src="@drawable/check"
-            android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -116,8 +116,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/parliamo"
-            tools:ignore="ContentDescription" />
+            android:importantForAccessibility="no"
+            android:src="@drawable/parliamo" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -136,9 +136,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/iconParliamo"
+            android:contentDescription="@string/done"
             android:src="@drawable/check"
-            android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -156,8 +156,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/leggiamo"
-            tools:ignore="ContentDescription" />
+            android:importantForAccessibility="no"
+            android:src="@drawable/leggiamo" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -176,9 +176,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/iconLeggere"
+            android:contentDescription="@string/done"
             android:src="@drawable/check"
-            android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -196,8 +196,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/scriviamo"
-            tools:ignore="ContentDescription" />
+            android:importantForAccessibility="no"
+            android:src="@drawable/scriviamo" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -218,7 +218,7 @@
             android:layout_toEndOf="@id/iconScriviamo"
             android:src="@drawable/check"
             android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/done" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -236,7 +236,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            tools:ignore="ContentDescription" />
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/verificaFinaleText"
@@ -255,8 +255,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/iconVerificaFinale"
             android:layout_toEndOf="@id/iconVerificaFinale"
+            android:contentDescription="@string/done"
             android:src="@drawable/check"
-            android:visibility="gone"
-            tools:ignore="ContentDescription" />
+            android:visibility="gone" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
