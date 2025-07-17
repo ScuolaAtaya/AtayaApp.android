@@ -63,7 +63,7 @@ class ActivityUnderstandQuestion : AppCompatActivity(), UnderstandActivityInterf
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 @Suppress("DEPRECATION")
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM)
-                    window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
+                    window.statusBarColor = ResourceProvider.getColor(this, it.name)
             }, { error ->
                 Log.e("ActivityUnderstandQuestion", "Error loading unit", error)
             }).let {

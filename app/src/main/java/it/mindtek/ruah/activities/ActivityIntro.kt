@@ -88,7 +88,7 @@ class ActivityIntro : AppCompatActivity() {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 @Suppress("DEPRECATION")
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM)
-                    window.statusBarColor = ResourceProvider.getColor(this, "${it.name}_dark")
+                    window.statusBarColor = ResourceProvider.getColor(this, it.name)
                 binding.coordinator.setBackgroundColor(color)
                 binding.fabBack.imageTintList = ColorStateList.valueOf(color)
                 binding.unitIcon.setImageResource(ResourceProvider.getIcon(this, it.name))
