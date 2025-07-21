@@ -21,13 +21,27 @@
         android:paddingEnd="16dp"
         android:paddingBottom="56dp">
 
-        <ImageView
-            android:id="@+id/item_category_image"
+        <FrameLayout
             android:layout_width="@dimen/card_image_size"
-            android:layout_height="@dimen/card_image_size"
-            android:importantForAccessibility="no"
-            android:scaleType="center"
-            tools:src="@drawable/italiano" />
+            android:layout_height="@dimen/card_image_size">
+
+            <ImageView
+                android:id="@+id/item_category_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="center"
+                tools:src="@drawable/italiano" />
+
+            <ImageView
+                android:id="@+id/item_category_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:contentDescription="@string/done"
+                android:src="@drawable/check"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/item_category_title"

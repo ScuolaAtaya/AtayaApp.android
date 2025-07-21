@@ -36,6 +36,7 @@ import it.mindtek.ruah.kotlin.extensions.setVisible
 
 class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
     private lateinit var binding: FragmentUnitsBinding
+    private lateinit var adapter: UnitsAdapter
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -49,7 +50,7 @@ class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = UnitsAdapter(this)
+        adapter = UnitsAdapter(this)
         binding.fragmentUnitsList.adapter = adapter
         binding.fragmentUnitsList.addItemDecoration(
             GridSpaceItemDecoration(
@@ -65,36 +66,6 @@ class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
             })
         }
         getCategory()?.let { category: Category ->
-            db.unitDao().getUnitsByCategoryAsync(category).map {
-                val list: MutableList<ModelUnitItem> = mutableListOf()
-                it.map { unit: ModelUnit ->
-                    try {
-                        list.add(
-                            ModelUnitItem(
-                                unit.id,
-                                getString(ResourceProvider.getString(requireActivity(), unit.name)),
-                                unit.position,
-                                unit.completed.size == 5,
-                                ResourceProvider.getIcon(requireActivity(), unit.name),
-                                ResourceProvider.getColor(requireActivity(), unit.name)
-                            )
-                        )
-                    } catch (e: Resources.NotFoundException) {
-                        Log.e("ActivityUnits", "Resources not found for unit: ${unit.name}", e)
-                    }
-                }
-                list.sortedBy { item: ModelUnitItem ->
-                    item.position
-                }
-            }.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    adapter.submitList(it)
-                }, {
-                    Log.e("ActivityUnits", "Error loading categories or units", it)
-                }).let {
-                    disposable.add(it)
-                }
             category.funded?.let {
                 binding.fragmentUnitsFounded.setVisible()
                 binding.fragmentUnitsFounded.text = getString(it)
@@ -119,6 +90,42 @@ class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
                         getString(alt)
                     }
             } ?: binding.fragmentUnitsCofoundedIcon.setGone()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getCategory()?.let { category: Category ->
+            db.unitDao().getUnitsByCategoryAsync(category).map {
+                val list: MutableList<ModelUnitItem> = mutableListOf()
+                it.map { unit: ModelUnit ->
+                    try {
+                        list.add(
+                            ModelUnitItem(
+                                unit.id,
+                                getString(ResourceProvider.getString(requireActivity(), unit.name)),
+                                unit.position,
+                                unit.completed.size == 5,
+                                ResourceProvider.getIcon(requireActivity(), unit.name),
+                                ResourceProvider.getColor(requireActivity(), unit.name)
+                            )
+                        )
+                    } catch (e: Resources.NotFoundException) {
+                        Log.e("FragmentUnits", "Resources not found for unit: ${unit.name}", e)
+                    }
+                }
+                list.sortedBy { item: ModelUnitItem ->
+                    item.position
+                }
+            }.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    adapter.submitList(it)
+                }, {
+                    Log.e("FragmentUnits", "Error loading categories or units", it)
+                }).let {
+                    disposable.add(it)
+                }
         }
     }
 
