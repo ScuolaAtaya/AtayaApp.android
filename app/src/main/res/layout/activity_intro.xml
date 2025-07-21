@@ -53,8 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             tools:text="@string/section_write" />
     </LinearLayout>
 
@@ -95,9 +96,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/figtree"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iconSection"
@@ -109,6 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/play"
+        android:fontFamily="@font/figtree_medium"
         android:text="@string/start"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toTopOf="@id/bottomButton"
@@ -133,9 +136,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
+        android:fontFamily="@font/figtree"
         android:text="@string/back"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

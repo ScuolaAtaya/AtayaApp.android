@@ -14,10 +14,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/figtree"
         android:gravity="center_horizontal"
         android:text="@string/watch_video"
         android:textColor="@color/blackAlpha54"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/stepLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +41,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </FrameLayout>
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -59,8 +60,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/figtree"
         android:textColor="@color/blackAlpha54"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,8 +89,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:fontFamily="@font/figtree"
         android:textColor="@color/blackAlpha54"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

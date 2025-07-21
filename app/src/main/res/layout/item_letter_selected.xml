@@ -20,8 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/figtree"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,8 +29,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/blackAlpha54"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +52,9 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
+                android:fontFamily="@font/figtree"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -62,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:drawableStart="@drawable/volume"
+            android:fontFamily="@font/figtree_medium"
             android:paddingStart="16dp"
             android:text="@string/listen"
             android:textColor="@color/white"
@@ -75,8 +78,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/blackAlpha54"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,8 +114,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ems="10"
+            android:fontFamily="@font/figtree"
             android:hint="@string/write"
             android:inputType="textPersonName"
+            android:text="@string/section_write"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"

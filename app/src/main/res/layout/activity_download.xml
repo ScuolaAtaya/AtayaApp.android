@@ -15,21 +15,22 @@
         android:importantForAccessibility="no"
         android:padding="16dp"
         android:src="@drawable/download"
-        app:tint="@color/black"
         app:layout_constraintBottom_toTopOf="@id/text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
+        android:fontFamily="@font/figtree"
         android:text="@string/downloading"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/progress"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView" />
@@ -39,9 +40,9 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:progressTint="@color/black"
         android:layout_marginBottom="16dp"
         android:indeterminate="false"
+        android:progressTint="@color/black"
         app:layout_constraintBottom_toTopOf="@id/progressText"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView" />
@@ -51,9 +52,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
+        android:fontFamily="@font/figtree"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView" />

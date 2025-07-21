@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ToolbarTheme"
-        app:titleTextColor="@color/black" />
+        app:titleTextAppearance="@style/ToolbarTextStyle" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/activity_units_fragment_spot"

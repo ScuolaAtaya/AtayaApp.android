@@ -15,6 +15,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
+        android:fontFamily="@font/figtree_medium"
         android:text="@string/hello"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:fontFamily="@font/figtree_medium"
         android:text="@string/category_header"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -54,13 +56,21 @@
                 android:id="@+id/activity_main_privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
                 android:background="@color/white"
+                android:fontFamily="@font/figtree"
                 android:foreground="?selectableItemBackground"
                 android:padding="16dp"
                 android:text="@string/privacy_policy"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="14sp"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeTextType="uniform"
+                tools:targetApi="26" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -18,21 +18,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
-            android:autoSizeMaxTextSize="14sp"
-            android:autoSizeMinTextSize="11sp"
+            android:autoSizeMaxTextSize="16sp"
+            android:autoSizeMinTextSize="12sp"
             android:autoSizeTextType="uniform"
+            android:fontFamily="@font/figtree"
             android:gravity="center_horizontal"
             android:maxLines="1"
             android:text="@string/read"
             android:textColor="@color/blackAlpha54"
-            android:textSize="14sp"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="11sp"
+            android:textSize="16sp"
+            app:autoSizeMaxTextSize="16sp"
+            app:autoSizeMinTextSize="12sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toStartOf="@id/stepBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            tools:targetApi="26" />
 
         <FrameLayout
             android:id="@+id/stepBackground"
@@ -51,8 +52,9 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
+                android:fontFamily="@font/figtree"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </FrameLayout>
 
         <ImageView
@@ -71,8 +73,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/blackAlpha54"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

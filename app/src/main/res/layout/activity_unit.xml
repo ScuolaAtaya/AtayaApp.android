@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white" />
+        app:titleTextAppearance="@style/ToolbarUnitTextStyle" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/verticalGuideline"
@@ -85,10 +85,11 @@
             android:layout_below="@id/iconCapiamo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/figtree"
             android:text="@string/section_understand"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/capiamoDone"
@@ -125,10 +126,11 @@
             android:layout_below="@id/iconParliamo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/figtree"
             android:text="@string/section_talk"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/parliamoDone"
@@ -165,10 +167,11 @@
             android:layout_below="@id/iconLeggere"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/figtree"
             android:text="@string/section_read"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/leggiamoDone"
@@ -205,10 +208,11 @@
             android:layout_below="@id/iconScriviamo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/figtree"
             android:text="@string/section_write"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/scriviamoDone"
@@ -216,9 +220,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/iconScriviamo"
+            android:contentDescription="@string/done"
             android:src="@drawable/check"
-            android:visibility="gone"
-            android:contentDescription="@string/done" />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -245,9 +249,10 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="24dp"
             android:layout_toEndOf="@id/iconVerificaFinale"
+            android:fontFamily="@font/figtree"
             android:text="@string/section_final_test"
             android:textAllCaps="true"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/verificaFinaleDone"
