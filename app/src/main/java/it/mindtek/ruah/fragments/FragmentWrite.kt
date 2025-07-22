@@ -128,12 +128,24 @@ class FragmentWrite : Fragment() {
         binding.editText.setVisible()
         binding.editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                clearDrawable()
-                if (setLowerCase(s.toString()) == setLowerCase(write[stepIndex].word)) {
-                    showRight()
+                val text: String = s.toString().trim()
+                binding.editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+                if (text.lowercase(Locale.ITALIAN) == write[stepIndex].word.lowercase(Locale.ITALIAN)) {
+                    binding.editText.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        ContextCompat.getDrawable(requireActivity(), R.drawable.done),
+                        null
+                    )
                     binding.next.enable()
                 } else {
-                    if (s.toString().isNotEmpty()) showError()
+                    if (text.isNotEmpty())
+                        binding.editText.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            ContextCompat.getDrawable(requireActivity(), R.drawable.close),
+                            null
+                        )
                     binding.next.disable()
                 }
             }
@@ -141,28 +153,6 @@ class FragmentWrite : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-    }
-
-    fun clearDrawable() {
-        binding.editText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
-    }
-
-    fun showError() {
-        binding.editText.setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(requireActivity(), R.drawable.close),
-            null
-        )
-    }
-
-    fun showRight() {
-        binding.editText.setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(requireActivity(), R.drawable.done),
-            null
-        )
     }
 
     private fun setupRecyclers() {
@@ -228,8 +218,6 @@ class FragmentWrite : Fragment() {
         super.onDestroy()
         player?.release()
     }
-
-    private fun setLowerCase(text: String) = text.lowercase(Locale.ITALIAN)
 
     companion object {
         private const val EXTRA_STEP: String = "extra step int position"
