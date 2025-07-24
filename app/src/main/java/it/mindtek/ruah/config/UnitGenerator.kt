@@ -20,8 +20,8 @@ class UnitGenerator {
             ModelUnit(11, Category.SICUREZZA, "rischi_pericoli", 2),
             ModelUnit(12, Category.SICUREZZA, "benessere", 3),
             ModelUnit(13, Category.SICUREZZA, "patente", 4),
-            ModelUnit(14, Category.LINGUA, "edilizia", 1), // TODO name
-            ModelUnit(15, Category.LINGUA, "edilizia_2", 2), // TODO name
+            ModelUnit(14, Category.LINGUA, "edilizia_1", 1),
+            ModelUnit(15, Category.LINGUA, "edilizia_2", 2),
             ModelUnit(16, Category.LINGUA, "persona", 3),
             ModelUnit(17, Category.LINGUA, "pulizie", 4)
         )

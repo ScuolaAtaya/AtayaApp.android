@@ -27,7 +27,7 @@
     <string name="lavoro">Lavoro</string>
     <string name="cibo">Cibo</string>
     <string name="telefono">Telefono</string>
-    <string name="stato">Come sei?\ncome stai?</string>
+    <string name="stato">Come sei?\nCome stai?</string>
     <string name="salute">Salute</string>
     <string name="citta">Città e servizi</string>
     <string name="mezzi">Mezzi di trasporto</string>
@@ -37,9 +37,9 @@
     <string name="rischi_pericoli">Rischi e pericoli</string>
     <string name="benessere">Benessere al lavoro</string>
     <string name="patente">Patente di guida</string>
-    <string name="edilizia">Edilizia</string>
+    <string name="edilizia_1">Edilizia 1</string>
     <string name="edilizia_2">Edilizia 2</string>
-    <string name="persona">Assistenza\nalla persona</string>
+    <string name="persona">Assistenza alla persona</string>
     <string name="pulizie">Pulizie</string>
 
     <string name="section_understand">Capiamo</string>
