@@ -14,7 +14,6 @@ enum class Category(
 ) {
     ITALIANO,
     SICUREZZA(
-        funded = R.string.sicurezza_funded,
         cofunded = R.string.sicurezza_cofunded,
         cofundedIcon = R.drawable.ministero_interno,
         cofundedAlt = R.string.sicurezza_cofunded_alt
