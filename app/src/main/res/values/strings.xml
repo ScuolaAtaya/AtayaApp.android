@@ -14,12 +14,12 @@
     <string name="italiano">L‘italiano per vivere in Italia</string>
     <string name="sicurezza">Sicurezza al lavoro e alla guida</string>
     <string name="lingua">Lingua per il lavoro</string>
-    <string name="sicurezza_funded" tools:ignore="TypographyDashes">Funded by\n\nSPELLINg - Progetto SPErimentale Lingua per il Lavoro e l’INtegrazione (PROG-2549; CUP: H75E19000050005; FAMI 2014-2020 - Obiettivo Specifico 2 - Obiettivo Nazionale 2 lett. h Formazione civico linguistica - Servizi sperimentali di formazione linguistica 2018-2021)</string>
+    <string name="sicurezza_funded" tools:ignore="TypographyDashes">Funded by SPELLINg - Progetto SPErimentale Lingua per il Lavoro e l’INtegrazione (PROG-2549; CUP: H75E19000050005; FAMI 2014-2020 - Obiettivo Specifico 2 - Obiettivo Nazionale 2 lett. h) Formazione civico linguistica - Servizi sperimentali di formazione linguistica 2018-2021) </string>
     <string name="sicurezza_cofunded">progetto Co-finanziato dall’UE Ministero dell’Interno</string>
     <string name="sicurezza_cofunded_alt">Co-founded by the Europian Union</string>
     <string name="lingua_funded">Funded by\n\nthe European Union.\nViews and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor the granting authority can be held responsible for them.</string>
     <string name="lingua_funded_alt">Co-founded by the Europian Union</string>
-    <string name="lingua_cofunded">Co-funded by Erasmus Brick</string>
+    <string name="lingua_cofunded">Erasmus + BRICK Project - Building, Re-qualifying and Innovating Public-Private Partnerships through Linguistic and Communicative Skills</string>
     <string name="lingua_cofunded_alt">Brick</string>
 
     <!-- Unit -->

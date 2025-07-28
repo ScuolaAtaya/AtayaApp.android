@@ -30,26 +30,13 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2" />
 
-            <TextView
-                android:id="@+id/fragment_units_founded"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="56dp"
-                android:layout_marginBottom="32dp"
-                android:fontFamily="@font/figtree"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:text="@string/lingua_funded" />
-
             <ImageView
-                android:id="@+id/fragment_units_founded_icon"
+                android:id="@+id/fragment_units_cofounded_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="42dp"
+                android:layout_marginBottom="32dp"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/ue" />
+                tools:src="@drawable/brick" />
 
             <TextView
                 android:id="@+id/fragment_units_cofounded"
@@ -57,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
                 android:layout_marginEnd="56dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="42dp"
                 android:fontFamily="@font/figtree"
                 android:textAlignment="center"
                 android:textColor="@color/black"
@@ -65,12 +52,25 @@
                 tools:text="@string/lingua_cofunded" />
 
             <ImageView
-                android:id="@+id/fragment_units_cofounded_icon"
+                android:id="@+id/fragment_units_founded_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="28dp"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/brick" />
+                tools:src="@drawable/ue" />
+
+            <TextView
+                android:id="@+id/fragment_units_founded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp"
+                android:layout_marginBottom="28dp"
+                android:fontFamily="@font/figtree"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="@string/lingua_funded" />
         </LinearLayout>
 
         <TextView
