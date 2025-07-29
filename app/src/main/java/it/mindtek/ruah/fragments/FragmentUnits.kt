@@ -66,30 +66,38 @@ class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
             })
         }
         getCategory()?.let { category: Category ->
-            category.funded?.let {
-                binding.fragmentUnitsFounded.setVisible()
-                binding.fragmentUnitsFounded.text = getString(it)
-            } ?: binding.fragmentUnitsFounded.setGone()
-            category.fundedIcon?.let {
-                binding.fragmentUnitsFoundedIcon.setVisible()
-                binding.fragmentUnitsFoundedIcon.setImageResource(it)
-                binding.fragmentUnitsFoundedIcon.contentDescription =
-                    category.fundedAlt?.let { alt: Int ->
+            category.firstFunded?.let {
+                binding.fragmentUnitsFirstFounded.setVisible()
+                binding.fragmentUnitsFirstFounded.text = getString(it)
+            } ?: binding.fragmentUnitsFirstFounded.setGone()
+            category.firstFundedIcon?.let {
+                binding.fragmentUnitsFirstFoundedIcon.setVisible()
+                binding.fragmentUnitsFirstFoundedIcon.setImageResource(it)
+                binding.fragmentUnitsFirstFoundedIcon.contentDescription =
+                    category.firstFundedAlt?.let { alt: Int ->
                         getString(alt)
                     }
-            } ?: binding.fragmentUnitsFoundedIcon.setGone()
-            category.cofunded?.let {
-                binding.fragmentUnitsCofounded.setVisible()
-                binding.fragmentUnitsCofounded.text = getString(it)
-            } ?: binding.fragmentUnitsCofounded.setGone()
-            category.cofundedIcon?.let {
-                binding.fragmentUnitsCofoundedIcon.setVisible()
-                binding.fragmentUnitsCofoundedIcon.setImageResource(it)
-                binding.fragmentUnitsFoundedIcon.contentDescription =
-                    category.cofundedAlt?.let { alt: Int ->
+            } ?: binding.fragmentUnitsFirstFoundedIcon.setGone()
+            category.secondFunded?.let {
+                binding.fragmentUnitsSecondFounded.setVisible()
+                binding.fragmentUnitsSecondFounded.text = getString(it)
+            } ?: binding.fragmentUnitsSecondFounded.setGone()
+            category.secondFundedIcon?.let {
+                binding.fragmentUnitsSecondFoundedIcon.setVisible()
+                binding.fragmentUnitsSecondFoundedIcon.setImageResource(it)
+                binding.fragmentUnitsSecondFoundedIcon.contentDescription =
+                    category.secondFundedAlt?.let { alt: Int ->
                         getString(alt)
                     }
-            } ?: binding.fragmentUnitsCofoundedIcon.setGone()
+            } ?: binding.fragmentUnitsSecondFoundedIcon.setGone()
+            category.thirdFundedIcon?.let {
+                binding.fragmentUnitsThirdFoundedIcon.setVisible()
+                binding.fragmentUnitsThirdFoundedIcon.setImageResource(it)
+                binding.fragmentUnitsThirdFoundedIcon.contentDescription =
+                    category.thirdFundedAlt?.let { alt: Int ->
+                        getString(alt)
+                    }
+            }
         }
     }
 

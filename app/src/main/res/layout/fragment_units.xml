@@ -31,15 +31,15 @@
                 app:spanCount="2" />
 
             <ImageView
-                android:id="@+id/fragment_units_cofounded_icon"
+                android:id="@+id/fragment_units_first_founded_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="28dp"
                 tools:ignore="ContentDescription"
                 tools:src="@drawable/brick" />
 
             <TextView
-                android:id="@+id/fragment_units_cofounded"
+                android:id="@+id/fragment_units_first_founded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
@@ -49,10 +49,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                tools:text="@string/lingua_cofunded" />
+                tools:text="@string/erasmus_brick" />
 
             <ImageView
-                android:id="@+id/fragment_units_founded_icon"
+                android:id="@+id/fragment_units_second_founded_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="28dp"
@@ -60,17 +60,25 @@
                 tools:src="@drawable/ue" />
 
             <TextView
-                android:id="@+id/fragment_units_founded"
+                android:id="@+id/fragment_units_second_founded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
                 android:layout_marginEnd="56dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="42dp"
                 android:fontFamily="@font/figtree"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                tools:text="@string/lingua_funded" />
+                tools:text="@string/funded_ue" />
+
+            <ImageView
+                android:id="@+id/fragment_units_third_founded_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ue" />
         </LinearLayout>
 
         <TextView

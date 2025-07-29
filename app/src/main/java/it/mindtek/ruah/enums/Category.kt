@@ -5,28 +5,30 @@ import androidx.annotation.StringRes
 import it.mindtek.ruah.R
 
 enum class Category(
-    @param:StringRes val funded: Int? = null,
-    @param:DrawableRes val fundedIcon: Int? = null,
-    @param:StringRes val fundedAlt: Int? = null,
-    @param:StringRes val cofunded: Int? = null,
-    @param:DrawableRes val cofundedIcon: Int? = null,
-    @param:StringRes val cofundedAlt: Int? = null
+    @param:DrawableRes val firstFundedIcon: Int? = null,
+    @param:StringRes val firstFundedAlt: Int? = null,
+    @param:StringRes val firstFunded: Int? = null,
+    @param:DrawableRes val secondFundedIcon: Int? = null,
+    @param:StringRes val secondFundedAlt: Int? = null,
+    @param:StringRes val secondFunded: Int? = null,
+    @param:DrawableRes val thirdFundedIcon: Int? = null,
+    @param:StringRes val thirdFundedAlt: Int? = null
 ) {
     ITALIANO,
     SICUREZZA(
-        funded = R.string.sicurezza_funded,
-        fundedIcon = R.drawable.ue,
-        fundedAlt = R.string.lingua_funded_alt,
-        cofunded = R.string.sicurezza_cofunded,
-        cofundedIcon = R.drawable.ministero_interno,
-        cofundedAlt = R.string.sicurezza_cofunded_alt
+        firstFunded = R.string.funded_spelling,
+        secondFundedIcon = R.drawable.ministero_interno,
+        secondFundedAlt = R.string.ministero_interno_alt,
+        secondFunded = R.string.cofunded_ministero_interno,
+        thirdFundedIcon = R.drawable.ue,
+        thirdFundedAlt = R.string.ue_alt
     ),
     LINGUA(
-        funded = R.string.lingua_funded,
-        fundedIcon = R.drawable.ue,
-        fundedAlt = R.string.lingua_funded_alt,
-        cofunded = R.string.lingua_cofunded,
-        cofundedIcon = R.drawable.brick,
-        cofundedAlt = R.string.lingua_cofunded_alt
+        firstFundedIcon = R.drawable.brick,
+        firstFundedAlt = R.string.brick_alt,
+        firstFunded = R.string.erasmus_brick,
+        secondFundedIcon = R.drawable.ue,
+        secondFundedAlt = R.string.ue_alt,
+        secondFunded = R.string.funded_ue
     );
 }
