@@ -1,29 +1,29 @@
 package it.mindtek.ruah.config
 
 import it.mindtek.ruah.db.models.ModelUnit
+import it.mindtek.ruah.enums.Category
 
-/**
- * Created by alessandrogaboardi on 29/11/2017.
- */
 class UnitGenerator {
     companion object {
-        fun getUnits(): MutableList<ModelUnit> {
-            val units: MutableList<ModelUnit> = mutableListOf()
-            units.add(ModelUnit(0, "accoglienza", 1))
-            units.add(ModelUnit(1, "lavoro", 2))
-            units.add(ModelUnit(2, "cibo", 3))
-            units.add(ModelUnit(3, "telefono", 4))
-            units.add(ModelUnit(4, "stato", 5))
-            units.add(ModelUnit(5, "salute", 6))
-            units.add(ModelUnit(6, "citta", 7))
-            units.add(ModelUnit(7, "mezzi", 8))
-            units.add(ModelUnit(8, "casa", 9))
-            units.add(ModelUnit(9, "viaggio", 10))
-            units.add(ModelUnit(10, "cartellonistica", 11))
-            units.add(ModelUnit(11, "rischi_pericoli", 12))
-            units.add(ModelUnit(12, "benessere", 13))
-            units.add(ModelUnit(13, "patente", 14))
-            return units
-        }
+        fun getUnits(): MutableList<ModelUnit> = mutableListOf(
+            ModelUnit(0, Category.ITALIANO, "presentazione", 1),
+            ModelUnit(1, Category.ITALIANO, "lavoro", 2),
+            ModelUnit(2, Category.ITALIANO, "cibo", 3),
+            ModelUnit(3, Category.ITALIANO, "telefono", 4),
+            ModelUnit(4, Category.ITALIANO, "stato", 5),
+            ModelUnit(5, Category.ITALIANO, "salute", 6),
+            ModelUnit(6, Category.ITALIANO, "citta", 7),
+            ModelUnit(7, Category.ITALIANO, "mezzi", 8),
+            ModelUnit(8, Category.ITALIANO, "casa", 9),
+            ModelUnit(9, Category.ITALIANO, "viaggio", 10),
+            ModelUnit(10, Category.SICUREZZA, "cartellonistica", 1),
+            ModelUnit(11, Category.SICUREZZA, "rischi_pericoli", 2),
+            ModelUnit(12, Category.SICUREZZA, "benessere", 3),
+            ModelUnit(13, Category.SICUREZZA, "patente", 4),
+            ModelUnit(14, Category.LINGUA, "edilizia_1", 1),
+            ModelUnit(15, Category.LINGUA, "edilizia_2", 2),
+            ModelUnit(16, Category.LINGUA, "persona", 3),
+            ModelUnit(17, Category.LINGUA, "pulizie", 4)
+        )
     }
 }

@@ -3,8 +3,10 @@
     <color name="transparentWhite">#44FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteAlpha50">#80FFFFFF</color>
+    <color name="whiteF4">#F4F4F4</color>
     <color name="black">#000000</color>
     <color name="blackAlpha54">#8A000000</color>
+    <color name="backgroundGrey">#EDEFF9</color>
     <color name="lightGrey">#D8D8D8</color>
     <color name="grey">#B2B2B2</color>
     <color name="red">#D0021B</color>
@@ -13,35 +15,28 @@
     <color name="blue">#3E6DB7</color>
     <color name="lightBlue">#68D2E7</color>
 
-    <!-- Unit colors -->
-    <color name="accoglienza">#37ABDF</color>
-    <color name="lavoro">#2C74B6</color>
-    <color name="cibo">#72458E</color>
-    <color name="telefono">#AE007D</color>
-    <color name="stato">#D4145D</color>
-    <color name="salute">#D2262D</color>
-    <color name="citta">#DD6927</color>
-    <color name="mezzi">#EAAC12</color>
-    <color name="casa">#9ACB2A</color>
-    <color name="viaggio">#139B43</color>
-    <color name="cartellonistica">#00796B</color>
-    <color name="rischi_pericoli">#0097A7</color>
-    <color name="benessere">#455965</color>
-    <color name="patente">#6E4C41</color>
+    <!-- Category colors -->
+    <color name="italiano">#FD367D</color>
+    <color name="sicurezza">#E6AC00</color>
+    <color name="lingua">#17CAB4</color>
 
-    <!-- Unit colors dark -->
-    <color name="accoglienza_dark">#007CAD</color>
-    <color name="lavoro_dark">#004986</color>
-    <color name="cibo_dark">#441B60</color>
-    <color name="telefono_dark">#7A0051</color>
-    <color name="stato_dark">#9C0034</color>
-    <color name="salute_dark">#990005</color>
-    <color name="citta_dark">#A53B00</color>
-    <color name="mezzi_dark">#B37D00</color>
-    <color name="casa_dark">#679A00</color>
-    <color name="viaggio_dark">#006B17</color>
-    <color name="cartellonistica_dark">#004C40</color>
-    <color name="rischi_pericoli_dark">#006978</color>
-    <color name="benessere_dark">#1C303B</color>
-    <color name="patente_dark">#41241A</color>
+    <!-- Unit colors -->
+    <color name="presentazione">#FD367D</color>
+    <color name="lavoro">#FA436F</color>
+    <color name="cibo">#F85061</color>
+    <color name="telefono">#F55D53</color>
+    <color name="stato">#F36A45</color>
+    <color name="salute">#F07838</color>
+    <color name="citta">#EE852A</color>
+    <color name="mezzi">#EB921C</color>
+    <color name="casa">#E99F0E</color>
+    <color name="viaggio">#E6AC00</color>
+    <color name="cartellonistica">#E6AC00</color>
+    <color name="rischi_pericoli">#A1B63C</color>
+    <color name="benessere">#5CC078</color>
+    <color name="patente">#17CAB4</color>
+    <color name="edilizia_1">#17CAB4</color>
+    <color name="edilizia_2">#6499A2</color>
+    <color name="persona">#B0678F</color>
+    <color name="pulizie">#FD367D</color>
 </resources>

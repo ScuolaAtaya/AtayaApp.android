@@ -1,5 +1,9 @@
 package it.mindtek.ruah
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import android.util.Log
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import it.mindtek.ruah.config.ImageWithMarkersGenerator
@@ -15,32 +19,37 @@ import it.mindtek.ruah.ws.interfaces.ApiClient
 class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
-        ApiClient.init(applicationContext.getString(R.string.api_base_url), applicationContext.getString(R.string.api_key))
+        ApiClient.init(
+            applicationContext.getString(R.string.api_base_url),
+            applicationContext.getString(R.string.api_key)
+        )
         ImageWithMarkersGenerator.init(applicationContext)
-        initRoom()
-        initUnits()
-    }
-
-    private fun initRoom() {
-        val room = Room.databaseBuilder(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) getSystemService(NotificationManager::class.java).createNotificationChannel(
+            NotificationChannel(
+                getString(R.string.notification_channel),
+                getString(R.string.notification_channel),
+                NotificationManager.IMPORTANCE_LOW
+            )
+        )
+        AppDatabase.setInstance(
+            Room.databaseBuilder(
                 applicationContext,
                 AppDatabase::class.java,
                 getString(R.string.database_name)
-        )
-                .fallbackToDestructiveMigration()
+            ).fallbackToDestructiveMigration(false)
                 .allowMainThreadQueries()
                 .build()
-        AppDatabase.setInstance(room)
+        )
+        if (db.unitDao().count() == 0) try {
+            ioThread {
+                db.unitDao().saveUnits(UnitGenerator.getUnits())
+            }
+        } catch (e: Exception) {
+            Log.e("APP", "An error occurred while generating units", e)
+        }
     }
 
-    private fun initUnits() {
-        if (db.unitDao().count() == 0) {
-            val units = UnitGenerator.getUnits()
-            try {
-                ioThread { db.unitDao().saveUnits(units) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+    companion object {
+        const val APP_SP: String = "app"
     }
 }

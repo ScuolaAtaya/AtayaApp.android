@@ -18,6 +18,7 @@ interface DaoUnderstand {
     @Insert
     fun insertAnswers(answers: MutableList<ModelAnswer>)
 
+    @Transaction
     @Query("SELECT * FROM understand WHERE unit_id = :unitId")
     fun getUnderstandByUnitId(unitId: Int): MutableList<PojoUnderstand>
 

@@ -1,5 +1,5 @@
-<resources>
-    <string name="privacy_policy_url">https://www.cooperativaruah.it/privacy-policy/</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="it">
+    <string name="privacy_policy_url">https://www.iubenda.com/privacy-policy/84388498</string>
 
     <string name="app_name">Ataya-app</string>
     <string name="notification_channel">Download</string>
@@ -7,21 +7,40 @@
     <string name="unit_icon">Unit icon</string>
     <string name="database_name">db_ruah</string>
 
-    <!-- Titoli unità -->
-    <string name="accoglienza">Accoglienza</string>
-    <string name="lavoro">Il lavoro</string>
-    <string name="cibo">Il cibo</string>
-    <string name="telefono">Pronto?</string>
-    <string name="stato">Come sei?\ncome stai?</string>
-    <string name="salute">La salute</string>
-    <string name="citta">La città e i\nsuoi servizi</string>
-    <string name="mezzi">I mezzi di\ntrasporto</string>
-    <string name="casa">La cura della\ncasa</string>
-    <string name="viaggio">Il viaggio</string>
-    <string name="cartellonistica">Lavoro:\ncartellonistica</string>
-    <string name="rischi_pericoli">Lavoro:\nrischi e pericoli</string>
-    <string name="benessere">Lavoro:\nbenessere</string>
-    <string name="patente">Patente</string>
+    <string name="hello">Ciao!</string>
+    <string name="category_header">Da dove vuoi iniziare oggi?</string>
+
+    <!-- Category -->
+    <string name="italiano">L‘italiano per vivere in Italia</string>
+    <string name="sicurezza">Sicurezza al lavoro e alla guida</string>
+    <string name="lingua">Lingua per il lavoro</string>
+    <string name="funded_spelling" tools:ignore="TypographyDashes">Funded by SPELLINg - Progetto SPErimentale Lingua per il Lavoro e l’INtegrazione (PROG-2549; CUP: H75E19000050005; FAMI 2014-2020 - Obiettivo Specifico 2 - Obiettivo Nazionale 2 lett. h) Formazione civico linguistica - Servizi sperimentali di formazione linguistica 2018-2021) </string>
+    <string name="cofunded_ministero_interno">progetto Co-finanziato dall’UE Ministero dell’Interno</string>
+    <string name="funded_ue">Funded by\n\nthe European Union.\nViews and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor the granting authority can be held responsible for them.</string>
+    <string name="erasmus_brick">Erasmus + BRICK Project - Building, Re-qualifying and Innovating Public-Private Partnerships through Linguistic and Communicative Skills</string>
+    <string name="ministero_interno_alt">Ministero dell’Interno</string>
+    <string name="ue_alt">Co-founded by the Europian Union</string>
+    <string name="brick_alt">Brick</string>
+
+    <!-- Unit -->
+    <string name="presentazione">Presentazione</string>
+    <string name="lavoro">Lavoro</string>
+    <string name="cibo">Cibo</string>
+    <string name="telefono">Telefono</string>
+    <string name="stato">Come sei?\nCome stai?</string>
+    <string name="salute">Salute</string>
+    <string name="citta">Città e servizi</string>
+    <string name="mezzi">Mezzi di trasporto</string>
+    <string name="casa">Cura della casa</string>
+    <string name="viaggio">Viaggio</string>
+    <string name="cartellonistica">Cartellonistica</string>
+    <string name="rischi_pericoli">Rischi e pericoli</string>
+    <string name="benessere">Benessere al lavoro</string>
+    <string name="patente">Patente di guida</string>
+    <string name="edilizia_1">Edilizia 1</string>
+    <string name="edilizia_2">Edilizia 2</string>
+    <string name="persona">Assistenza alla persona</string>
+    <string name="pulizie">Pulizie</string>
 
     <string name="section_understand">Capiamo</string>
     <string name="section_talk">Parliamo</string>
@@ -31,8 +50,8 @@
 
     <string name="section_understand_description">Guarda il video e rispondi\nalle domande</string>
     <string name="section_talk_description">Ascolta e ripeti la parola\nregistrandola</string>
-    <string name="section_read_description">Guarda l\'immagine e seleziona\nle parole corrispondenti</string>
-    <string name="section_write_description">Osserva l\'immagine e\nscrivi il suo nome</string>
+    <string name="section_read_description">Guarda l‘immagine e seleziona\nle parole corrispondenti</string>
+    <string name="section_write_description">Osserva l‘immagine e\nscrivi il suo nome</string>
     <string name="section_final_test_description">Rispondi sì o no per\ncontrollare se hai capito tutto</string>
 
     <string name="start">Comincia</string>
@@ -46,14 +65,16 @@
     <string name="congrats">Congratulazioni!</string>
     <string name="hold_to_record">Premi per registrare</string>
     <string name="listen_again">Riascolta</string>
-    <string name="downloading">Stiamo scaricando i file necessari, non chiudere l\'applicazione</string>
+    <string name="downloading">Stiamo scaricando i file necessari, non chiudere l‘applicazione</string>
     <string name="download_permission_denied">Permesso negato, consenti per procedere</string>
-    <string name="downloaded">File scaricato, elaborando</string>
+    <string name="download">Scaricamento del file in corso</string>
+    <string name="downloaded">File scaricato, elaborazione in corso</string>
     <string name="question">Domanda</string>
     <string name="write">Scrivi</string>
     <string name="downloaded_mb">Scaricati %d MB di %d MB</string>
     <string name="privacy_policy">Clicca qui per visualizzare la privacy policy</string>
-    <string name="category_empty_error">Nessun esercizio presente per questa categoria</string>
+    <string name="exercise_empty_error">Nessun esercizio presente per questa unità</string>
+    <string name="done">Completato</string>
 
     <string name="yes">Sì</string>
     <string name="no">No</string>

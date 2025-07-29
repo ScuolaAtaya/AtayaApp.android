@@ -4,21 +4,22 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import it.mindtek.ruah.R
+import android.os.Looper
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import it.mindtek.ruah.App.Companion.APP_SP
 import it.mindtek.ruah.ws.interfaces.ApiClient
 import okhttp3.ResponseBody
-import org.jetbrains.anko.defaultSharedPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
-    private val apiClient = ApiClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-        Handler().postDelayed({
+        installSplashScreen().apply {
+            setKeepOnScreenCondition { true }
+        }
+        Handler(Looper.getMainLooper()).postDelayed({
             checkUpdates()
         }, 1000)
     }
@@ -36,18 +37,23 @@ class ActivitySplash : AppCompatActivity(), Callback<ResponseBody> {
     }
 
     private fun checkUpdates() {
-        val timestamp = defaultSharedPreferences.getLong(ActivityUnits.TIMESTAMP, 0)
-        val request = apiClient.needsUpdate(timestamp)
+        val timestamp: Long =
+            getSharedPreferences(APP_SP, MODE_PRIVATE).getLong(TIMESTAMP, 0)
+        val request: Call<ResponseBody> = ApiClient.needsUpdate(timestamp)
         request.enqueue(this)
     }
 
     private fun download() {
-        val intent = Intent(this, ActivityDownload::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        startActivity(intent)
+        startActivity(Intent(this, ActivityDownload::class.java))
+        finish()
     }
 
     private fun goToUnits() {
-        startActivity(Intent(this, ActivityUnits::class.java))
+        startActivity(Intent(this, ActivityMain::class.java))
+        finish()
+    }
+
+    companion object {
+        private const val TIMESTAMP: String = "timestamp"
     }
 }

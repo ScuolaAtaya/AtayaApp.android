@@ -1,58 +1,37 @@
 package it.mindtek.ruah.adapters
 
 import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import it.mindtek.ruah.R
-import it.mindtek.ruah.db.models.ModelSyllable
-import kotlinx.android.synthetic.main.item_letter_selected.view.*
+import it.mindtek.ruah.databinding.ItemLetterEmptyBinding
+import it.mindtek.ruah.databinding.ItemLetterSelectableBinding
 
-/**
- * Created by alessandrogaboardi on 08/01/2018.
- */
 @SuppressLint("NotifyDataSetChanged")
 class SelectedLettersAdapter(
-        private val givenLetters: MutableList<ModelSyllable>,
-        private val onLetterTap: ((syllable: ModelSyllable) -> Unit)?
+    private val givenLetters: MutableList<ModelSyllableItem>,
+    private val listener: OnClickListener
 ) : RecyclerView.Adapter<ViewHolder>() {
-    private var letters = MutableList(givenLetters.size) { "" }
+    private var letters: MutableList<String> = MutableList(givenLetters.size) { "" }
 
     override fun getItemViewType(position: Int): Int = if (letters[position].isEmpty()) 0 else 1
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = if (viewType == 0)
-        EmptyLetterHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_empty, parent, false))
-    else LettersHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter_selected, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        if (viewType == 0) EmptyLetterHolder(
+            ItemLetterEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
+        else ItemViewHolder(
+            ItemLetterSelectableBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
     override fun getItemCount(): Int = letters.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (holder.itemViewType != 0) {
-            holder as LettersHolder
-            val item = letters[position]
-            val syllable = givenLetters.first {
-                it.id == item
-            }
-            val right = syllable.occurences.any {
-                it == position
-            }
-            holder.card.background = if (right)
-                ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_blue)
-            else ContextCompat.getDrawable(holder.itemView.context, R.drawable.card_red)
-            holder.letter.text = syllable.text
-            holder.itemView.setOnClickListener {
-                letters[position] = ""
-                onLetterTap?.invoke(syllable)
-                notifyDataSetChanged()
-            }
-        }
+        if (holder.itemViewType != 0) (holder as ItemViewHolder).bind(letters[position], position)
     }
 
-    fun select(letter: ModelSyllable) {
+    fun select(letter: ModelSyllableItem) {
         val firstEmpty = letters.indexOfFirst {
             it.isEmpty()
         }
@@ -77,11 +56,31 @@ class SelectedLettersAdapter(
         }
         return !wrong
     }
-}
 
-class LettersHolder(itemView: View) : ViewHolder(itemView) {
-    val letter: TextView = itemView.letter
-    val card: FrameLayout = itemView.card
-}
+    inner class ItemViewHolder(private val binding: ItemLetterSelectableBinding) :
+        ViewHolder(binding.root) {
+        fun bind(item: String, position: Int) {
+            val syllable = givenLetters.first {
+                it.id == item
+            }
+            val right = syllable.occurences.any {
+                it == position
+            }
+            binding.card.background = if (right)
+                ContextCompat.getDrawable(binding.root.context, R.drawable.letter_card_blue)
+            else ContextCompat.getDrawable(binding.root.context, R.drawable.letter_card_red)
+            binding.letter.text = syllable.text
+            binding.root.setOnClickListener {
+                letters[position] = ""
+                listener.onLetterTapped(syllable)
+                notifyDataSetChanged()
+            }
+        }
+    }
 
-class EmptyLetterHolder(itemView: View) : ViewHolder(itemView)
+    inner class EmptyLetterHolder(binding: ItemLetterEmptyBinding) : ViewHolder(binding.root)
+
+    interface OnClickListener {
+        fun onLetterTapped(item: ModelSyllableItem)
+    }
+}

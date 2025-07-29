@@ -5,6 +5,7 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="@color/lavoro"
     tools:context="it.mindtek.ruah.activities.ActivityIntro">
 
     <androidx.constraintlayout.widget.Guideline
@@ -43,8 +44,8 @@
             android:id="@+id/sectionIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/volume"
-            tools:ignore="ContentDescription" />
+            android:importantForAccessibility="no"
+            android:src="@drawable/volume" />
 
         <TextView
             android:id="@+id/sectionName"
@@ -52,8 +53,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            tools:text="@string/section_write" />
     </LinearLayout>
 
     <RelativeLayout
@@ -62,7 +65,7 @@
         android:layout_height="124dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/topIcon">
 
@@ -72,8 +75,8 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
-            android:src="@drawable/lavoro"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/lavoro" />
 
         <ImageView
             android:id="@+id/done"
@@ -81,8 +84,9 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/unitIcon"
+            android:contentDescription="@string/done"
             android:src="@drawable/check"
-            tools:ignore="ContentDescription" />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView
@@ -92,12 +96,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/figtree"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconSection" />
+        app:layout_constraintTop_toBottomOf="@id/iconSection"
+        tools:text="@string/section_write_description" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonNext"
@@ -105,6 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/play"
+        android:fontFamily="@font/figtree_medium"
         android:text="@string/start"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toTopOf="@id/bottomButton"
@@ -116,22 +123,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:importantForAccessibility="no"
         android:src="@drawable/home"
         app:backgroundTint="@color/white"
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@id/backText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/backText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="36dp"
+        android:fontFamily="@font/figtree"
         android:text="@string/back"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

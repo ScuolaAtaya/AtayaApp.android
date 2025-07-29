@@ -4,19 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="it.mindtek.ruah.fragments.write.FragmentWrite">
+    tools:context="it.mindtek.ruah.fragments.FragmentWrite">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="32dp">
 
         <ImageView
             android:id="@+id/stepImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintDimensionRatio="h,16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,11 +29,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/blackAlpha54"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/stepImage"
-            app:layout_constraintStart_toStartOf="@id/stepImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/stepImage" />
 
         <FrameLayout
@@ -50,8 +52,9 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
+                android:fontFamily="@font/figtree"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -59,10 +62,9 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/volume"
+            android:fontFamily="@font/figtree_medium"
             android:paddingStart="16dp"
             android:text="@string/listen"
             android:textColor="@color/white"
@@ -76,20 +78,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:fontFamily="@font/figtree"
             android:textColor="@color/blackAlpha54"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/audioButton"
-            app:layout_constraintStart_toStartOf="@id/audioButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/audioButton" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/compile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +100,8 @@
             android:id="@+id/available"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/next"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,15 +112,14 @@
             android:id="@+id/editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:ems="10"
+            android:fontFamily="@font/figtree"
             android:hint="@string/write"
             android:inputType="textPersonName"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/audioCredits" />
 
@@ -128,8 +129,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/check"
             android:drawablePadding="12dp"
             android:paddingStart="16dp"
@@ -139,6 +138,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editText"
-            app:layout_constraintVertical_bias="0.99" />
+            app:layout_constraintVertical_bias="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

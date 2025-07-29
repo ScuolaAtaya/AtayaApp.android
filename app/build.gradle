@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.room'
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -9,82 +9,104 @@ apply plugin: 'com.google.firebase.crashlytics'
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 
 android {
-    compileSdk 33
+    namespace 'it.mindtek.ruah'
+    compileSdk 36
+
     defaultConfig {
         applicationId "it.mindtek.ruah"
-        minSdkVersion 19
-        targetSdkVersion 33
-        versionCode 22
-        versionName "1.3.6"
+        minSdkVersion 25
+        targetSdkVersion 36
+        versionCode 23
+        versionName "1.4"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        room {
+            schemaDirectory "$projectDir/schemas"
+        }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile rootProject.file(keystoreProperties['storeFile'])
+            storeFile rootProject.file('ataya_key_store')
             storePassword keystoreProperties['storePassword']
         }
     }
 
-    flavorDimensions("buildType")
+    flavorDimensions = ["buildType"]
 
     productFlavors {
         develop {
             dimension "buildType"
             applicationIdSuffix ".develop"
-            resValue "string", "api_base_url", '"http://api-dev.ruah.mindtek.it/api/"'
+            resValue "string", "api_base_url", '"https://api-dev.ruah.mindtek.it/api/"'
             resValue "string", "api_key", "apiKey"
         }
 
         production {
             dimension "buildType"
-            resValue "string", "api_base_url", 'http://api.ruah.mindtek.it/api/'
+            resValue "string", "api_base_url", 'https://api.ruah.mindtek.it/api/'
             resValue "string", "api_key", "892a487f-ccaf-4b99-94a6-733640bfb9cb"
         }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
-    buildToolsVersion '30.0.3'
+
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation 'androidx.gridlayout:gridlayout:1.1.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.android.exoplayer:exoplayer:2.19.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'androidx.room:room-runtime:2.5.2'
-    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation 'androidx.room:room-runtime:2.7.2'
+    implementation 'androidx.room:room-rxjava2:2.7.2'
+    implementation 'com.google.guava:guava:33.4.8-jre'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.ghost1372:Mzip-Android:0.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.0.0'
-    kapt 'com.github.bumptech.glide:compiler:4.15.1'
-    implementation 'com.github.bumptech.glide:glide:4.15.1'
-    kapt 'androidx.room:room-compiler:2.5.2'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.4.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'androidx.work:work-runtime-ktx:2.10.2'
+    implementation 'androidx.concurrent:concurrent-futures:1.3.0'
+    implementation 'com.karumi:dexter:6.2.3'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.2'
+    ksp 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    ksp 'androidx.room:room-compiler:2.7.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:22.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.4'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
 }

@@ -4,19 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.mindtek.ruah.fragments.understand.FragmentUnderstandVideo">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="32dp"
+    tools:context="it.mindtek.ruah.fragments.FragmentUnderstandVideo">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/figtree"
         android:gravity="center_horizontal"
         android:text="@string/watch_video"
         android:textColor="@color/blackAlpha54"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/stepLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +27,6 @@
         android:id="@+id/stepLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/title"
@@ -40,7 +41,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </FrameLayout>
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -49,8 +50,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         app:layout_constraintDimensionRatio="H,16:9"
-        app:layout_constraintEnd_toEndOf="@id/stepLayout"
-        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
         app:resize_mode="fixed_width" />
 
@@ -59,11 +60,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/figtree"
         android:textColor="@color/blackAlpha54"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/videoPlayerView"
-        app:layout_constraintStart_toStartOf="@id/videoPlayerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/videoPlayerView" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -71,7 +73,6 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:drawableStart="@drawable/volume"
@@ -88,11 +89,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:fontFamily="@font/figtree"
         android:textColor="@color/blackAlpha54"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/next"
-        app:layout_constraintStart_toStartOf="@id/listen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listen" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -101,7 +103,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/check"
         android:paddingStart="16dp"
         android:text="@string/next"

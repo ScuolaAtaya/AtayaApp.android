@@ -1,21 +1,34 @@
 package it.mindtek.ruah.enums
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import it.mindtek.ruah.R
 
-/**
- * Created by alessandrogaboardi on 04/12/2017.
- */
-enum class Category(val value: Int, @StringRes val title: Int, @DrawableRes val icon: Int, @StringRes val description: Int, @RawRes val audio: Int) {
-    UNDERSTAND(0, R.string.section_understand, R.drawable.volume, R.string.section_understand_description, R.raw.capiamo),
-    TALK(1, R.string.section_talk, R.drawable.mic, R.string.section_talk_description, R.raw.parliamo),
-    READ(2, R.string.section_read, R.drawable.eye, R.string.section_read_description, R.raw.leggiamo),
-    WRITE(3, R.string.section_write, R.drawable.edit, R.string.section_write_description, R.raw.scriviamo),
-    FINAL_TEST(4, R.string.section_final_test, R.drawable.edit, R.string.section_final_test_description, R.raw.verifica_finale);
-
-    companion object {
-        fun from(value: Int): Category? = values().firstOrNull { it.value == value }
-    }
+enum class Category(
+    @param:DrawableRes val firstFundedIcon: Int? = null,
+    @param:StringRes val firstFundedAlt: Int? = null,
+    @param:StringRes val firstFunded: Int? = null,
+    @param:DrawableRes val secondFundedIcon: Int? = null,
+    @param:StringRes val secondFundedAlt: Int? = null,
+    @param:StringRes val secondFunded: Int? = null,
+    @param:DrawableRes val thirdFundedIcon: Int? = null,
+    @param:StringRes val thirdFundedAlt: Int? = null
+) {
+    ITALIANO,
+    SICUREZZA(
+        firstFunded = R.string.funded_spelling,
+        secondFundedIcon = R.drawable.ministero_interno,
+        secondFundedAlt = R.string.ministero_interno_alt,
+        secondFunded = R.string.cofunded_ministero_interno,
+        thirdFundedIcon = R.drawable.ue,
+        thirdFundedAlt = R.string.ue_alt
+    ),
+    LINGUA(
+        firstFundedIcon = R.drawable.brick,
+        firstFundedAlt = R.string.brick_alt,
+        firstFunded = R.string.erasmus_brick,
+        secondFundedIcon = R.drawable.ue,
+        secondFundedAlt = R.string.ue_alt,
+        secondFunded = R.string.funded_ue
+    );
 }

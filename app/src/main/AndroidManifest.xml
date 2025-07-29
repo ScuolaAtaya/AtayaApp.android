@@ -1,81 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="it.mindtek.ruah">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/app_logo"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name=".activities.ActivityUnderstandQuestion"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityFinalTest"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityUnits"
-            android:noHistory="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityUnit"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityIntro"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityUnderstand"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivitySpeak"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityRead"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityWrite"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".activities.ActivityDownload"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
             android:name=".activities.ActivitySplash"
             android:exported="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoToolbar"
-            tools:ignore="LockedOrientationActivity">
+            android:theme="@style/SplashTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ActivityDownload"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityMain"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityUnits"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityUnit"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityIntro"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivitySpeak"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityRead"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityWrite"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityUnderstand"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityUnderstandQuestion"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ActivityFinalTest"
+            android:screenOrientation="portrait"
+            android:theme="@style/UnitTheme"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
 
-        <service android:name=".services.DownloadService" />
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 </manifest>

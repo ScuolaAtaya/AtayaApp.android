@@ -12,18 +12,20 @@ import it.mindtek.ruah.db.models.*
 /**
  * Created by alessandrogaboardi on 29/11/2017.
  */
-@Database(entities = [
-    ModelUnit::class,
-    ModelUnderstand::class,
-    ModelQuestion::class,
-    ModelAnswer::class,
-    ModelSpeak::class,
-    ModelRead::class,
-    ModelReadOption::class,
-    ModelWrite::class,
-    ModelFinalTest::class,
-    ModelFinalTestQuestion::class
-], version = 33)
+@Database(
+    entities = [
+        ModelUnit::class,
+        ModelUnderstand::class,
+        ModelQuestion::class,
+        ModelAnswer::class,
+        ModelSpeak::class,
+        ModelRead::class,
+        ModelReadOption::class,
+        ModelWrite::class,
+        ModelFinalTest::class,
+        ModelFinalTestQuestion::class
+    ], version = 36
+)
 
 @TypeConverters(StringArrayConverter::class, IntArrayConverter::class, MarkerArrayConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -41,10 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
             INSTANCE = instance
         }
 
-        fun getInstance(): AppDatabase {
-            INSTANCE?.let {
-                return it
-            } ?: throw Exception("No room instance has been set!!")
-        }
+        fun getInstance(): AppDatabase =
+            INSTANCE ?: throw Exception("No room instance has been set!")
     }
 }
