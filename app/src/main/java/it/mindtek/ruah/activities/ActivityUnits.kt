@@ -2,9 +2,9 @@ package it.mindtek.ruah.activities
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import it.mindtek.ruah.R
 import it.mindtek.ruah.config.ResourceProvider
 import it.mindtek.ruah.databinding.ActivityUnitsBinding
@@ -33,11 +33,8 @@ class ActivityUnits : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    @Suppress("DEPRECATION")
     private fun getCategory(): Category? =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            intent?.getSerializableExtra(CATEGORY_KEY, Category::class.java) else
-            intent?.getSerializableExtra(CATEGORY_KEY) as? Category
+        IntentCompat.getSerializableExtra(intent, CATEGORY_KEY, Category::class.java)
 
     companion object {
         const val CATEGORY_KEY: String = "category_key"
