@@ -10,14 +10,14 @@ keystoreProperties.load(new FileInputStream(rootProject.file("keystore.propertie
 
 android {
     namespace 'it.mindtek.ruah'
-    compileSdk 36
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "it.mindtek.ruah"
         minSdkVersion 25
         targetSdkVersion 36
-        versionCode 23
-        versionName "1.4"
+        versionCode 24
+        versionName "1.4.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
