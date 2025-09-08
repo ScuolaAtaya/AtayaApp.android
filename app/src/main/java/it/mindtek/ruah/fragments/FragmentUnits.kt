@@ -3,7 +3,6 @@ package it.mindtek.ruah.fragments
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Paint
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +12,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
+import androidx.core.os.BundleCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -148,11 +148,11 @@ class FragmentUnits : Fragment(), UnitsAdapter.OnClickListener {
         })
     }
 
-    @Suppress("DEPRECATION")
-    private fun getCategory(): Category? =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            requireArguments().getSerializable(ActivityUnits.CATEGORY_KEY, Category::class.java)
-        else requireArguments().getSerializable(ActivityUnits.CATEGORY_KEY) as? Category
+    private fun getCategory(): Category? = BundleCompat.getSerializable(
+        requireArguments(),
+        ActivityUnits.CATEGORY_KEY,
+        Category::class.java
+    )
 
     companion object {
         fun newInstance(category: Category): FragmentUnits = FragmentUnits().apply {
