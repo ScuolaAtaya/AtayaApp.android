@@ -2,18 +2,16 @@ package it.mindtek.ruah.config
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
-import android.os.Build
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.text.TextPaint
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import it.mindtek.ruah.R
 import it.mindtek.ruah.db.models.ModelMarker
 import java.io.File
 
-
-@Suppress("DEPRECATION")
 @SuppressLint("StaticFieldLeak")
 object ImageWithMarkersGenerator {
     private lateinit var context: Context
@@ -29,21 +27,17 @@ object ImageWithMarkersGenerator {
                 inMutable = true
             }) ?: return null
         val canvas = Canvas(bitmap)
-        val wm: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val widthPixels: Int =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) wm.currentWindowMetrics.bounds.width() else {
-                val displayMetrics = DisplayMetrics()
-                wm.defaultDisplay.getMetrics(displayMetrics)
-                displayMetrics.widthPixels
-            }
         markerList.forEach {
-            createMarker(it, canvas, widthPixels)
+            createMarker(it, canvas)
         }
         return bitmap
     }
 
-    private fun createMarker(marker: ModelMarker, canvas: Canvas, width: Int) {
-        val radius: Float = (LayoutUtils.dpToPx(context, 14) * canvas.width / width).toFloat()
+    private fun createMarker(marker: ModelMarker, canvas: Canvas) {
+        // Calculate the smallest side of the canvas in density-independent pixels (dp) to use as a scaling ratio
+        val scalingRatio: Float =
+            (if (canvas.width > canvas.height) canvas.height else canvas.width).toFloat() / canvas.density
+        val radius: Float = LayoutUtils.dpToPx(context, 14) * scalingRatio
         var x: Float = (marker.x * canvas.width).toFloat()
         var y: Float = (marker.y * canvas.height).toFloat()
         x = when {
@@ -62,7 +56,7 @@ object ImageWithMarkersGenerator {
         })
         val paintText: TextPaint = TextPaint().apply {
             color = ContextCompat.getColor(context, R.color.white)
-            textSize = LayoutUtils.spToPx(context, 16).toFloat()
+            textSize = LayoutUtils.spToPx(context, 16) * scalingRatio
             textAlign = Paint.Align.CENTER
         }
         val textOffset: Float = (paintText.descent() - paintText.ascent()) / 2 - paintText.descent()
