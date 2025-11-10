@@ -62,6 +62,11 @@
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 
+# Gson
+-keep class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
 # CUSTOM CLASSES
 -keep class it.mindtek.ruah.services.** { *;}
 -keepclassmembers class it.mindtek.ruah.services.** { *; }
