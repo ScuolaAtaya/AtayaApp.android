@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.getString
@@ -64,7 +63,7 @@ class DownloadWorker(context: Context, workerParameters: WorkerParameters) :
                         onDownloadComplete()
                     }
                 } catch (e: IOException) {
-                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Failure downloading file", e)
                 }
                 it.set(Result.success())
                 executor.shutdown()
