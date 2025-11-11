@@ -68,6 +68,8 @@
 }
 
 # CUSTOM CLASSES
+-keep class it.mindtek.ruah.db.models.** { *;}
+-keepclassmembers class it.mindtek.ruah.db.models.** { *; }
 -keep class it.mindtek.ruah.services.** { *;}
 -keepclassmembers class it.mindtek.ruah.services.** { *; }
 -keep class it.mindtek.ruah.ws.interfaces.** { *;}

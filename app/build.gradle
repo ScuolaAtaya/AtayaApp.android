@@ -16,8 +16,8 @@ android {
         applicationId "it.mindtek.ruah"
         minSdkVersion 25
         targetSdkVersion 36
-        versionCode 26
-        versionName "1.4.4"
+        versionCode 27
+        versionName "1.4.5"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
